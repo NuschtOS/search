@@ -15,7 +15,7 @@
         {
           packages = rec {
             nuscht-search = pkgs.callPackage ./nix/frontend.nix { };
-            mkSearch = pkgs.callPackage ./nix/wrapper.nix { inherit nuscht-search; }.mkSearch;
+            mkSearch = (pkgs.callPackages ./nix/wrapper.nix { inherit nuscht-search; }).mkSearch;
             default = nuscht-search;
           };
         }
