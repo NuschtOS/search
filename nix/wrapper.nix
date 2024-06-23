@@ -29,6 +29,6 @@ rec {
       ''
         mkdir $out
         lndir ${nuscht-search} $out
-        ln -s ${mkSearchJSON { inherit modules urlPrefix; }} $out/options.json
+        ln -s ${mkSearchJSON { inherit modules urlPrefix; }}/options.json $out/options.json
       '';
 }
