@@ -1,0 +1,21 @@
+<header>
+  <h1>NüschtOS Search</h1>
+</header>
+
+<aside>
+  <div class="card">
+    <feel-text-field [formControl]="search" label="Search"></feel-text-field>
+
+    <ul>
+      <li *ngFor="let option of results | async">
+        <a [routerLink]="option.name" queryParamsHandling="merge" routerLinkActive="active"><code>{{option.name}}</code></a>
+      </li>
+    </ul>
+  </div>
+</aside>
+
+<main>
+  <div class="card">
+    <router-outlet />
+  </div>
+</main>

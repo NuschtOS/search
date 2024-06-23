@@ -1,0 +1,30 @@
+<div *ngIf="(option | async) as option" class="typography">
+  <h2><code>{{option.name}}</code></h2>
+  <table>
+    <tbody>
+      <tr>
+        <td>Declarations</td>
+        <td>
+  <a *ngFor="let declaration of option.declarations" [href]="declaration">{{declaration}}</a>
+        </td>
+      </tr>
+      <tr>
+        <td>Description</td>
+        <!-- TODO: Markdown -->
+        <td [innerHTML]="option.description"></td>
+      </tr>
+      <tr>
+        <td>Type</td>
+        <td>{{option.type}}</td>
+      </tr>
+      <tr *ngIf="option.default">
+        <td>Default</td>
+        <td><code [innerHTML]="option.default"></code></td>
+      </tr>
+      <tr *ngIf="option.example">
+        <td>Example</td>
+        <td><code [innerHTML]="option.example"></code></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
