@@ -8,7 +8,7 @@ stdenv.mkDerivation (finalAttrs: {
   inherit (manifest) version;
 
   src = lib.cleanSourceWith {
-    filter = name: type: (!lib.hasSuffix ".nix" name);
+    filter = name: type: ((!lib.hasSuffix ".nix" name) && (builtins.baseNameOf name) != "options.json");
     src = lib.cleanSource ./..;
   };
 
