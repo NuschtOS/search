@@ -3,7 +3,7 @@
 rec {
   mkOptionsJSON = modules:
     let
-      patchedModules = lib.singleton { config._module.check = false; } ++ modules;
+      patchedModules = [ { config._module.check = false; } ] ++ modules;
       inherit (lib.evalModules { modules = patchedModules; }) options;
     in
     (nixosOptionsDoc {
