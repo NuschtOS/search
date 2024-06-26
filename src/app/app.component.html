@@ -8,7 +8,7 @@
 
     <ul>
       <li *ngFor="let option of results | async">
-        <a [routerLink]="option.name" queryParamsHandling="merge" routerLinkActive="active"><code>{{option.name}}</code></a>
+        <a [routerLink]="[]" [queryParams]="{option: option.name}" queryParamsHandling="merge" routerLinkActive="active"><code>{{option.name}}</code></a>
       </li>
     </ul>
   </div>
@@ -16,6 +16,6 @@
 
 <main>
   <div class="card">
-    <router-outlet />
+    <app-option></app-option>
   </div>
 </main>
