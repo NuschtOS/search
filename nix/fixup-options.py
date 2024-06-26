@@ -11,8 +11,13 @@ if (len(sys.argv) - 1) % 2 != 0:
   sys.exit(1)
 
 def code(code):
-  assert code["_type"] == 'literalExpression'
-  return highlight(code["text"], NixLexer(), HtmlFormatter())
+  if code["_type"] == 'literalExpression':
+    return highlight(code["text"], NixLexer(), HtmlFormatter())
+  elif code["_type"] == 'literalMD':
+    return markdown.markdown(code["text"])
+  else:
+    print("ERROR: cannot handle a " + code["_type"], file=sys.stderr)
+    sys.exit(1)
 
 out = []
 
