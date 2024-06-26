@@ -1,11 +1,11 @@
-<div *ngIf="(option | async) as option" class="typography">
+<div *ngIf="(option | async) as option; else notFound" class="typography">
   <h2><code>{{option.name}}</code></h2>
   <table>
     <tbody>
       <tr>
         <td>Declarations</td>
         <td>
-  <a *ngFor="let declaration of option.declarations" [href]="declaration">{{declaration}}</a>
+          <a *ngFor="let declaration of option.declarations" [href]="declaration">{{declaration}}</a>
         </td>
       </tr>
       <tr>
@@ -28,3 +28,7 @@
     </tbody>
   </table>
 </div>
+
+<ng-template #notFound>
+  <p>Try searching for something!</p>
+</ng-template>
