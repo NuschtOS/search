@@ -13,6 +13,7 @@ jobs:
           token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
       - uses: AndreasAugustin/actions-template-sync@v2
         with:
+          # required to update github workflow files
           github_token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
           pr_commit_msg: Merge template changes
           source_repo_path: NuschtOS/template

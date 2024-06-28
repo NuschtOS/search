@@ -11,4 +11,5 @@ jobs:
       - uses: cachix/install-nix-action@V27
       - uses: DeterminateSystems/update-flake-lock@v23
         with:
-          token: ${{ github.token }}
+          # required to trigger GitHub Actions on the created PRs
+          token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
