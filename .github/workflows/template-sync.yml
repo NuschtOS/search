@@ -1,0 +1,17 @@
+on:
+  schedule:
+  - cron:  "0 0 1 * *"
+  workflow_dispatch:
+jobs:
+  repo-sync:
+    if: github.repository != 'NuschtOS/template'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: AndreasAugustin/actions-template-sync@v2
+        with:
+          source_repo_path: NuschtOS/template
