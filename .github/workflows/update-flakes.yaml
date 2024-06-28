@@ -1,6 +1,5 @@
 name: "Update flakes"
 on:
-  repository_dispatch:
   workflow_dispatch:
   schedule:
     - cron: '0 0 * * 0'
@@ -10,6 +9,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@V27
-      - uses: DeterminateSystems/update-flake-lock@v22
+      - uses: DeterminateSystems/update-flake-lock@v23
         with:
-          token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
+          token: ${{ github.token }}
