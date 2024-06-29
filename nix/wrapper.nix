@@ -12,6 +12,14 @@ rec {
     }).optionsJSON + /share/doc/nixos/options.json;
 
   mkSearchJSON = searchArgs:
+    let
+      optionsJSON = opt: opt.optionsJSON or mkOptionsJSON opt.modules;
+      optionsJSONPrefixed = opt: if opt?optionsPrefix then runCommand "options.json-prefixed" {
+        nativeBuildInputs = [ python3 ];
+      } ''
+        ${./prefix-options.py} ${optionsJSON} ${opt.optionsPrefix}
+      '' else optionsJSON;
+    in
     runCommand "options.json"
       { nativeBuildInputs = [ (python3.withPackages (ps: with ps; [ markdown pygments ])) ]; }
       (''
@@ -19,7 +27,7 @@ rec {
         python \
           ${./fixup-options.py} \
       '' + lib.concatStringsSep " " (lib.flatten (map (opt: [
-        (opt.optionsJSON or mkOptionsJSON opt.modules) "'${opt.urlPrefix}'"
+        (optionsJSONPrefixed opt) "'${opt.urlPrefix}'"
         ]) searchArgs)) + ''
           > $out/options.json
       '');
@@ -41,7 +49,7 @@ rec {
 
   # mkMultiSearch [
   #   { modules = [ self.inputs.nixos-modules.nixosModule ]; urlPrefix = "https://github.com/NuschtOS/nixos-modules/blob/main/"; }
-  #   { optionsJSON = ./path/to/options.json; urlPrefix = "https://git.example.com/blob/main/"; }
+  #   { optionsJSON = ./path/to/options.json; optionsPrefix = "programs.example"; urlPrefix = "https://git.example.com/blob/main/"; }
   # ]
   mkMultiSearch = searchArgs:
     runCommand "nuscht-search"
