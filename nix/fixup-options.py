@@ -31,22 +31,22 @@ def update_declaration(url, declaration):
 out = []
 
 for i in range(1,len(sys.argv),2):
-  file = open(sys.argv[i])
-  url = sys.argv[i+1]
-  data = json.load(file)
+  with open(sys.argv[i], "r", encoding="utf-8") as file:
+    url = sys.argv[i+1]
+    data = json.load(file)
 
-  for key in data:
-    entry = data[key]
-    entry["name"] = key
-    del entry["loc"]
-    entry["declarations"] = list(map(lambda x: update_declaration(url, x), entry["declarations"]))
+    for key in data:
+      entry = data[key]
+      entry["name"] = key
+      del entry["loc"]
+      entry["declarations"] = list(map(lambda x: update_declaration(url, x), entry["declarations"]))
 
-    entry["description"] = markdown.markdown(entry["description"])
-    if 'default' in entry:
-      entry['default'] = code(entry["default"])
-    if 'example' in entry:
-      entry['example'] = code(entry["example"])
-    out.append(entry)
+      entry["description"] = markdown.markdown(entry["description"])
+      if 'default' in entry:
+        entry['default'] = code(entry["default"])
+      if 'example' in entry:
+        entry['example'] = code(entry["example"])
+      out.append(entry)
 
 
 print(json.dumps(out))
