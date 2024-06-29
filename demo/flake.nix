@@ -12,7 +12,10 @@
     };
     nixos-modules = {
       url = "github:nuschtos/nixos-modules";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        search.follows = "search";
+      };
     };
     nixvim = {
       url = "github:nix-community/nixvim";
