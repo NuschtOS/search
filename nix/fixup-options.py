@@ -19,6 +19,15 @@ def code(code):
     print("ERROR: cannot handle a " + code["_type"], file=sys.stderr)
     sys.exit(1)
 
+
+def update_declaration(url, declaration):
+  if "url" in declaration:
+    return declaration["url"]
+  if declaration.startswith("/nix/store/"):
+    # strip prefix: /nix/store/0a0mxyfmad6kaknkkr0ysraifws856i7-source
+    return f"{url}{declaration[51:]}"
+  return declaration
+
 out = []
 
 for i in range(1,len(sys.argv),2):
@@ -30,7 +39,7 @@ for i in range(1,len(sys.argv),2):
     entry = data[key]
     entry["name"] = key
     del entry["loc"]
-    entry["declarations"] = list(map(lambda x: f"{url}{x[51:]}",entry["declarations"]))
+    entry["declarations"] = list(map(lambda x: update_declaration(url, x), entry["declarations"]))
 
     entry["description"] = markdown.markdown(entry["description"])
     if 'default' in entry:
