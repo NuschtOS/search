@@ -15,6 +15,7 @@
       inputs = {
         nixpkgs.follows = "nixpkgs";
         search.follows = "search";
+        flake-utils.follows = "flake-utils";
       };
     };
     nixvim = {

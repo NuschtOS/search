@@ -36,12 +36,41 @@ export class SearchService {
 
   public search(query: string): Observable<Option[]> {
     this.update();
-    return this.data.pipe(map(options => options.filter(option => {
-      return option.name.includes(query)
-    })));
+    return this.data.pipe(map(options => {
+      const result = [];
+      let i = 0;
+      for (const option of options) {
+        if (option.name.includes(query)) {
+          result.push(option);
+          i++;
+          // TODO: pagination
+          if (i === 500) {
+            return result;
+          }
+        }
+      }
+      return result;
+    }));
   }
+
   public getByName(name: string): Observable<Option | undefined> {
     this.update();
     return this.data.pipe(map(options => options.find(option => option.name === name)));
+  }
+
+  public all(): Observable<Option[]> {
+    return this.data.pipe(map(options => {
+      const result = [];
+      let i = 0;
+      for (const option of options) {
+        result.push(option);
+        i++;
+        // TODO: pagination
+        if (i === 500) {
+          return result;
+        }
+      }
+      return result;
+    }));
   }
 }
