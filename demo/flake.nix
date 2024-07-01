@@ -33,25 +33,28 @@
         in
         {
           packages = {
-            default = search.packages.${system}.mkMultiSearch [
-              {
-                modules = [
-                  ({ config, lib, ... }: {
-                    _module.args = {
-                      libS = nixos-modules.lib { inherit config lib; };
-                      inherit pkgs;
-                    };
-                  })
-                  nixos-modules.nixosModule
-                ];
-                urlPrefix = "https://github.com/NuschtOS/nixos-modules/tree/main/";
-              }
-              {
-                optionsJSON = nixvim.packages.${system}.options-json + /share/doc/nixos/options.json;
-                optionsPrefix = "programs.nixvim";
-                urlPrefix = "https://github.com/nix-community/nixvim/tree/main/";
-              }
-            ];
+            default = search.packages.${system}.mkMultiSearch {
+              baseHref = "/search/";
+              scopes = [
+                {
+                  modules = [
+                    ({ config, lib, ... }: {
+                      _module.args = {
+                        libS = nixos-modules.lib { inherit config lib; };
+                        inherit pkgs;
+                      };
+                    })
+                    nixos-modules.nixosModule
+                  ];
+                  urlPrefix = "https://github.com/NuschtOS/nixos-modules/tree/main/";
+                }
+                {
+                  optionsJSON = nixvim.packages.${system}.options-json + /share/doc/nixos/options.json;
+                  optionsPrefix = "programs.nixvim";
+                  urlPrefix = "https://github.com/nix-community/nixvim/tree/main/";
+                }
+              ];
+            };
           };
         });
 }
