@@ -61,6 +61,9 @@ devDependencies:
   '@angular/compiler-cli':
     specifier: ^18.0.0
     version: 18.0.4(@angular/compiler@18.0.4)(typescript@5.4.5)
+  '@angular/language-service':
+    specifier: ^18.0.5
+    version: 18.0.5
   '@types/jasmine':
     specifier: ~5.1.0
     version: 5.1.4
@@ -470,6 +473,11 @@ packages:
       rxjs: 7.8.1
       tslib: 2.6.3
     dev: false
+
+  /@angular/language-service@18.0.5:
+    resolution: {integrity: sha512-ahZnsUk8q/4k+okP9hBcfWRiOiMximSAI7Vq5M/fe9cezykt8cWEzxgRoduTvDKoQPqcRl0nHlDYju2zkXcU6g==}
+    engines: {node: ^18.19.1 || ^20.11.1 || >=22.0.0}
+    dev: true
 
   /@angular/platform-browser-dynamic@18.0.4(@angular/common@18.0.4)(@angular/compiler@18.0.4)(@angular/core@18.0.4)(@angular/platform-browser@18.0.4):
     resolution: {integrity: sha512-K36/gamqs8etGlmWew7IwZ/bDJdI5ZeUqvOUmkKjJ9F2I/g5P/zZrB1qExwN/zsxzxd9idkvEhwY+YDeiZEEJg==}
