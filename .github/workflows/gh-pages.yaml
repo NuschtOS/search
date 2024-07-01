@@ -11,6 +11,7 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  deployments: write
 
 concurrency:
   group: "pages"
@@ -35,6 +36,15 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: demo/result
+
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: 2a09613716e511a8fe8ca74abc084762
+          projectName: nuschtos-search
+          directory: demo/result
+          gitHubToken: ${{ github.token }}
 
   deploy:
     name: Deploy to GitHub Pages
