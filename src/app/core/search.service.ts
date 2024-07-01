@@ -29,7 +29,7 @@ export class SearchService {
     const now = Date.now();
     if (this.nextUpdate < now) {
       this.nextUpdate = now + 1000 * 60 * 10;
-      this.http.get<Record<string, Omit<Option, "name">>>("/options.json")
+      this.http.get<Record<string, Omit<Option, "name">>>(`${document.getElementsByTagName('base')[0].href}options.json`)
         .subscribe(data => this.data.next(Object.entries(data).map(([name, data]) => ({ name, ...data }))));
     }
   }
