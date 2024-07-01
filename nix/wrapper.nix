@@ -47,10 +47,13 @@ rec {
         ln -s ${mkSearchJSON [ args ]} $out/options.json
       '';
 
-  # mkMultiSearch [
-  #   { modules = [ self.inputs.nixos-modules.nixosModule ]; urlPrefix = "https://github.com/NuschtOS/nixos-modules/blob/main/"; }
-  #   { optionsJSON = ./path/to/options.json; optionsPrefix = "programs.example"; urlPrefix = "https://git.example.com/blob/main/"; }
-  # ]
+  # mkMultiSearch {
+  #   baseHref = "/search/";
+  #   scopes = [
+  #     { modules = [ self.inputs.nixos-modules.nixosModule ]; urlPrefix = "https://github.com/NuschtOS/nixos-modules/blob/main/"; }
+  #     { optionsJSON = ./path/to/options.json; optionsPrefix = "programs.example"; urlPrefix = "https://git.example.com/blob/main/"; }
+  #   ];
+  # };
   mkMultiSearch = { scopes, baseHref ? "/" }:
     runCommand "nuscht-search"
       { nativeBuildInputs = [ xorg.lndir ]; }
