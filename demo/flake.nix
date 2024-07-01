@@ -34,7 +34,6 @@
         {
           packages = {
             default = search.packages.${system}.mkMultiSearch {
-              baseHref = "/search/";
               scopes = [
                 {
                   modules = [
