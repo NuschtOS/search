@@ -1,4 +1,4 @@
-{ lib, stdenv, pnpm_8, nodejs }:
+{ lib, stdenv, pnpm_8, nodejs, baseHref ? "/" }:
 
 let
   manifest = lib.importJSON ../package.json;
@@ -20,7 +20,7 @@ stdenv.mkDerivation (finalAttrs: {
   nativeBuildInputs = [ nodejs pnpm_8.configHook ];
 
   buildPhase = ''
-    pnpm run build:ci
+    pnpm run build:ci --base-href ${baseHref}
   '';
 
   installPhase = ''
