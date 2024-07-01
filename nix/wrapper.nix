@@ -33,13 +33,7 @@ rec {
           > $out/options.json
       '');
 
-  mkSearch = { modules ? null, optionsJSON ? null, urlPrefix }:
-    let
-      args = {
-        inherit urlPrefix;
-      } // lib.optionalAttrs (modules != null) modules
-        // lib.optionalAttrs (optionsJSON != null) optionsJSON;
-    in
+  mkSearch = { modules ? null, optionsJSON ? null, urlPrefix } @ args:
     runCommand "nuscht-search"
       { nativeBuildInputs = [ xorg.lndir ]; }
       ''
