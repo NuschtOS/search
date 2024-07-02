@@ -13,6 +13,10 @@
           };
         in
         {
+          devShells.default = pkgs.mkShell {
+            buildInputs = with pkgs; [ pnpm_8 nodejs ];
+          };
+
           packages = rec {
             nuscht-search = pkgs.callPackage ./nix/frontend.nix { };
             inherit (pkgs.callPackages ./nix/wrapper.nix { inherit nuscht-search; }) mkOptionsJSON mkSearchJSON mkSearch mkMultiSearch;
