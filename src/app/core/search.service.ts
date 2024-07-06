@@ -36,16 +36,35 @@ export class SearchService {
 
   public search(query: string): Observable<Option[]> {
     this.update();
+
+    const search = query.split('*');
+
     return this.data.pipe(map(options => {
       const result = [];
+
       let i = 0;
+
       for (const option of options) {
-        if (option.name.includes(query)) {
-          result.push(option);
-          i++;
-          // TODO: pagination
-          if (i === 500) {
-            return result;
+        let remainingName = option.name;
+        let idx = -1;
+
+        outer: {
+          for (const segment of search) {
+            idx = remainingName.indexOf(segment);
+            if (idx !== -1) {
+              remainingName = remainingName.substring(idx + segment.length);
+            } else {
+              break outer;
+            }
+          }
+
+          if (idx !== -1) {
+            result.push(option);
+            i++;
+            // TODO: pagination
+            if (i === 500) {
+              return result;
+            }
           }
         }
       }
