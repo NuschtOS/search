@@ -2,15 +2,16 @@
 
 :host {
   display: grid;
-  grid-template-rows: min-content;
+  grid-template-rows: min-content 1fr min-content;
   grid-template-columns: 1fr 2fr;
+  grid-template-areas: "header header" "aside main" "aside footer";
+  height: 100dvh;
+  width: 100%;
   gap: 1rem;
   padding: 1rem;
 
-  header,
-  footer {
-    grid-column-start: 1;
-    grid-column-end: 3;
+  header {
+    grid-area: header;
   }
 
   .card {
@@ -18,15 +19,22 @@
     border: .1rem solid $c-card-secondary;
     background-color: $c-card;
     border-radius: .5rem;
+    max-height: 100%;
+    display: flex;
   }
 
-  aside {}
+  aside {
+    grid-area: aside;
+  }
 
-  main {}
+  main {
+    grid-area: main;
+  }
 
   footer {
     display: flex;
     justify-content: flex-end;
+    grid-area: footer;
 
     >*:not(:last-child)::after {
       content: "|";
