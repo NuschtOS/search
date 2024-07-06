@@ -1,0 +1,29 @@
+@import "vars";
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  li {
+    list-style-type: none;
+
+    a {
+      display: block;
+      text-decoration: none;
+      padding: 0.4rem 0.8rem;
+      color: $f-color;
+      transition: 40ms ease-out background-color, 40ms ease-out border-color;
+      border-radius: 0.4rem;
+      border: 0.1rem solid transparent;
+
+      &:hover {
+        background-color: $c-page;
+      }
+
+      &.active {
+        border-color: $c-primary;
+      }
+    }
+  }
+}

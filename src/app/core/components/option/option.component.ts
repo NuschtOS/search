@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { SearchService } from '../../core/search.service';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { SearchService } from '../../data/search.service';
 
 @Component({
   selector: 'app-option',

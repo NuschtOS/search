@@ -4,24 +4,12 @@
 
 <aside>
   <div class="card">
-    <feel-text-field [formControl]="search" label="Search"></feel-text-field>
-
-    <ng-container *ngIf="(results | async) as options">
-      <ul>
-        <li *ngFor="let option of options; trackBy trackBy">
-          <a [routerLink]="[]" [queryParams]="{option: option.name}" queryParamsHandling="merge"
-            routerLinkActive="active">
-            <code>{{option.name}}</code>
-          </a>
-        </li>
-      </ul>
-      <p *ngIf="options.length == 500">Only showing the first 500 results. Make your search term more concise.</p>
-    </ng-container>
+    <app-search/>
   </div>
 </aside>
 
 <main>
   <div class="card">
-    <app-option></app-option>
+    <app-option/>
   </div>
 </main>
