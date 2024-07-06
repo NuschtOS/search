@@ -7,7 +7,8 @@
   gap: 1rem;
   padding: 1rem;
 
-  header {
+  header,
+  footer {
     grid-column-start: 1;
     grid-column-end: 3;
   }
@@ -22,4 +23,15 @@
   aside {}
 
   main {}
+
+  footer {
+    display: flex;
+    justify-content: flex-end;
+
+    >*:not(:last-child)::after {
+      content: "|";
+      margin: 0 0.5rem;
+      color: $c-gray;
+    }
+  }
 }
