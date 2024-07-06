@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import wcmatch from 'wildcard-match';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 
 // https://transform.tools/json-to-typescript
@@ -37,17 +36,35 @@ export class SearchService {
 
   public search(query: string): Observable<Option[]> {
     this.update();
+
+    const search = query.split('*');
+
     return this.data.pipe(map(options => {
       const result = [];
-      const match = wcmatch('*'+query+'*', false);
+
       let i = 0;
+
       for (const option of options) {
-        if (match(option.name)) {
-          result.push(option);
-          i++;
-          // TODO: pagination
-          if (i === 500) {
-            return result;
+        let remainingName = option.name;
+        let idx = -1;
+
+        outer: {
+          for (const segment of search) {
+            idx = remainingName.indexOf(segment);
+            if (idx !== -1) {
+              remainingName = remainingName.substring(idx + segment.length);
+            } else {
+              break outer;
+            }
+          }
+
+          if (idx !== -1) {
+            result.push(option);
+            i++;
+            // TODO: pagination
+            if (i === 500) {
+              return result;
+            }
           }
         }
       }

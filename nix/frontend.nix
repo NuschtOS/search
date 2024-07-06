@@ -14,7 +14,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   pnpmDeps = pnpm_8.fetchDeps {
     inherit (finalAttrs) pname version src;
-    hash = "sha256-iFkxydQlMSd3fKE1hCEnaCzAkbyt753NRr5NK51/6uY=";
+    hash = "sha256-2bmu2KU/3vkQK+8uvGYkHidAuS0l7pM3F66W8NVs3I8=";
   };
 
   nativeBuildInputs = [ nodejs pnpm_8.configHook ];
