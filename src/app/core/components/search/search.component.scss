@@ -1,28 +1,38 @@
 @import "vars";
 
 :host {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: min-content 1fr;
   gap: 1rem;
+  width: 100%;
 
-  li {
-    list-style-type: none;
+  .scroll {
+    overflow-y: scroll;
 
-    a {
-      display: block;
-      text-decoration: none;
-      padding: 0.4rem 0.8rem;
-      color: $f-color;
-      transition: 40ms ease-out background-color, 40ms ease-out border-color;
-      border-radius: 0.4rem;
-      border: 0.1rem solid transparent;
+    ul {
+      display: flex;
+      flex-direction: column;
 
-      &:hover {
-        background-color: $c-page;
-      }
+      li {
+        list-style-type: none;
 
-      &.active {
-        border-color: $c-primary;
+        a {
+          display: block;
+          text-decoration: none;
+          padding: 0.4rem 0.8rem;
+          color: $f-color;
+          transition: 40ms ease-out background-color, 40ms ease-out border-color;
+          border-radius: 0.4rem;
+          border: 0.1rem solid transparent;
+
+          &:hover {
+            background-color: $c-page;
+          }
+
+          &.active {
+            border-color: $c-primary;
+          }
+        }
       }
     }
   }

@@ -1,3 +1,7 @@
 @import "theme";
 @include theme();
 @import "scss/pygments";
+
+* {
+  box-sizing: border-box;
+}
