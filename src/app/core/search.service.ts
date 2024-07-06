@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import wcmatch from 'wildcard-match';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 
 // https://transform.tools/json-to-typescript
@@ -38,9 +39,10 @@ export class SearchService {
     this.update();
     return this.data.pipe(map(options => {
       const result = [];
+      const match = wcmatch('*'+query+'*', false);
       let i = 0;
       for (const option of options) {
-        if (option.name.includes(query)) {
+        if (match(option.name)) {
           result.push(option);
           i++;
           // TODO: pagination
