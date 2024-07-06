@@ -37,7 +37,7 @@ export class SearchService {
   public search(query: string): Observable<Option[]> {
     this.update();
 
-    const search = query.split('*');
+    const search = query.toLowerCase().split('*');
 
     return this.data.pipe(map(options => {
       const result = [];
@@ -45,7 +45,7 @@ export class SearchService {
       let i = 0;
 
       for (const option of options) {
-        let remainingName = option.name;
+        let remainingName = option.name.toLowerCase();
         let idx = -1;
 
         outer: {
