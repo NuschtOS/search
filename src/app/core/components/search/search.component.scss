@@ -24,6 +24,8 @@
           transition: 40ms ease-out background-color, 40ms ease-out border-color;
           border-radius: 0.4rem;
           border: 0.1rem solid transparent;
+          overflow: hidden;
+          text-overflow: ellipsis;
 
           &:hover {
             background-color: $c-page;
