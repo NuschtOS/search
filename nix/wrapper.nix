@@ -20,7 +20,7 @@ rec {
             nativeBuildInputs = [ jq ];
           } /* bash */ ''
           mkdir $out
-          jq -r '[to_entries[] | select(.key | test("^(_module|_freeformOptions|warnings|assertions|content)\\..*") | not)] | from_entries | with_entries(.key as $key | .key |= "${opt.optionsPrefix}.\($key)")' ${optionsJSON opt} > $out/options.json
+          jq -r '[to_entries[] | select(.key | test("^(_module|_freeformOptions|warnings|assertions|content)\\..*") | not)] | from_entries ${lib.optionalString (opt?optionsPrefix) "| with_entries(.key as $key | .key |= \"${opt.optionsPrefix}.\($key)\")' ${optionsJSON opt}"} > $out/options.json
         '') + /options.json else optionsJSON opt;
     in
     runCommand "options.json"
@@ -54,11 +54,12 @@ rec {
         ln -s ${mkSearchJSON scopes}/options.json $out/options.json
       '';
 
-  mkSearch = { modules ? null, optionsJSON ? null, urlPrefix, baseHref ? "/" }:
+  # mkSearch { modules = [ self.inputs.nixos-modules.nixosModule ]; urlPrefix = "https://github.com/NuschtOS/nixos-modules/blob/main/"; }
+  # mkSearch { optionsJSON = ./path/to/options.json; optionsPrefix = "programs.example"; urlPrefix = "https://git.example.com/blob/main/"; }
+  # mkSearch { optionsJSON = ./path/to/options.json; urlPrefix = "https://git.example.com/blob/main/"; baseHref = "/search/"; }
+  mkSearch = { baseHref ? "/", ... }@args:
     mkMultiSearch {
       inherit baseHref;
-      scopes = [ {
-      inherit modules optionsJSON urlPrefix;
-      }
-    ]; };
+      scopes = [ (lib.removeAttrs args [ "baseHref" ]) ];
+    };
 }
