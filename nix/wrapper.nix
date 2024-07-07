@@ -38,15 +38,6 @@ rec {
         > $out/options.json
       '');
 
-  mkSearch = { modules ? null, optionsJSON ? null, urlPrefix, baseHref ? "/" } @ args:
-    runCommand "nuscht-search"
-      { nativeBuildInputs = [ xorg.lndir ]; }
-      ''
-        mkdir $out
-        lndir ${nuscht-search.override { inherit baseHref; }} $out
-        ln -s ${mkSearchJSON [ args ]} $out/options.json
-      '';
-
   # mkMultiSearch {
   #   baseHref = "/search/";
   #   scopes = [
@@ -62,4 +53,12 @@ rec {
         lndir ${nuscht-search.override { inherit baseHref; }} $out
         ln -s ${mkSearchJSON scopes}/options.json $out/options.json
       '';
+
+  mkSearch = { modules ? null, optionsJSON ? null, urlPrefix, baseHref ? "/" }:
+    mkMultiSearch {
+      inherit baseHref;
+      scopes = [ {
+      inherit modules optionsJSON urlPrefix;
+      }
+    ]; };
 }
