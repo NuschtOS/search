@@ -18,9 +18,9 @@ rec {
         if opt?optionsJSON then (runCommand "options.json-prefixed"
           {
             nativeBuildInputs = [ jq ];
-          } ''
+          } /* bash */ ''
           mkdir $out
-          jq -r 'with_entries(.key as $key | .key |= "${opt.optionsPrefix}.\($key)")' ${optionsJSON opt} > $out/options.json
+          jq -r '[to_entries[] | select(.key | test("^(_module|_freeformOptions|warnings|assertions|content)\\..*") | not)] | from_entries | with_entries(.key as $key | .key |= "${opt.optionsPrefix}.\($key)")' ${optionsJSON opt} > $out/options.json
         '') + /options.json else optionsJSON opt;
     in
     runCommand "options.json"
