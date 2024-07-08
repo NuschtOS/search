@@ -24,7 +24,7 @@ rec {
         '') + /options.json else optionsJSON opt;
     in
     runCommand "options.json"
-      { nativeBuildInputs = [ (python3.withPackages (ps: with ps; [ markdown pygments ])) ]; }
+      { nativeBuildInputs = [ (python3.withPackages (ps: with ps; [ markdown pygments html-sanitizer ])) ]; }
       (''
         mkdir $out
         python \
