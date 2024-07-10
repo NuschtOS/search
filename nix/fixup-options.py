@@ -51,7 +51,7 @@ for i in range(1,len(sys.argv),2):
         entry['example'] = code(entry["example"])
       out.append(entry)
 
-out.sort(key=lamda option: option["name"])
+out.sort(key=lambda option: option["name"])
 
 
 print(json.dumps(out))
