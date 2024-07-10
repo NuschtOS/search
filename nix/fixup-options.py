@@ -53,5 +53,4 @@ for i in range(1,len(sys.argv),2):
 
 out.sort(key=lambda option: option["name"])
 
-
 print(json.dumps(out))
