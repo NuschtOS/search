@@ -2,7 +2,12 @@
 
 Simple and fast static-page NixOS option search
 
-## Usage
+## Deployments
+
+- NixVim https://nix-community.github.io/nixvim/search/
+- Our small demo https://nuschtos-search.pages.dev/
+
+## How to use
 
 Until we have written proper instructions please take a look at the following examples:
 - Static page with GitHub Actions and Cloudflare/GitHub Pages https://github.com/NuschtOS/search/blob/main/.github/workflows/gh-pages.yaml https://github.com/NuschtOS/search/blob/main/demo/flake.nix#L37-L57
