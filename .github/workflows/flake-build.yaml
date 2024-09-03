@@ -1,0 +1,32 @@
+name: "flake build"
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ '*' ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [ "unstable", "stable" ]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: cachix/install-nix-action@V27
+
+      - name: build stable
+        if: matrix.target == 'stable'
+        run: |
+          nix build -L \
+            --override-input nixpkgs github:NixOS/nixpkgs/nixos-24.05
+
+      - name: build unstable
+        if: matrix.target != 'stable'
+        run: |
+          nix build -L
