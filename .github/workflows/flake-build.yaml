@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: cachix/install-nix-action@V28
+      - uses: cachix/install-nix-action@v29
 
       - name: build stable
         if: matrix.target == 'stable'
