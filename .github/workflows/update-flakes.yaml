@@ -8,8 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: cachix/install-nix-action@v29
-      - uses: DeterminateSystems/update-flake-lock@v24
+      - uses: cachix/install-nix-action@V27
+      - uses: DeterminateSystems/update-flake-lock@v23
         if: ${{ hashFiles('flake.nix') != '' }}
         with:
           # required to trigger GitHub Actions on the created PRs
