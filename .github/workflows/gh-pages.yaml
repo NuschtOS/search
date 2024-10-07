@@ -28,6 +28,8 @@ jobs:
       - name: Install Nix
         uses: cachix/install-nix-action@v30
 
+      - uses: DeterminateSystems/magic-nix-cache-action@v8
+
       - name: Build search
         working-directory: demo
         run: nix build -L --override-input search ..
