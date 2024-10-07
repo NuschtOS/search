@@ -20,6 +20,8 @@ jobs:
 
       - uses: cachix/install-nix-action@v30
 
+      - uses: DeterminateSystems/magic-nix-cache-action@v8
+
       - name: build stable
         if: matrix.target == 'stable'
         run: |
