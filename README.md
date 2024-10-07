@@ -4,8 +4,9 @@ Simple and fast static-page NixOS option search
 
 ## Deployments
 
-- NixVim https://nix-community.github.io/nixvim/search/
-- Our small demo https://nuschtos-search.pages.dev/
+- NixOS Modules <https://modules.nüschtos.de>
+- General collection of community projects <https://search.nüschtos.de>
+- NixVim <https://nix-community.github.io/nixvim/search>
 
 ## How to use
 
