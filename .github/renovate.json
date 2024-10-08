@@ -1,0 +1,24 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "default:pinDigestsDisabled",
+    "mergeConfidence:all-badges"
+  ],
+  "assignees": [
+    "MarcelCoding",
+    "SuperSandro2000"
+  ],
+  "dependencyDashboardOSVVulnerabilitySummary": "all",
+  "osvVulnerabilityAlerts": true,
+  "postUpgradeTasks": {
+    "commands": ["./nix/update-pnpm-hash.sh"],
+    "executionMode": "branch",
+    "fileFilters": ["package.json", "pnpm-lock.yaml"]
+  },
+  "prHourlyLimit": 0,
+  "schedule": [
+    "before 12am on sunday"
+  ],
+  "semanticCommits": "disabled"
+}
