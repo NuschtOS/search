@@ -26,6 +26,7 @@
           border: 0.1rem solid transparent;
           overflow: hidden;
           text-overflow: ellipsis;
+          white-space: nowrap;
 
           &:hover {
             background-color: $c-page;
