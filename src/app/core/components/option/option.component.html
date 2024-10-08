@@ -5,7 +5,14 @@
       <tr>
         <td>Declarations</td>
         <td>
-          <a target="_blank" *ngFor="let declaration of option.declarations" [href]="declaration">{{declaration}}</a>
+          <ul *ngIf="option.declarations.length > 1; else singleDeclaration">
+            <li *ngFor="let declaration of option.declarations">
+              <a target="_blank" [href]="declaration">{{declaration}}</a>
+            </li>
+          </ul>
+          <ng-template #singleDeclaration>
+            <a target="_blank" [href]="option.declarations[0]">{{option.declarations[0]}}</a>
+          </ng-template>
         </td>
       </tr>
       <tr>
