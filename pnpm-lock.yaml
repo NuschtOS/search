@@ -30,11 +30,11 @@ dependencies:
     specifier: ^18.2.6
     version: 18.2.6(@angular/common@18.2.6)(@angular/core@18.2.6)(@angular/platform-browser@18.2.6)(rxjs@7.8.1)
   '@feel/form':
-    specifier: ^0.0.24
-    version: 0.0.24(@angular/cdk@17.3.10)(@angular/common@18.2.6)(@angular/core@18.2.6)(@feel/style@0.0.24)
+    specifier: ^0.0.25
+    version: 0.0.25(@angular/cdk@17.3.10)(@angular/common@18.2.6)(@angular/core@18.2.6)(@feel/style@0.0.25)
   '@feel/style':
-    specifier: ^0.0.24
-    version: 0.0.24(@angular/common@18.2.6)(@angular/core@18.2.6)
+    specifier: ^0.0.25
+    version: 0.0.25(@angular/common@18.2.6)(@angular/core@18.2.6)
   '@fontsource/dm-mono':
     specifier: ^5.1.0
     version: 5.1.0
@@ -2231,23 +2231,23 @@ packages:
     dev: true
     optional: true
 
-  /@feel/form@0.0.24(@angular/cdk@17.3.10)(@angular/common@18.2.6)(@angular/core@18.2.6)(@feel/style@0.0.24):
-    resolution: {integrity: sha512-8CoaIKXCULkZCDk/936j/xsBOyFuOhkVrkVjOOroZpXKV5Rz/3njtGYcB1+Z/7wRHKVS0dBiC7U0jYeTDa3TFQ==, tarball: https://codeberg.org/api/packages/m4rc3l/npm/%40feel%2Fform/-/0.0.24/form-0.0.24.tgz}
+  /@feel/form@0.0.25(@angular/cdk@17.3.10)(@angular/common@18.2.6)(@angular/core@18.2.6)(@feel/style@0.0.25):
+    resolution: {integrity: sha512-S86TcCN3Va5GbgcSymsXCbe0EAm9YjueM3VWnY9WoCY4CHxNJ1YXboz/tuXtFGwzpuJ+yp73B0c+GpCZhIKAPQ==, tarball: https://codeberg.org/api/packages/m4rc3l/npm/%40feel%2Fform/-/0.0.25/form-0.0.25.tgz}
     peerDependencies:
       '@angular/cdk': ^17.0.0
       '@angular/common': ^17.0.0
       '@angular/core': ^17.0.0
-      '@feel/style': 0.0.24
+      '@feel/style': 0.0.25
     dependencies:
       '@angular/cdk': 17.3.10(@angular/common@18.2.6)(@angular/core@18.2.6)(rxjs@7.8.1)
       '@angular/common': 18.2.6(@angular/core@18.2.6)(rxjs@7.8.1)
       '@angular/core': 18.2.6(rxjs@7.8.1)(zone.js@0.14.10)
-      '@feel/style': 0.0.24(@angular/common@18.2.6)(@angular/core@18.2.6)
+      '@feel/style': 0.0.25(@angular/common@18.2.6)(@angular/core@18.2.6)
       tslib: 2.7.0
     dev: false
 
-  /@feel/style@0.0.24(@angular/common@18.2.6)(@angular/core@18.2.6):
-    resolution: {integrity: sha512-KAe6VcYBo4qL7o1D9MwwVa1PmL2cMLq9USY3XpqU1bAle7Xty22XDjRCnuKZUfNO+06qsdDXhHi0jcB4BuoPQg==, tarball: https://codeberg.org/api/packages/m4rc3l/npm/%40feel%2Fstyle/-/0.0.24/style-0.0.24.tgz}
+  /@feel/style@0.0.25(@angular/common@18.2.6)(@angular/core@18.2.6):
+    resolution: {integrity: sha512-uW1cVRlhdEKujRrBxeiTp9/dS97IHsuJzZQgvbqjmPf0gOoC9sUE5fBiGauJ+NwNq2SLv/Shlhuobzry/zQWvQ==, tarball: https://codeberg.org/api/packages/m4rc3l/npm/%40feel%2Fstyle/-/0.0.25/style-0.0.25.tgz}
     peerDependencies:
       '@angular/common': ^17.0.0
       '@angular/core': ^17.0.0
