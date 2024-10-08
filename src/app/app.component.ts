@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { SearchComponent } from './core/components/search/search.component';
 import { OptionComponent } from './core/components/option/option.component';
+import { TITLE } from './core/config.domain';
 
 @Component({
   selector: 'app-root',
@@ -12,4 +13,5 @@ import { OptionComponent } from './core/components/option/option.component';
 })
 export class AppComponent {
 
+  protected readonly title = TITLE;
 }

@@ -1,4 +1,4 @@
-{ lib, stdenv, pnpm_8, nodejs, baseHref ? "/" }:
+{ lib, stdenv, pnpm_8, nodejs, baseHref ? "/", title ? "NuschtOS Search" }:
 
 let
   manifest = lib.importJSON ../package.json;
@@ -11,6 +11,11 @@ stdenv.mkDerivation (finalAttrs: {
     filter = name: type: ((!lib.hasSuffix ".nix" name) && (builtins.baseNameOf name) != "options.json" && (builtins.dirOf name) != "node_modules");
     src = lib.cleanSource ./..;
   };
+
+  postPatch = ''
+    substituteInPlace src/app/core/config.domain.ts \
+      --replace-fail '##TITLE##' '${title}'
+  '';
 
   pnpmDeps = pnpm_8.fetchDeps {
     inherit (finalAttrs) pname version src;
