@@ -26,7 +26,7 @@
     "@fontsource/dm-sans": "^5.1.0",
     "rxjs": "~7.8.1",
     "tslib": "^2.7.0",
-    "zone.js": "~0.14.10"
+    "zone.js": "~0.15.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.2.7",
