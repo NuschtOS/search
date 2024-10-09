@@ -31,8 +31,7 @@ jobs:
       - uses: DeterminateSystems/magic-nix-cache-action@v8
 
       - name: Build search
-        working-directory: demo
-        run: nix build -L --override-input search ..
+        run: nix build -L github:NuschtOS/search.nuschtos.de --override-input search .
 
       - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@v1
@@ -40,5 +39,5 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: 2a09613716e511a8fe8ca74abc084762
           projectName: nuschtos-search
-          directory: demo/result
+          directory: result
           gitHubToken: ${{ github.token }}
