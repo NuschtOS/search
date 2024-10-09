@@ -14,7 +14,7 @@
   "postUpgradeTasks": {
     "commands": ["./nix/update-pnpm-hash.sh"],
     "executionMode": "branch",
-    "fileFilters": ["package.json", "pnpm-lock.yaml"]
+    "fileFilters": ["nix/frontend.nix"]
   },
   "prHourlyLimit": 0,
   "schedule": [

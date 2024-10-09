@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -eou pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")" || exit 1
 fake_hash="sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
 old_hash="$(command nix eval --raw ..#nuscht-search.pnpmDeps.outputHash)"
