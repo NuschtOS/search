@@ -1,4 +1,6 @@
 {
+  description = "Simple and fast static-page NixOS option search";
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
