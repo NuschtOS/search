@@ -16,11 +16,19 @@
         in
         {
           devShells.default = pkgs.mkShell {
-            buildInputs = with pkgs; [
+            nativeBuildInputs = with pkgs; [
               nodejs
               pnpm
               (python3.withPackages (ps: with ps; [ markdown pygments ]))
+
+              cargo
+              clippy
+              rustc
+              rustc.llvmPackages.lld
+              wasm-pack
             ];
+
+            RUST_SRC_PATH = pkgs.rust.packages.stable.rustPlatform.rustLibSrc;
           };
 
           packages = rec {
