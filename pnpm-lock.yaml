@@ -53,14 +53,14 @@ dependencies:
 
 devDependencies:
   '@angular-devkit/build-angular':
-    specifier: ^18.2.7
-    version: 18.2.8(@angular/compiler-cli@18.2.7)(karma@6.4.4)(typescript@5.4.5)
+    specifier: ^18.2.8
+    version: 18.2.8(@angular/compiler-cli@18.2.7)(karma@6.4.4)(typescript@5.5.4)
   '@angular/cli':
-    specifier: ^18.2.7
+    specifier: ^18.2.8
     version: 18.2.8
   '@angular/compiler-cli':
     specifier: ^18.2.7
-    version: 18.2.7(@angular/compiler@18.2.7)(typescript@5.4.5)
+    version: 18.2.7(@angular/compiler@18.2.7)(typescript@5.5.4)
   '@angular/language-service':
     specifier: ^18.2.7
     version: 18.2.7
@@ -86,8 +86,8 @@ devDependencies:
     specifier: ~2.1.0
     version: 2.1.0(jasmine-core@5.3.0)(karma-jasmine@5.1.0)(karma@6.4.4)
   typescript:
-    specifier: ~5.4.5
-    version: 5.4.5
+    specifier: ~5.5.4
+    version: 5.5.4
 
 packages:
 
@@ -109,7 +109,7 @@ packages:
       - chokidar
     dev: true
 
-  /@angular-devkit/build-angular@18.2.8(@angular/compiler-cli@18.2.7)(karma@6.4.4)(typescript@5.4.5):
+  /@angular-devkit/build-angular@18.2.8(@angular/compiler-cli@18.2.7)(karma@6.4.4)(typescript@5.5.4):
     resolution: {integrity: sha512-qK/iLk7A8vQp1CyiJV4DpwfLjPKoiOlTtFqoO5vD8Tyxmc+R06FQp6GJTsZ7JtrTLYSiH+QAWiY6NgF/Rj/hHg==}
     engines: {node: ^18.19.1 || ^20.11.1 || >=22.0.0, npm: ^6.11.0 || ^7.5.6 || >=8.0.0, yarn: '>= 1.13.0'}
     peerDependencies:
@@ -154,8 +154,8 @@ packages:
       '@angular-devkit/architect': 0.1802.8
       '@angular-devkit/build-webpack': 0.1802.8(webpack-dev-server@5.0.4)(webpack@5.94.0)
       '@angular-devkit/core': 18.2.8
-      '@angular/build': 18.2.8(@angular/compiler-cli@18.2.7)(less@4.2.0)(postcss@8.4.41)(terser@5.31.6)(typescript@5.4.5)
-      '@angular/compiler-cli': 18.2.7(@angular/compiler@18.2.7)(typescript@5.4.5)
+      '@angular/build': 18.2.8(@angular/compiler-cli@18.2.7)(less@4.2.0)(postcss@8.4.41)(terser@5.31.6)(typescript@5.5.4)
+      '@angular/compiler-cli': 18.2.7(@angular/compiler@18.2.7)(typescript@5.5.4)
       '@babel/core': 7.25.2
       '@babel/generator': 7.25.0
       '@babel/helper-annotate-as-pure': 7.24.7
@@ -166,7 +166,7 @@ packages:
       '@babel/preset-env': 7.25.3(@babel/core@7.25.2)
       '@babel/runtime': 7.25.0
       '@discoveryjs/json-ext': 0.6.1
-      '@ngtools/webpack': 18.2.8(@angular/compiler-cli@18.2.7)(typescript@5.4.5)(webpack@5.94.0)
+      '@ngtools/webpack': 18.2.8(@angular/compiler-cli@18.2.7)(typescript@5.5.4)(webpack@5.94.0)
       '@vitejs/plugin-basic-ssl': 1.1.0(vite@5.4.6)
       ansi-colors: 4.1.3
       autoprefixer: 10.4.20(postcss@8.4.41)
@@ -196,7 +196,7 @@ packages:
       picomatch: 4.0.2
       piscina: 4.6.1
       postcss: 8.4.41
-      postcss-loader: 8.1.1(postcss@8.4.41)(typescript@5.4.5)(webpack@5.94.0)
+      postcss-loader: 8.1.1(postcss@8.4.41)(typescript@5.5.4)(webpack@5.94.0)
       resolve-url-loader: 5.0.0
       rxjs: 7.8.1
       sass: 1.77.6
@@ -207,7 +207,7 @@ packages:
       terser: 5.31.6
       tree-kill: 1.2.2
       tslib: 2.6.3
-      typescript: 5.4.5
+      typescript: 5.5.4
       vite: 5.4.6(less@4.2.0)(sass@1.77.6)(terser@5.31.6)
       watchpack: 2.4.1
       webpack: 5.94.0(esbuild@0.23.0)
@@ -291,7 +291,7 @@ packages:
       tslib: 2.7.0
     dev: false
 
-  /@angular/build@18.2.8(@angular/compiler-cli@18.2.7)(less@4.2.0)(postcss@8.4.41)(terser@5.31.6)(typescript@5.4.5):
+  /@angular/build@18.2.8(@angular/compiler-cli@18.2.7)(less@4.2.0)(postcss@8.4.41)(terser@5.31.6)(typescript@5.5.4):
     resolution: {integrity: sha512-ufuA4vHJSrL9SQW7bKV61DOoN1mm0t0ILTHaxSoCG3YF70cZJOX7+HNp3cK2uoldRMwbTOKSvCWBw54KKDRd5Q==}
     engines: {node: ^18.19.1 || ^20.11.1 || >=22.0.0, npm: ^6.11.0 || ^7.5.6 || >=8.0.0, yarn: '>= 1.13.0'}
     peerDependencies:
@@ -319,7 +319,7 @@ packages:
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@angular-devkit/architect': 0.1802.8
-      '@angular/compiler-cli': 18.2.7(@angular/compiler@18.2.7)(typescript@5.4.5)
+      '@angular/compiler-cli': 18.2.7(@angular/compiler@18.2.7)(typescript@5.5.4)
       '@babel/core': 7.25.2
       '@babel/helper-annotate-as-pure': 7.24.7
       '@babel/helper-split-export-declaration': 7.24.7
@@ -343,7 +343,7 @@ packages:
       rollup: 4.22.4
       sass: 1.77.6
       semver: 7.6.3
-      typescript: 5.4.5
+      typescript: 5.5.4
       vite: 5.4.6(less@4.2.0)(sass@1.77.6)(terser@5.31.6)
       watchpack: 2.4.1
     transitivePeerDependencies:
@@ -412,7 +412,7 @@ packages:
       tslib: 2.7.0
     dev: false
 
-  /@angular/compiler-cli@18.2.7(@angular/compiler@18.2.7)(typescript@5.4.5):
+  /@angular/compiler-cli@18.2.7(@angular/compiler@18.2.7)(typescript@5.5.4):
     resolution: {integrity: sha512-U7cveObj+rrXH5EC8egAhATCeAAcOceEQDTVIOWmBa0qMR4hOMjtI2XUS2QRuI1Q+fQZ2hVEOW95WVLvEMsANA==}
     engines: {node: ^18.19.1 || ^20.11.1 || >=22.0.0}
     hasBin: true
@@ -428,7 +428,7 @@ packages:
       reflect-metadata: 0.2.2
       semver: 7.6.3
       tslib: 2.7.0
-      typescript: 5.4.5
+      typescript: 5.5.4
       yargs: 17.7.2
     transitivePeerDependencies:
       - supports-color
@@ -2654,7 +2654,7 @@ packages:
     dev: true
     optional: true
 
-  /@ngtools/webpack@18.2.8(@angular/compiler-cli@18.2.7)(typescript@5.4.5)(webpack@5.94.0):
+  /@ngtools/webpack@18.2.8(@angular/compiler-cli@18.2.7)(typescript@5.5.4)(webpack@5.94.0):
     resolution: {integrity: sha512-sq0kI8gEen4QlM6X8XqOYy7j4B8iLCYNo+iKxatV36ts4AXH0MuVkP56+oMaoH5oZNoSqd0RlfnotEHfvJAr8A==}
     engines: {node: ^18.19.1 || ^20.11.1 || >=22.0.0, npm: ^6.11.0 || ^7.5.6 || >=8.0.0, yarn: '>= 1.13.0'}
     peerDependencies:
@@ -2662,8 +2662,8 @@ packages:
       typescript: '>=5.4 <5.6'
       webpack: ^5.54.0
     dependencies:
-      '@angular/compiler-cli': 18.2.7(@angular/compiler@18.2.7)(typescript@5.4.5)
-      typescript: 5.4.5
+      '@angular/compiler-cli': 18.2.7(@angular/compiler@18.2.7)(typescript@5.5.4)
+      typescript: 5.5.4
       webpack: 5.94.0(esbuild@0.23.0)
     dev: true
 
@@ -3749,7 +3749,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001667
-      electron-to-chromium: 1.5.33
+      electron-to-chromium: 1.5.35
       node-releases: 2.0.18
       update-browserslist-db: 1.1.1(browserslist@4.24.0)
     dev: true
@@ -4034,13 +4034,13 @@ packages:
     resolution: {integrity: sha512-QADzlaHc8icV8I7vbaJXJwod9HWYp8uCqf1xa4OfNu1T7JVxQIrUgOWtHdNDtPiywmFbiS12VjotIXLrKM3orQ==}
     dev: true
 
-  /cookie@0.4.2:
-    resolution: {integrity: sha512-aSWTXFzaKWkvHO1Ny/s+ePFpvKsPnjc551iI41v3ny/ow6tBG5Vd+FuqGNhh1LxOmVzOlGUriIlOaokOvhaStA==}
+  /cookie@0.7.1:
+    resolution: {integrity: sha512-6DnInpx7SJ2AK3+CTUE/ZM0vWTUboZCegxhC2xiIydHR9jNuTAASBrfEpHhiGOZw/nX51bHt6YQl8jsGo4y/0w==}
     engines: {node: '>= 0.6'}
     dev: true
 
-  /cookie@0.7.1:
-    resolution: {integrity: sha512-6DnInpx7SJ2AK3+CTUE/ZM0vWTUboZCegxhC2xiIydHR9jNuTAASBrfEpHhiGOZw/nX51bHt6YQl8jsGo4y/0w==}
+  /cookie@0.7.2:
+    resolution: {integrity: sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w==}
     engines: {node: '>= 0.6'}
     dev: true
 
@@ -4083,7 +4083,7 @@ packages:
       vary: 1.1.2
     dev: true
 
-  /cosmiconfig@9.0.0(typescript@5.4.5):
+  /cosmiconfig@9.0.0(typescript@5.5.4):
     resolution: {integrity: sha512-itvL5h8RETACmOTFc4UfIyB2RfEHi71Ax6E/PivVxq9NseKbOWpeyHEOIbmAw1rs8Ak0VursQNww7lf7YtUwzg==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -4096,7 +4096,7 @@ packages:
       import-fresh: 3.3.0
       js-yaml: 4.1.0
       parse-json: 5.2.0
-      typescript: 5.4.5
+      typescript: 5.5.4
     dev: true
 
   /critters@0.0.24:
@@ -4315,8 +4315,8 @@ packages:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
     dev: true
 
-  /electron-to-chromium@1.5.33:
-    resolution: {integrity: sha512-+cYTcFB1QqD4j4LegwLfpCNxifb6dDFUAwk6RsLusCwIaZI6or2f+q8rs5tTB2YC53HhOlIbEaqHMAAC8IOIwA==}
+  /electron-to-chromium@1.5.35:
+    resolution: {integrity: sha512-hOSRInrIDm0Brzp4IHW2F/VM+638qOL2CzE0DgpnGzKW27C95IqqeqgKz/hxHGnvPxvQGpHUGD5qRVC9EZY2+A==}
     dev: true
 
   /emoji-regex@10.4.0:
@@ -4359,8 +4359,8 @@ packages:
     engines: {node: '>=10.0.0'}
     dev: true
 
-  /engine.io@6.6.1:
-    resolution: {integrity: sha512-NEpDCw9hrvBW+hVEOK4T7v0jFJ++KgtPl4jKFwsZVfG1XhS0dCrSb3VMb9gPAd7VAdW52VT1EnaNiU2vM8C0og==}
+  /engine.io@6.6.2:
+    resolution: {integrity: sha512-gmNvsYi9C8iErnZdVcJnvCpSKbWTt1E8+JZo8b+daLninywUWi5NQ5STSHZ9rFjFO7imNcvb8Pc5pe/wMR5xEw==}
     engines: {node: '>=10.2.0'}
     dependencies:
       '@types/cookie': 0.4.1
@@ -4368,7 +4368,7 @@ packages:
       '@types/node': 22.7.5
       accepts: 1.3.8
       base64id: 2.0.0
-      cookie: 0.4.2
+      cookie: 0.7.2
       cors: 2.8.5
       debug: 4.3.7
       engine.io-parser: 5.2.3
@@ -6480,7 +6480,7 @@ packages:
       find-up: 6.3.0
     dev: true
 
-  /postcss-loader@8.1.1(postcss@8.4.41)(typescript@5.4.5)(webpack@5.94.0):
+  /postcss-loader@8.1.1(postcss@8.4.41)(typescript@5.5.4)(webpack@5.94.0):
     resolution: {integrity: sha512-0IeqyAsG6tYiDRCYKQJLAmgQr47DX6N7sFSWvQxt6AcupX8DIdmykuk/o/tx0Lze3ErGHJEp5OSRxrelC6+NdQ==}
     engines: {node: '>= 18.12.0'}
     peerDependencies:
@@ -6493,7 +6493,7 @@ packages:
       webpack:
         optional: true
     dependencies:
-      cosmiconfig: 9.0.0(typescript@5.4.5)
+      cosmiconfig: 9.0.0(typescript@5.5.4)
       jiti: 1.21.6
       postcss: 8.4.41
       semver: 7.6.3
@@ -7188,7 +7188,7 @@ packages:
       base64id: 2.0.0
       cors: 2.8.5
       debug: 4.3.7
-      engine.io: 6.6.1
+      engine.io: 6.6.2
       socket.io-adapter: 2.5.5
       socket.io-parser: 4.2.4
     transitivePeerDependencies:
@@ -7570,8 +7570,8 @@ packages:
     resolution: {integrity: sha512-KNNZtayBCtmnNmbo5mG47p1XsCyrx6iVqomjcZnec/1Y5GGARaxPs6r49RnSPeUP3YjNYiU9sQHAtY4BBvnZwg==}
     dev: true
 
-  /typescript@5.4.5:
-    resolution: {integrity: sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ==}
+  /typescript@5.5.4:
+    resolution: {integrity: sha512-Mtq29sKDAEYP7aljRgtPOpTvOfbwRWlS6dPRzwjdE+C0R4brX/GUyhHSecbHMFLNBLcJIPt9nl9yG5TZ1weH+Q==}
     engines: {node: '>=14.17'}
     hasBin: true
     dev: true
