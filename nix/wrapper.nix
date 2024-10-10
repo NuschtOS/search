@@ -1,15 +1,21 @@
 { lib, nixosOptionsDoc, jq, nuscht-search, python3, runCommand, xorg }:
 
 rec {
-  mkOptionsJSON = modules:
-    let
-      patchedModules = [{ config._module.check = false; }] ++ modules;
-      inherit (lib.evalModules { modules = patchedModules; }) options;
-    in
-    (nixosOptionsDoc {
-      options = lib.filterAttrs (key: _: key != "_module") options;
-      warningsAreErrors = false;
-    }).optionsJSON + /share/doc/nixos/options.json;
+  mkOptionsJSON = modules: (nixosOptionsDoc {
+    inherit ((lib.evalModules {
+      modules = modules ++ [
+        ({ lib, ... }: {
+          options._module = {
+            args = lib.mkOption {
+              internal = true;
+            };
+            check = false;
+          };
+        })
+      ];
+    })) options;
+    warningsAreErrors = false;
+  }).optionsJSON + /share/doc/nixos/options.json;
 
   mkSearchJSON = scopes:
     let
