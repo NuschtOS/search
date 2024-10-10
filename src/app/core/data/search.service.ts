@@ -1,6 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, map, of } from 'rxjs';
+import __wbg_init, { Index } from '@nuschtos/fixx';
+import { BehaviorSubject, Observable, from, map, of, switchMap, tap } from 'rxjs';
+
+export interface SearchedOption {
+  idx: number;
+  name: string;
+}
+
+const CHUNK_SIZE = 100;
+export const MAX_SEARCH_RESULTS=500;
 
 // https://transform.tools/json-to-typescript
 export interface Option {
@@ -18,79 +27,58 @@ export interface Option {
 })
 export class SearchService {
 
-  private nextUpdate = 0;
-  private readonly data = new BehaviorSubject<Option[]>([]);
+  private readonly index = new BehaviorSubject<Index | null>(null);
+  private readonly data = new BehaviorSubject<Record<number, Option[]>>({});
 
   constructor(
     private readonly http: HttpClient,
-  ) { }
-
-  private update() {
-    const now = Date.now();
-    if (this.nextUpdate < now) {
-      this.nextUpdate = now + 1000 * 60 * 10;
-      this.http.get<Record<string, Omit<Option, "name">>>(`${document.getElementsByTagName('base')[0].href}options.json`)
-        .subscribe(data => this.data.next(Object.entries(data).map(([name, data]) => ({ name, ...data }))));
-    }
+  ) {
+    from(__wbg_init(`${document.getElementsByTagName('base')[0].href}fixx_bg.wasm`))
+      .pipe(switchMap(() => this.http.get(`${document.getElementsByTagName('base')[0].href}index.ixx`, { responseType: 'arraybuffer' })))
+      .subscribe(data => this.index.next(Index.read(new Uint8Array(data))));
   }
 
-  public search(query: string): Observable<Option[]> {
-    this.update();
+  public search(query: string | null | undefined): Observable<SearchedOption[]> {
+    return this.index.pipe(
+      map(index => {
+        return index ? (query && query.length > 0 ? index.search(query, MAX_SEARCH_RESULTS).map(option => {
+          const opt = ({ idx: option.idx(), name: option.name() });
+          //      option.free();
+          return opt;
+        }) : index.all(MAX_SEARCH_RESULTS).map((name, idx) => ({ idx, name }))) : [];
+      })
+    );
+  }
 
-    const search = query.toLowerCase().split('*');
-    if (search.length === 0) {
-      return of([]);
-    }
+  public getByName(name: string | undefined): Observable<Option | undefined> {
+    return this.index.pipe(
+      switchMap(index => {
+        const idx = index && name && name.length > 0 ? index.get_idx_by_name(name) : undefined;
+        console.log(idx);
+        return idx ? this.getByIdx(idx) : of(undefined);
+      })
+    );
+  }
 
-    return this.data.pipe(map(options => {
-      const result = [];
+  private getByIdx(idx: number): Observable<Option | undefined> {
+    const idx_in_chunk = idx % CHUNK_SIZE;
+    const chunk = (idx - idx_in_chunk) / CHUNK_SIZE;
 
-      let i = 0;
+    return this.data.pipe(
+      switchMap(entries => {
+        let options = entries[chunk];
 
-      for (const option of options) {
-        let remainingName = option.name.toLowerCase();
-        let idx = -1;
-
-        outer: {
-          for (const segment of search) {
-            idx = remainingName.indexOf(segment);
-            if (idx !== -1) {
-              remainingName = remainingName.substring(idx + segment.length);
-            } else {
-              break outer;
-            }
-          }
-
-          result.push(option);
-          i++;
-          // TODO: pagination
-          if (i === 500) {
-            return result;
-          }
+        if (typeof options === "undefined") {
+          return this.http.get<Option[]>(`${document.getElementsByTagName('base')[0].href}meta/${chunk}.json`)
+            .pipe(tap(options => {
+              entries[chunk] = options;
+              return this.data.next(entries);
+            }));
         }
-      }
-      return result;
-    }));
-  }
 
-  public getByName(name: string): Observable<Option | undefined> {
-    this.update();
-    return this.data.pipe(map(options => options.find(option => option.name === name)));
-  }
-
-  public all(): Observable<Option[]> {
-    return this.data.pipe(map(options => {
-      const result = [];
-      let i = 0;
-      for (const option of options) {
-        result.push(option);
-        i++;
-        // TODO: pagination
-        if (i === 500) {
-          return result;
-        }
-      }
-      return result;
-    }));
+        return of(options);
+      }),
+      map(options => options[idx_in_chunk]),
+    );
   }
 }

@@ -9,5 +9,5 @@
       </a>
     </li>
   </ul>
-  <p *ngIf="options.length == 500">Only showing the first 500 results. Make your search term more concise.</p>
+  <p *ngIf="options.length == maxSearchResults">Only showing the first {{maxSearchResults}} results. Make your search term more concise.</p>
 </div>
