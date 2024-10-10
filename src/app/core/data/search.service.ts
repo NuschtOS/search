@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map, of } from 'rxjs';
 
 // https://transform.tools/json-to-typescript
 export interface Option {
@@ -38,6 +38,9 @@ export class SearchService {
     this.update();
 
     const search = query.toLowerCase().split('*');
+    if (search.length === 0) {
+      return of([]);
+    }
 
     return this.data.pipe(map(options => {
       const result = [];
@@ -58,13 +61,11 @@ export class SearchService {
             }
           }
 
-          if (idx !== -1) {
-            result.push(option);
-            i++;
-            // TODO: pagination
-            if (i === 500) {
-              return result;
-            }
+          result.push(option);
+          i++;
+          // TODO: pagination
+          if (i === 500) {
+            return result;
           }
         }
       }
