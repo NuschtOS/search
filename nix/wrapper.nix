@@ -8,7 +8,7 @@ rec {
           options._module.args = lib.mkOption {
             internal = true;
           };
-          config.check = false;
+          config._module.check = false;
         })
       ];
     })) options;
