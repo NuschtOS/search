@@ -1,4 +1,4 @@
-{ lib, stdenv, pnpm_8, nodejs, baseHref ? "/", title ? "NuschtOS Search" }:
+{ lib, stdenv, pnpm, nodejs, baseHref ? "/", title ? "NuschtOS Search" }:
 
 let
   manifest = lib.importJSON ../package.json;
@@ -17,12 +17,12 @@ stdenv.mkDerivation (finalAttrs: {
       --replace-fail '##TITLE##' '${title}'
   '';
 
-  pnpmDeps = pnpm_8.fetchDeps {
+  pnpmDeps = pnpm.fetchDeps {
     inherit (finalAttrs) pname version src;
-    hash = "sha256-UlGKnlTfVy312i5y/5/jkdJMv7DN4WUIrTYEPDPgp6I=";
+    hash = "sha256-Ib3LtASKSLEnaLqa7nPIMX7I/FncL2pb7u7KcxaR4f8=";
   };
 
-  nativeBuildInputs = [ nodejs pnpm_8.configHook ];
+  nativeBuildInputs = [ nodejs pnpm.configHook ];
 
   buildPhase = ''
     pnpm run build:ci --base-href ${baseHref}
