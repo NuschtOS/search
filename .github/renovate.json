@@ -11,7 +11,7 @@
   ],
   "dependencyDashboardOSVVulnerabilitySummary": "all",
   "nix": {
-    "enable": true
+    "enabled": true
   },
   "osvVulnerabilityAlerts": true,
   "postUpgradeTasks": {
