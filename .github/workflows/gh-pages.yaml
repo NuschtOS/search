@@ -29,6 +29,9 @@ jobs:
         uses: cachix/install-nix-action@v30
 
       - uses: DeterminateSystems/magic-nix-cache-action@v8
+        with:
+          diagnostic-endpoint: false
+          use-flakehub: false
 
       - name: Build search
         run: nix build -L github:NuschtOS/search.nuschtos.de --override-input search .
