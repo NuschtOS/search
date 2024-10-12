@@ -5,12 +5,10 @@ rec {
     inherit ((lib.evalModules {
       modules = modules ++ [
         ({ lib, ... }: {
-          options._module = {
-            args = lib.mkOption {
-              internal = true;
-            };
-            check = false;
+          options._module.args = lib.mkOption {
+            internal = true;
           };
+          config.check = false;
         })
       ];
     })) options;
