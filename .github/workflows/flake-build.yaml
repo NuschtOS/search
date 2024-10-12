@@ -5,6 +5,10 @@ on:
     branches: [ main ]
     tags: [ '*' ]
   pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   build:
@@ -21,6 +25,9 @@ jobs:
       - uses: cachix/install-nix-action@v30
 
       - uses: DeterminateSystems/magic-nix-cache-action@v8
+        with:
+          diagnostic-endpoint: false
+          use-flakehub: false
 
       - name: build stable
         if: matrix.target == 'stable'
