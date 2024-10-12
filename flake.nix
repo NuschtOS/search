@@ -18,7 +18,7 @@
           devShells.default = pkgs.mkShell {
             buildInputs = with pkgs; [
               nodejs
-              pnpm_8
+              pnpm
               (python3.withPackages (ps: with ps; [ markdown pygments ]))
             ];
           };
