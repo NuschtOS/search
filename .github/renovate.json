@@ -10,6 +10,9 @@
     "SuperSandro2000"
   ],
   "dependencyDashboardOSVVulnerabilitySummary": "all",
+  "nix": {
+    "enable": true
+  },
   "osvVulnerabilityAlerts": true,
   "postUpgradeTasks": {
     "commands": ["./nix/update-pnpm-hash.sh"],
