@@ -4,36 +4,37 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    ixx = {
+      # match version with npm package
+      url = "github:NuschtOS/ixx/declaration-store-path";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "flake-utils";
+      };
+    };
   };
 
-  outputs = { nixpkgs, flake-utils, ... }:
+  outputs = { nixpkgs, flake-utils, ixx, ... }:
     flake-utils.lib.eachDefaultSystem
       (system:
         let
           pkgs = (import nixpkgs) {
             inherit system;
           };
+          ixxPkgs = ixx.packages.${system};
         in
         {
           devShells.default = pkgs.mkShell {
             nativeBuildInputs = with pkgs; [
               nodejs
               pnpm
-              (python3.withPackages (ps: with ps; [ markdown pygments ]))
-
-              cargo
-              clippy
-              rustc
-              rustc.llvmPackages.lld
-              wasm-pack
+              ixxPkgs.ixx
             ];
-
-            RUST_SRC_PATH = pkgs.rust.packages.stable.rustPlatform.rustLibSrc;
           };
 
           packages = rec {
             nuscht-search = pkgs.callPackage ./nix/frontend.nix { };
-            inherit (pkgs.callPackages ./nix/wrapper.nix { inherit nuscht-search; }) mkOptionsJSON mkSearchJSON mkSearch mkMultiSearch;
+            inherit (pkgs.callPackages ./nix/wrapper.nix { inherit nuscht-search ixxPkgs; }) mkOptionsJSON mkSearchJSON mkSearch mkMultiSearch;
             default = nuscht-search;
           };
         }
