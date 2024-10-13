@@ -9,7 +9,7 @@ export interface SearchedOption {
 }
 
 const CHUNK_SIZE = 100;
-export const MAX_SEARCH_RESULTS=500;
+export const MAX_SEARCH_RESULTS = 500;
 
 // https://transform.tools/json-to-typescript
 export interface Option {
@@ -51,10 +51,13 @@ export class SearchService {
   }
 
   public getByName(name: string | undefined): Observable<Option | undefined> {
+    if (typeof name === "undefined" || name.length == 0) {
+      return of(undefined);
+    }
+
     return this.index.pipe(
       switchMap(index => {
-        const idx = index && name && name.length > 0 ? index.get_idx_by_name(name) : undefined;
-        console.log(idx);
+        const idx = index ? index.get_idx_by_name(name) : undefined;
         return idx ? this.getByIdx(idx) : of(undefined);
       })
     );

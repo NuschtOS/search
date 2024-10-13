@@ -45,8 +45,8 @@ importers:
         specifier: ^5.1.0
         version: 5.1.0
       '@nuschtos/fixx':
-        specifier: link:../ixx/result
-        version: link:../ixx/result
+        specifier: ^0.0.3
+        version: 0.0.3
       rxjs:
         specifier: ~7.8.1
         version: 7.8.1
@@ -1425,6 +1425,9 @@ packages:
   '@npmcli/run-script@8.1.0':
     resolution: {integrity: sha512-y7efHHwghQfk28G2z3tlZ67pLG0XdfYbcVG26r7YIXALRsrVQcTq4/tdenSmdOrEsNahIYA/eh8aEVROWGFUDg==}
     engines: {node: ^16.14.0 || >=18.0.0}
+
+  '@nuschtos/fixx@0.0.3':
+    resolution: {integrity: sha512-HLNZpyfcyYyI5VJsmN6uBL096GvRYfQ6VjxoyL6R6c5EeKv/G5IMW7eBlccq6sTWPBQUohCCbnTo2ImUiEjtow==}
 
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -5859,6 +5862,8 @@ snapshots:
     transitivePeerDependencies:
       - bluebird
       - supports-color
+
+  '@nuschtos/fixx@0.0.3': {}
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
