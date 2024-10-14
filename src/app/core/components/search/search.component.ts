@@ -27,7 +27,7 @@ export class SearchComponent implements AfterViewInit {
       if (q !== getQuery()) {
         this.router.navigate([], { queryParams: { query: q }, queryParamsHandling: 'merge' });
       }
-      return this.searchService.search(q);
+      return this.searchService.search(undefined, q);
     }),
   );
 
