@@ -38,14 +38,14 @@ export class SearchService {
       .subscribe(data => this.index.next(Index.read(new Uint8Array(data))));
   }
 
-  public search(query: string | null | undefined): Observable<SearchedOption[]> {
+  public search(scope_id: number | undefined, query: string | null | undefined): Observable<SearchedOption[]> {
     return this.index.pipe(
       map(index => {
-        return index ? (query && query.length > 0 ? index.search(query, MAX_SEARCH_RESULTS).map(option => {
+        return index ? (query && query.length > 0 ? index.search(scope_id ?? 0, query, MAX_SEARCH_RESULTS).map(option => {
           const opt = ({ idx: option.idx(), name: option.name() });
           //      option.free();
           return opt;
-        }) : index.all(MAX_SEARCH_RESULTS).map((name, idx) => ({ idx, name }))) : [];
+        }) : index.all(scope_id ?? 0, MAX_SEARCH_RESULTS).map((name, idx) => ({ idx, name }))) : [];
       })
     );
   }
