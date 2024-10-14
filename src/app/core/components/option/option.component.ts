@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { switchMap } from 'rxjs';
+import { switchMap, tap } from 'rxjs';
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { SearchService } from '../../data/search.service';
 
@@ -15,7 +15,7 @@ import { SearchService } from '../../data/search.service';
 export class OptionComponent {
 
   protected readonly option = this.activatedRoute.queryParams.pipe(
-    switchMap(({option}) => this.searchService.getByName(option)),
+    switchMap(({ option }) => this.searchService.getByName(option)),
   );
 
   constructor(

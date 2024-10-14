@@ -1,4 +1,4 @@
-{ lib, nixosOptionsDoc, jq, nuscht-search, ixxPkgs, runCommand, xorg }:
+{ lib, nixosOptionsDoc, nuscht-search, ixxPkgs, runCommand, xorg }:
 
 rec {
   mkOptionsJSON = modules: (nixosOptionsDoc {
@@ -46,8 +46,8 @@ rec {
   #   baseHref = "/search/";
   #   title = "Custom Search";
   #   scopes = [
-  #     { modules = [ self.inputs.nixos-modules.nixosModule ]; urlPrefix = "https://github.com/NuschtOS/nixos-modules/blob/main/"; }
-  #     { optionsJSON = ./path/to/options.json; optionsPrefix = "programs.example"; urlPrefix = "https://git.example.com/blob/main/"; }
+  #     { modules = [ self.inputs.nixos-modules.nixosModule ]; urlPrefix = "https://github.com/NuschtOS/nixos-modules/blob/main/"; name = "NixOS Modules"; }
+  #     { optionsJSON = ./path/to/options.json; optionsPrefix = "programs.example"; urlPrefix = "https://git.example.com/blob/main/"; name = "Example Module"; }
   #   ];
   # };
   mkMultiSearch = { scopes, baseHref ? "/", title ? "NüschtOS Search" }:
