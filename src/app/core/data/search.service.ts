@@ -1,6 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, map, of } from 'rxjs';
+import __wbg_init, { Index } from '@nuschtos/fixx';
+import { BehaviorSubject, Observable, from, map, of, switchMap, tap } from 'rxjs';
+
+export interface SearchedOption {
+  idx: number;
+  name: string;
+}
+
+export const MAX_SEARCH_RESULTS = 500;
 
 // https://transform.tools/json-to-typescript
 export interface Option {
@@ -18,79 +26,65 @@ export interface Option {
 })
 export class SearchService {
 
-  private nextUpdate = 0;
-  private readonly data = new BehaviorSubject<Option[]>([]);
+  private readonly index = new BehaviorSubject<Index | null>(null);
+  private readonly data = new BehaviorSubject<Record<number, Option[]>>({});
 
   constructor(
     private readonly http: HttpClient,
-  ) { }
+  ) {
+    from(__wbg_init(`${document.getElementsByTagName('base')[0].href}fixx_bg.wasm`))
+      .pipe(switchMap(() => this.http.get(`${document.getElementsByTagName('base')[0].href}index.ixx`, { responseType: 'arraybuffer' })))
+      .subscribe(data => this.index.next(Index.read(new Uint8Array(data))));
+  }
 
-  private update() {
-    const now = Date.now();
-    if (this.nextUpdate < now) {
-      this.nextUpdate = now + 1000 * 60 * 10;
-      this.http.get<Record<string, Omit<Option, "name">>>(`${document.getElementsByTagName('base')[0].href}options.json`)
-        .subscribe(data => this.data.next(Object.entries(data).map(([name, data]) => ({ name, ...data }))));
+  public search(scope_id: number | undefined, query: string): Observable<SearchedOption[]> {
+    return this.index.pipe(
+      map(index => {
+        return index ? index.search(scope_id, query, MAX_SEARCH_RESULTS).map(option => {
+          const opt = ({ idx: option.idx(), name: option.name() });
+          //      option.free();
+          return opt;
+        }) : [];
+      })
+    );
+  }
+
+  public getByName(name: string | undefined): Observable<Option | undefined> {
+    if (typeof name === "undefined" || name.length == 0) {
+      return of(undefined);
     }
+
+    return this.index.pipe(
+      switchMap(index => {
+        const idx = index?.get_idx_by_name(name);
+        return typeof idx === "number" ? this.getByIdx(idx, index!.chunk_size()) : of(undefined);
+      })
+    );
   }
 
-  public search(query: string): Observable<Option[]> {
-    this.update();
+  private getByIdx(idx: number, chunk_size: number): Observable<Option | undefined> {
+    const idx_in_chunk = idx % chunk_size;
+    const chunk = (idx - idx_in_chunk) / chunk_size;
 
-    const search = query.toLowerCase().split('*');
-    if (search.length === 0) {
-      return of([]);
-    }
+    return this.data.pipe(
+      switchMap(entries => {
+        let options = entries[chunk];
 
-    return this.data.pipe(map(options => {
-      const result = [];
-
-      let i = 0;
-
-      for (const option of options) {
-        let remainingName = option.name.toLowerCase();
-        let idx = -1;
-
-        outer: {
-          for (const segment of search) {
-            idx = remainingName.indexOf(segment);
-            if (idx !== -1) {
-              remainingName = remainingName.substring(idx + segment.length);
-            } else {
-              break outer;
-            }
-          }
-
-          result.push(option);
-          i++;
-          // TODO: pagination
-          if (i === 500) {
-            return result;
-          }
+        if (typeof options === "undefined") {
+          return this.http.get<Option[]>(`${document.getElementsByTagName('base')[0].href}meta/${chunk}.json`)
+            .pipe(tap(options => {
+              entries[chunk] = options;
+              return this.data.next(entries);
+            }));
         }
-      }
-      return result;
-    }));
+
+        return of(options);
+      }),
+      map(options => options[idx_in_chunk]),
+    );
   }
 
-  public getByName(name: string): Observable<Option | undefined> {
-    this.update();
-    return this.data.pipe(map(options => options.find(option => option.name === name)));
-  }
-
-  public all(): Observable<Option[]> {
-    return this.data.pipe(map(options => {
-      const result = [];
-      let i = 0;
-      for (const option of options) {
-        result.push(option);
-        i++;
-        // TODO: pagination
-        if (i === 500) {
-          return result;
-        }
-      }
-      return result;
-    }));
+  public getScopes(): Observable<string[]> {
+    return this.index.pipe(map(index => index ? index.scopes() : []));
   }
 }
