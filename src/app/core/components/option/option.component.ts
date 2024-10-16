@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { switchMap, tap } from 'rxjs';
+import { switchMap } from 'rxjs';
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { SearchService } from '../../data/search.service';
 

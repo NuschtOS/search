@@ -47,9 +47,6 @@ importers:
       '@nuschtos/fixx':
         specifier: link:../ixx/result
         version: link:../ixx/result
-      fixx:
-        specifier: link:../ixx/fixx
-        version: link:../ixx/fixx
       rxjs:
         specifier: ~7.8.1
         version: 7.8.1
