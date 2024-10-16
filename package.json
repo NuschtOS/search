@@ -25,7 +25,6 @@
     "@fontsource/dm-mono": "^5.1.0",
     "@fontsource/dm-sans": "^5.1.0",
     "@nuschtos/fixx": "link:../ixx/result",
-    "fixx": "link:../ixx/fixx",
     "rxjs": "~7.8.1",
     "tslib": "^2.7.0",
     "zone.js": "~0.15.0"
