@@ -8,7 +8,6 @@ export interface SearchedOption {
   name: string;
 }
 
-const CHUNK_SIZE = 100;
 export const MAX_SEARCH_RESULTS = 500;
 
 // https://transform.tools/json-to-typescript
@@ -57,15 +56,15 @@ export class SearchService {
 
     return this.index.pipe(
       switchMap(index => {
-        const idx = index ? index.get_idx_by_name(name) : undefined;
-        return idx ? this.getByIdx(idx) : of(undefined);
+        const idx = index?.get_idx_by_name(name);
+        return typeof idx === "number" ? this.getByIdx(idx, index!.chunk_size()) : of(undefined);
       })
     );
   }
 
-  private getByIdx(idx: number): Observable<Option | undefined> {
-    const idx_in_chunk = idx % CHUNK_SIZE;
-    const chunk = (idx - idx_in_chunk) / CHUNK_SIZE;
+  private getByIdx(idx: number, chunk_size: number): Observable<Option | undefined> {
+    const idx_in_chunk = idx % chunk_size;
+    const chunk = (idx - idx_in_chunk) / chunk_size;
 
     return this.data.pipe(
       switchMap(entries => {
