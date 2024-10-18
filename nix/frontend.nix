@@ -15,11 +15,15 @@ stdenv.mkDerivation (finalAttrs: {
   postPatch = ''
     substituteInPlace src/app/core/config.domain.ts \
       --replace-fail '##TITLE##' '${title}'
+    substituteInPlace src/index.html \
+      --replace-fail '##TITLE##' '${title}'
   '';
 
   pnpmDeps = pnpm.fetchDeps {
     inherit (finalAttrs) pname version src;
-    hash = "sha256-Ib3LtASKSLEnaLqa7nPIMX7I/FncL2pb7u7KcxaR4f8=";
+    # TODO: update hash
+    # @nuschtos/fixx is not yet released and still only a PR
+    hash = "sha256-5Yc88BZPyA7aZWu9hAxuZireVgtWluqxHMfAFoijaWw=";
   };
 
   nativeBuildInputs = [ nodejs pnpm.configHook ];

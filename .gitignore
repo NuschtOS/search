@@ -44,3 +44,5 @@ Thumbs.db
 
 # CUSTOM
 result
+/public/meta
+/public/index.ixx
