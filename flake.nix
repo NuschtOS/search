@@ -6,7 +6,7 @@
     flake-utils.url = "github:numtide/flake-utils";
     ixx = {
       # match version with npm package
-      url = "github:NuschtOS/ixx/declaration-store-path";
+      url = "github:NuschtOS/ixx/v0.0.4";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "flake-utils";
