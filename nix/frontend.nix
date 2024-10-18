@@ -23,7 +23,7 @@ stdenv.mkDerivation (finalAttrs: {
     inherit (finalAttrs) pname version src;
     # TODO: update hash
     # @nuschtos/fixx is not yet released and still only a PR
-    hash = "sha256-QzuR/Xc8kAfqK4pO7sU2e+x9zCFPxfm6p3uBfx4eMm1=";
+    hash = "sha256-5Yc88BZPyA7aZWu9hAxuZireVgtWluqxHMfAFoijaWw=";
   };
 
   nativeBuildInputs = [ nodejs pnpm.configHook ];
