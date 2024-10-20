@@ -1,0 +1,91 @@
+.comment {
+  /* Subtle gray for comments */
+  color: #727169;
+}
+
+.embedded {
+  /* Warm yellowish tone for embedded code */
+  color: #dca561;
+}
+
+.escape {
+  /* Reddish for escape characters */
+  color: #c34043;
+}
+
+.function {
+  /* Soft blue for function names */
+  color: #7e9cd8;
+}
+
+.function-builtin {
+  /* Orange for built-in functions */
+  color: #ff9e3b;
+}
+
+.keyword {
+  /* Bright yellow/orange for keywords */
+  color: #ffa066;
+  font-weight: bold;
+}
+
+.number {
+  /* Reddish for numbers */
+  color: #ff5d62;
+}
+
+.operator {
+  /* Pinkish-red for operators */
+  color: #e46876;
+}
+
+.property {
+  /* Golden yellow for properties */
+  color: #dca561;
+}
+
+.punctuation-bracket {
+  /* Purplish tone for brackets */
+  color: #a093c7;
+}
+
+.punctuation-delimiter {
+  /* Neutral beige for punctuation */
+  color: #c8c093;
+}
+
+.punctuation-special {
+  /* Light ivory for special punctuation */
+  color: #e2d3ba;
+}
+
+.string {
+  /* Green for strings */
+  color: #98bb6c;
+}
+
+.string-special-path {
+  /* Orange for special strings (path) */
+  color: #ffa066;
+}
+
+.string-special-uri {
+  /* Bright orange for URIs */
+  color: #ff9e3b;
+}
+
+.variable {
+  /* Neutral white for variables */
+  color: #dca561;
+  //color: #dcd7ba;
+}
+
+.variable-builtin {
+  /* Bright orange for built-in variables */
+  color: #ff9e3b;
+}
+
+.variable-parameter {
+  /* Soft blue for function parameters */
+  color: #7e9cd8;
+}

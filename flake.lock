@@ -18,6 +18,30 @@
         "type": "github"
       }
     },
+    "ixx": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1729444256,
+        "narHash": "sha256-HBVk7bfsCyrolAoqaVlzBp22/LDLfgea/H4yKiDyb3E=",
+        "owner": "NuschtOS",
+        "repo": "ixx",
+        "rev": "58708daf1c1474a5013648eeb02fb030ee584bfc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NuschtOS",
+        "ref": "nixpkgs-edge-case",
+        "repo": "ixx",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1728492678,
@@ -37,6 +61,7 @@
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
+        "ixx": "ixx",
         "nixpkgs": "nixpkgs"
       }
     },
