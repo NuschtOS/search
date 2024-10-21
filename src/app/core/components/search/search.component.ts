@@ -1,16 +1,16 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Observable, Subject, debounceTime, map, switchMap, takeUntil } from 'rxjs';
+import { Observable, Subject, combineLatest, debounceTime, filter, map, switchMap, takeUntil } from 'rxjs';
 import { MAX_SEARCH_RESULTS, SearchService, SearchedOption } from '../../data/search.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DropdownComponent, TextFieldComponent } from "@feel/form";
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 
-function getQuery(): { query: string | null, scope: number | null } {
+function getQuery(): { query: string | null, scope: string | null } {
   const params = new URL(location.href).searchParams;
   const query = (params.get("query") ?? '').trim();
-  const scope = params.has("scope") ? Number(params.get("scope")) : -1;
-  return { query: query.length > 0 ? query : null, scope: scope >= 0 ? scope : null };
+  const scope = (params.get("scope") ?? '').trim();
+  return { query: query.length > 0 ? query : null, scope: scope.length > 0 ? scope : null };
 }
 
 @Component({
@@ -63,19 +63,32 @@ export class SearchComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       });
 
-    this.formValue
+    combineLatest({ form: this.formValue, scopes: this.scopes })
       .pipe(takeUntil(this.destroy), debounceTime(500))
-      .subscribe(formValue => {
+      .subscribe(({ form, scopes }) => {
+        const formValue = {
+          query: form.query,
+          scope: form.scope === null ? null : scopes[form.scope]
+        };
+
         const urlValue = getQuery();
-        if (formValue !== urlValue) {
-          this.router.navigate([], { queryParams: formValue, queryParamsHandling: 'merge' });
+        if (form !== urlValue) {
+          this.router.navigate([], {
+            queryParams: formValue,
+            queryParamsHandling: 'merge'
+          });
         }
       });
   }
 
   public ngAfterViewInit(): void {
     const { query, scope } = getQuery();
-    this.search.setValue({ query, scope: scope === null ? "-1" : scope.toString() })
+    this.scopes.pipe(takeUntil(this.destroy), filter(scopes => scopes.length > 0))
+      .subscribe(scopes => {
+        const idx = scopes.findIndex(s => s === scope);
+        console.log(scopes, scope, idx);
+        this.search.setValue({ query, scope: idx.toString() })
+      })
   }
 
   public ngOnDestroy(): void {
