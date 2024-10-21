@@ -1,7 +1,7 @@
 <form [formGroup]="search">
   <feel-text-field formControlName="query" label="Search" />
   <ng-container *ngIf="(scopes | async) as scopes">
-    <feel-dropdown formControlName="scope" label="Scope">
+    <feel-dropdown formControlName="scope" label="Scope" *ngIf="scopes.length > 1">
       <option value="-1">All</option>
       <option *ngFor="let scope of scopes; index as idx" [value]="idx.toString()">
         {{scope}}
