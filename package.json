@@ -24,7 +24,7 @@
     "@feel/style": "^0.0.27",
     "@fontsource/dm-mono": "^5.1.0",
     "@fontsource/dm-sans": "^5.1.0",
-    "@nuschtos/fixx": "^0.0.4",
+    "@nuschtos/fixx": "^0.0.5",
     "rxjs": "~7.8.1",
     "tslib": "^2.7.0",
     "zone.js": "~0.15.0"

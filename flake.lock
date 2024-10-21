@@ -37,6 +37,7 @@
       },
       "original": {
         "owner": "NuschtOS",
+        "ref": "v0.0.5",
         "repo": "ixx",
         "type": "github"
       }
