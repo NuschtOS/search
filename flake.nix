@@ -4,28 +4,37 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    ixx = {
+      # match version with npm package
+      url = "github:NuschtOS/ixx/v0.0.5";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "flake-utils";
+      };
+    };
   };
 
-  outputs = { nixpkgs, flake-utils, ... }:
+  outputs = { nixpkgs, flake-utils, ixx, ... }:
     flake-utils.lib.eachDefaultSystem
       (system:
         let
           pkgs = (import nixpkgs) {
             inherit system;
           };
+          ixxPkgs = ixx.packages.${system};
         in
         {
           devShells.default = pkgs.mkShell {
-            buildInputs = with pkgs; [
+            nativeBuildInputs = with pkgs; [
               nodejs
               pnpm
-              (python3.withPackages (ps: with ps; [ markdown pygments ]))
+              ixxPkgs.ixx
             ];
           };
 
           packages = rec {
             nuscht-search = pkgs.callPackage ./nix/frontend.nix { };
-            inherit (pkgs.callPackages ./nix/wrapper.nix { inherit nuscht-search; }) mkOptionsJSON mkSearchJSON mkSearch mkMultiSearch;
+            inherit (pkgs.callPackages ./nix/wrapper.nix { inherit nuscht-search ixxPkgs; }) mkOptionsJSON mkSearchJSON mkSearch mkMultiSearch;
             default = nuscht-search;
           };
         }

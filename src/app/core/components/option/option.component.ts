@@ -15,7 +15,7 @@ import { SearchService } from '../../data/search.service';
 export class OptionComponent {
 
   protected readonly option = this.activatedRoute.queryParams.pipe(
-    switchMap(({option}) => this.searchService.getByName(option)),
+    switchMap(({ option }) => this.searchService.getByName(option)),
   );
 
   constructor(

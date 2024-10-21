@@ -15,11 +15,13 @@ stdenv.mkDerivation (finalAttrs: {
   postPatch = ''
     substituteInPlace src/app/core/config.domain.ts \
       --replace-fail '##TITLE##' '${title}'
+    substituteInPlace src/index.html \
+      --replace-fail '##TITLE##' '${title}'
   '';
 
   pnpmDeps = pnpm.fetchDeps {
     inherit (finalAttrs) pname version src;
-    hash = "sha256-1SwWGZtPQ3/5sumiuOSVhKmwAkYGzSDsGNFXetmqLQk=";
+    hash = "sha256-DLB/BTHReaTdUUTqnLkO9UsWmWp12CJ5UOVlK0sIT1Y=";
   };
 
   nativeBuildInputs = [ nodejs pnpm.configHook ];

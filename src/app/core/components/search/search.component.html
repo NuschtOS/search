@@ -1,4 +1,14 @@
-<feel-text-field [formControl]="search" label="Search"></feel-text-field>
+<form [formGroup]="search">
+  <feel-text-field formControlName="query" label="Search" />
+  <ng-container *ngIf="(scopes | async) as scopes">
+    <feel-dropdown formControlName="scope" label="Scope" *ngIf="scopes.length > 1">
+      <option value="-1">All</option>
+      <option *ngFor="let scope of scopes; index as idx" [value]="idx.toString()">
+        {{scope}}
+      </option>
+    </feel-dropdown>
+  </ng-container>
+</form>
 
 <div class="scroll" *ngIf="(results | async) as options">
   <ul>
@@ -9,5 +19,6 @@
       </a>
     </li>
   </ul>
-  <p *ngIf="options.length == 500">Only showing the first 500 results. Make your search term more concise.</p>
+  <p *ngIf="options.length == maxSearchResults">Only showing the first {{maxSearchResults}} results. Make your search
+    term more concise.</p>
 </div>
