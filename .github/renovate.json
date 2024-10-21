@@ -18,6 +18,10 @@
     {
       "matchPackageNames": ["/@feel\//"],
       "groupName": "feel"
+    },
+    {
+      "matchManagers": ["nix"],
+      "groupName": "flake inputs"
     }
   ],
   "postUpgradeTasks": {
