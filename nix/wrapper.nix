@@ -30,9 +30,6 @@ rec {
         passAsFile = [ "config" ];
         nativeBuildInputs = [ ixxPkgs.ixx ];
       }
-      # NOTE: "chunk-size" has to match with constant JS code
-      #       maybe we should encode this in the index file,
-      #       so the frontend can determinate the value dynamically
       ''
         mkdir $out
         ixx index \
