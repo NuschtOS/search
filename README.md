@@ -18,3 +18,11 @@ Until we have written proper instructions please take a look at the following ex
 
 We wanted something similar to https://search.nixos.org to easily search through all the flakes options across many projects we accumulated in projects
 but without the need to deploy an Elasticsearch. Ideally it should be just a static site with json blob that can be deployed on GitHub pages.
+
+## Debugging
+
+Generating `options.json` in a `nix repl`:
+
+```
+:b (pkgs.nixosOptionsDoc { inherit ((lib.evalModules { modules = [ { config._module.check = false; } outputs.nixosModules.default ]; })) options; warningsAreErrors = false; }).optionsJSON
+```
