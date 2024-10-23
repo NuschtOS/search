@@ -21,7 +21,7 @@ but without the need to deploy an Elasticsearch. Ideally it should be just a sta
 
 ## Debugging
 
-Generating `options.json` in a `nix repl`:
+Generating a `options.json` in a `nix repl` can be done with the following snippet:
 
 ```
 :b (pkgs.nixosOptionsDoc { inherit ((lib.evalModules { modules = [ { config._module.check = false; } outputs.nixosModules.default ]; })) options; warningsAreErrors = false; }).optionsJSON
