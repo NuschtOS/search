@@ -33,11 +33,11 @@ importers:
         specifier: ^18.2.7
         version: 18.2.8(@angular/common@18.2.8(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@18.2.8(@angular/animations@18.2.8(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@18.2.8(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0)))(rxjs@7.8.1)
       '@feel/form':
-        specifier: ^0.0.27
-        version: 0.0.27(@angular/cdk@17.3.10(@angular/common@18.2.8(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/common@18.2.8(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(@feel/style@0.0.27(@angular/common@18.2.8(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0)))
+        specifier: ^0.0.28
+        version: 0.0.28(@angular/cdk@17.3.10(@angular/common@18.2.8(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/common@18.2.8(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(@feel/style@0.0.28(@angular/common@18.2.8(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0)))
       '@feel/style':
-        specifier: ^0.0.27
-        version: 0.0.27(@angular/common@18.2.8(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))
+        specifier: ^0.0.28
+        version: 0.0.28(@angular/common@18.2.8(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))
       '@fontsource/dm-mono':
         specifier: ^5.1.0
         version: 5.1.0
@@ -1178,19 +1178,19 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@feel/form@0.0.27':
-    resolution: {integrity: sha512-/pCMGr+B9bk8MWIdhI7STpzA0rH7mc+pgmhLaohW8E7DysrpEyW+6fKNpcYF8OVUQFVeinxHzRdIMYsniWdM1Q==, tarball: https://codeberg.org/api/packages/m4rc3l/npm/%40feel%2Fform/-/0.0.27/form-0.0.27.tgz}
+  '@feel/form@0.0.28':
+    resolution: {integrity: sha512-llwlfmV9zq3WE8gDigaUBrCkYVAgiYJMF2/z6Bjfm4tkzyPhgOZxvjU9qQcLYqKst7uOGLKUBHP2UeUU0ccXiQ==, tarball: https://codeberg.org/api/packages/m4rc3l/npm/%40feel%2Fform/-/0.0.28/form-0.0.28.tgz}
     peerDependencies:
-      '@angular/cdk': ^17.0.0
-      '@angular/common': ^17.0.0
-      '@angular/core': ^17.0.0
-      '@feel/style': 0.0.27
+      '@angular/cdk': ^18.0.0
+      '@angular/common': ^18.0.0
+      '@angular/core': ^18.0.0
+      '@feel/style': 0.0.28
 
-  '@feel/style@0.0.27':
-    resolution: {integrity: sha512-CNdncgpUiZ8QHOlzU9WTgklPsf8I51xWs+UjwQSNJRxCtaxEAWCd3EUtv53xvSN7idUe5ZmayyVGaYTbU17h5w==, tarball: https://codeberg.org/api/packages/m4rc3l/npm/%40feel%2Fstyle/-/0.0.27/style-0.0.27.tgz}
+  '@feel/style@0.0.28':
+    resolution: {integrity: sha512-zGtUYiX7l4g7hKSiSOmF1+nUeyZCCYzqv8++ZFrP4IWAq1/6FDDEtrDZojrXHToIKRkRUfNQ8tVEZhi/4IJ5vw==, tarball: https://codeberg.org/api/packages/m4rc3l/npm/%40feel%2Fstyle/-/0.0.28/style-0.0.28.tgz}
     peerDependencies:
-      '@angular/common': ^17.0.0
-      '@angular/core': ^17.0.0
+      '@angular/common': ^18.0.0
+      '@angular/core': ^18.0.0
 
   '@fontsource/dm-mono@5.1.0':
     resolution: {integrity: sha512-cfowZUJJDHjgVFOEQmIn2KHtQ8LDXnTGgTTunUImzzg3Xf6V92MlYR/pmkqIt7lXq7lfP/pQZ9ph/9JeLDRsCQ==}
@@ -5580,15 +5580,15 @@ snapshots:
   '@esbuild/win32-x64@0.23.0':
     optional: true
 
-  '@feel/form@0.0.27(@angular/cdk@17.3.10(@angular/common@18.2.8(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/common@18.2.8(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(@feel/style@0.0.27(@angular/common@18.2.8(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0)))':
+  '@feel/form@0.0.28(@angular/cdk@17.3.10(@angular/common@18.2.8(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/common@18.2.8(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(@feel/style@0.0.28(@angular/common@18.2.8(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0)))':
     dependencies:
       '@angular/cdk': 17.3.10(@angular/common@18.2.8(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1)
       '@angular/common': 18.2.8(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1)
       '@angular/core': 18.2.8(rxjs@7.8.1)(zone.js@0.15.0)
-      '@feel/style': 0.0.27(@angular/common@18.2.8(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))
+      '@feel/style': 0.0.28(@angular/common@18.2.8(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))
       tslib: 2.8.0
 
-  '@feel/style@0.0.27(@angular/common@18.2.8(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))':
+  '@feel/style@0.0.28(@angular/common@18.2.8(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))':
     dependencies:
       '@angular/common': 18.2.8(@angular/core@18.2.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1)
       '@angular/core': 18.2.8(rxjs@7.8.1)(zone.js@0.15.0)
