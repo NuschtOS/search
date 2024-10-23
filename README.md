@@ -26,3 +26,5 @@ Generating a `options.json` in a `nix repl` can be done with the following snipp
 ```
 :b (pkgs.nixosOptionsDoc { inherit ((lib.evalModules { modules = [ { config._module.check = false; } outputs.nixosModules.default ]; })) options; warningsAreErrors = false; }).optionsJSON
 ```
+
+It is assumed that the flake was loaded before with `:lf` and the module(s) is/are under `nixosModules.default`. For some flakes this may need to be adapted.
