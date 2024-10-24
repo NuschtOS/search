@@ -37,6 +37,7 @@ jobs:
         run: nix build -L github:NuschtOS/search.nuschtos.de --override-input search .
 
       - name: Publish to Cloudflare Pages
+        if: "github.repository_owner == 'NuschtOS'"
         uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
