@@ -1,7 +1,7 @@
 { lib, nixosOptionsDoc, nuscht-search, ixxPkgs, runCommand, xorg }:
 
 rec {
-  mkOptionsJSON = modules: (nixosOptionsDoc {
+  mkOptionsJSON = { modules, specialArgs }: (nixosOptionsDoc {
     inherit ((lib.evalModules {
       modules = modules ++ [
         ({ lib, ... }: {
@@ -11,13 +11,17 @@ rec {
           config._module.check = false;
         })
       ];
+      inherit specialArgs;
     })) options;
     warningsAreErrors = false;
   }).optionsJSON + /share/doc/nixos/options.json;
 
   mkSearchData = scopes:
     let
-      optionsJSON = opt: opt.optionsJSON or (mkOptionsJSON opt.modules);
+      optionsJSON = opt: opt.optionsJSON or (mkOptionsJSON {
+        inherit (opt) modules;
+        specialArgs = opt.specialArgs or { };
+      });
       config = {
         scopes = map
           (scope: (lib.filterAttrs (name: _value: name != "modules") scope) // { optionsJson = optionsJSON scope; })
