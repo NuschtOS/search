@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable, from, map, of, switchMap, tap } from 'rxjs
 
 export interface SearchedOption {
   idx: number;
+  scope_id: number;
   name: string;
 }
 
@@ -41,7 +42,7 @@ export class SearchService {
     return this.index.pipe(
       map(index => {
         return index ? index.search(scope_id, query, MAX_SEARCH_RESULTS).map(option => {
-          const opt = ({ idx: option.idx(), name: option.name() });
+          const opt = ({ idx: option.idx(), scope_id: option.scope_id(), name: option.name() });
           //      option.free();
           return opt;
         }) : [];
@@ -49,14 +50,14 @@ export class SearchService {
     );
   }
 
-  public getByName(name: string | undefined): Observable<Option | undefined> {
+  public getByName(scope_id: number, name: string | undefined): Observable<Option | undefined> {
     if (typeof name === "undefined" || name.length == 0) {
       return of(undefined);
     }
 
     return this.index.pipe(
       switchMap(index => {
-        const idx = index?.get_idx_by_name(name);
+        const idx = index?.get_idx_by_name(scope_id, name);
         return typeof idx === "number" ? this.getByIdx(idx, index!.chunk_size()) : of(undefined);
       })
     );

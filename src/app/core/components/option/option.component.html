@@ -15,6 +15,10 @@
           </ng-template>
         </td>
       </tr>
+      <tr *ngIf="(scope | async) as scope">
+        <td>Scope</td>
+        <td><a [routerLink]="[]" [queryParams]="{scope}" queryParamsHandling="merge">{{scope}}</a></td>
+      </tr>
       <tr>
         <td>Description</td>
         <td [innerHTML]="option.description"></td>
@@ -25,11 +29,15 @@
       </tr>
       <tr *ngIf="option.default">
         <td>Default</td>
-        <td><pre><code [innerHTML]="option.default"></code></pre></td>
+        <td>
+          <pre><code [innerHTML]="option.default"></code></pre>
+        </td>
       </tr>
       <tr *ngIf="option.example">
         <td>Example</td>
-        <td><pre><code [innerHTML]="option.example"></code></pre></td>
+        <td>
+          <pre><code [innerHTML]="option.example"></code></pre>
+        </td>
       </tr>
     </tbody>
   </table>
