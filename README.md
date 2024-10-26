@@ -28,3 +28,9 @@ Generating a `options.json` in a `nix repl` can be done with the following snipp
 ```
 
 It is assumed that the flake was loaded before with `:lf` and the module(s) is/are under `nixosModules.default`. For some flakes this may need to be adapted.
+
+## Contact
+
+For bugs and issues please open an issue in this repository.
+
+If you want to chat about things or have ideas, feel free to join the [Matrix chat](https://matrix.to/#/#nuschtos:c3d2.de).
