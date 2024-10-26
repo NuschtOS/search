@@ -38,7 +38,7 @@ rec {
         ixx index \
           --index-output $out/index.ixx \
           --meta-output $out/meta \
-          --chunk-size 100 \
+          --chunk-size 500 \
           $configPath
       '';
 
