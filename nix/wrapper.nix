@@ -18,15 +18,14 @@ rec {
 
   mkSearchData = scopes:
     let
-      optionsJSON = opt: opt.optionsJSON or (mkOptionsJSON {
-        inherit (opt) modules;
-        specialArgs = opt.specialArgs or { };
-      });
-      config = {
-        scopes = map
-          (scope: (lib.filterAttrs (name: _value: name != "modules") scope) // { optionsJson = optionsJSON scope; })
-          scopes;
-      };
+      config.scopes = map (scope: {
+        inherit (scope) urlPrefix;
+      } // lib.optionalAttrs (scope?name) { inherit (scope) name; } // {
+        optionsJson = scope.optionsJSON or (mkOptionsJSON {
+          modules = scope.modules or (throw "A scope requires either optionsJSON or module!");
+          specialArgs = scope.specialArgs or { };
+        });
+      }) scopes;
     in
     runCommand "search-meta"
       {
