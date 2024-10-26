@@ -4,8 +4,8 @@ Simple and fast static-page NixOS option search
 
 ## Deployments
 
-- NixOS Modules <https://modules.nüschtos.de>
 - General collection of community projects <https://search.nüschtos.de>
+- All flakes used at C3D2 <https://search.nixos.c3d2.de>
 - NixVim <https://nix-community.github.io/nixvim/search>
 
 ## How to use
