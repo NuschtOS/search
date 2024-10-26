@@ -37,6 +37,7 @@
               "node_modules/@fontsource/dm-sans/700.css",
               "node_modules/@fontsource/dm-sans/700-italic.css",
               "node_modules/@fontsource/dm-mono/400.css",
+              "node_modules/@fontsource/dm-mono/500.css",
               "node_modules/@feel/style/main.scss",
               "src/styles.scss"
             ],
@@ -108,6 +109,7 @@
               "node_modules/@fontsource/dm-sans/700.css",
               "node_modules/@fontsource/dm-sans/700-italic.css",
               "node_modules/@fontsource/dm-mono/400.css",
+              "node_modules/@fontsource/dm-mono/500.css",
               "node_modules/@feel/style/main.scss",
               "src/styles.scss"
             ],
