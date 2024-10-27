@@ -7,6 +7,7 @@ Simple and fast static-page NixOS option search
 - General collection of community projects <https://search.nüschtos.de>
 - All flakes used at C3D2 <https://search.nixos.c3d2.de>
 - NixVim <https://nix-community.github.io/nixvim/search>
+- Nixidy <https://arnarg.github.io/nixidy/options/search>
 
 ## How to use
 
