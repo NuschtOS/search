@@ -3,8 +3,8 @@
 let
   manifest = lib.importJSON ../package.json;
   pnpm = callPackage (path + "/pkgs/development/tools/pnpm/generic.nix") {
-    version = "9.12.2";
-    hash = "sha256-LvblR7CwfYQdYFJA3OTWNWd4MRSM0w9tVkuPT5KPc9I=";
+    version = "9.12.3";
+    hash = "sha256-JCNXcsxKyCpiYnzUf4NMcmZ6LOh3mahG7E6OVV4tS4s=";
   };
 in
 stdenv.mkDerivation (finalAttrs: {
