@@ -14,21 +14,6 @@
     "enabled": true
   },
   "osvVulnerabilityAlerts": true,
-  "packageRules": [
-    {
-      "matchPackageNames": ["/@feel\//"],
-      "groupName": "feel"
-    },
-    {
-      "matchManagers": ["nix"],
-      "groupName": "flake inputs"
-    }
-  ],
-  "postUpgradeTasks": {
-    "commands": ["./nix/update-pnpm-hash.sh"],
-    "executionMode": "branch",
-    "fileFilters": ["nix/frontend.nix"]
-  },
   "prHourlyLimit": 0,
   "schedule": [
     "before 12am on sunday"
