@@ -45,8 +45,8 @@ importers:
         specifier: ^5.1.0
         version: 5.1.0
       '@nuschtos/fixx':
-        specifier: ^0.0.5
-        version: 0.0.5
+        specifier: ^0.0.6
+        version: 0.0.6
       rxjs:
         specifier: ~7.8.1
         version: 7.8.1
@@ -1457,8 +1457,8 @@ packages:
     resolution: {integrity: sha512-y7efHHwghQfk28G2z3tlZ67pLG0XdfYbcVG26r7YIXALRsrVQcTq4/tdenSmdOrEsNahIYA/eh8aEVROWGFUDg==}
     engines: {node: ^16.14.0 || >=18.0.0}
 
-  '@nuschtos/fixx@0.0.5':
-    resolution: {integrity: sha512-MJkoxTALqXlga1OQJzw1C04xOSXAc7EBWy/vGYXnBFqg1VPd4c6iOjV+ejpoBy3ESVIPJkszNxN/LnjqBuSByA==}
+  '@nuschtos/fixx@0.0.6':
+    resolution: {integrity: sha512-OFMC1Js00NhBCpnL62VyAPvr2AwRIlMCtnMFlj27OAwniOVKelBvQaBFlSqn+xVasgzpWTPyvEq2hnI1Rue/Uw==}
 
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -5924,7 +5924,7 @@ snapshots:
       - bluebird
       - supports-color
 
-  '@nuschtos/fixx@0.0.5': {}
+  '@nuschtos/fixx@0.0.6': {}
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
