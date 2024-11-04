@@ -15,7 +15,7 @@
     <li *ngFor="let option of options; trackBy trackBy">
       <a [routerLink]="[]" [title]="option.name" [queryParams]="{option: option.name}" queryParamsHandling="merge"
         [class.active]="isActive(option) | async">
-        <code>{{option.name}}</code>
+        <code>{{option.displayName}}</code>
       </a>
     </li>
   </ul>
