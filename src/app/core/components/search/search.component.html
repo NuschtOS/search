@@ -13,7 +13,7 @@
 <div class="scroll" *ngIf="(results | async) as options">
   <ul>
     <li *ngFor="let option of options; trackBy trackBy">
-      <a [routerLink]="[]" [title]="option.name" [queryParams]="{option: option.name}" queryParamsHandling="merge"
+      <a [routerLink]="[]" [title]="option.name" [queryParams]="{option_scope: option.scope_id, option: option.name}" queryParamsHandling="merge"
         [class.active]="isActive(option) | async">
         <code>{{option.displayName}}</code>
       </a>

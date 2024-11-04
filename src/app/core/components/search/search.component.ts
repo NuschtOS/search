@@ -65,7 +65,7 @@ export class SearchComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   );
 
-  protected readonly selectedOption = this.activatedRoute.queryParams.pipe(map(({ option }) => option));
+  protected readonly selectedOption = this.activatedRoute.queryParams.pipe(map(({ option_scope, option }) => ({ scope_id: Number(option_scope), name: option })));
   protected readonly maxSearchResults = MAX_SEARCH_RESULTS;
 
   private readonly destroy = new Subject<void>();
@@ -127,7 +127,7 @@ export class SearchComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   protected isActive(opt: SearchedOption): Observable<boolean> {
-    return this.selectedOption.pipe(map(option => option === opt.name));
+    return this.selectedOption.pipe(map(option => option.scope_id === opt.scope_id && option.name === opt.name));
   }
 }
 
