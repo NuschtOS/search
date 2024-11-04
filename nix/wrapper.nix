@@ -20,7 +20,9 @@ rec {
     let
       config.scopes = map (scope: {
         inherit (scope) urlPrefix;
-      } // lib.optionalAttrs (scope?name) { inherit (scope) name; } // {
+      } // lib.optionalAttrs (scope?name) { inherit (scope) name; }
+        // lib.optionalAttrs (scope?optionsPrefix) { inherit (scope) optionsPrefix; }
+        // {
         optionsJson = scope.optionsJSON or (mkOptionsJSON {
           modules = scope.modules or (throw "A scope requires either optionsJSON or module!");
           specialArgs = scope.specialArgs or { };
