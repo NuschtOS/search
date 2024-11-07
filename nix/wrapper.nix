@@ -44,14 +44,7 @@ rec {
           $configPath
       '';
 
-  # mkMultiSearch {
-  #   baseHref = "/search/";
-  #   title = "Custom Search";
-  #   scopes = [
-  #     { modules = [ self.inputs.nixos-modules.nixosModule ]; urlPrefix = "https://github.com/NuschtOS/nixos-modules/blob/main/"; name = "NixOS Modules"; }
-  #     { optionsJSON = ./path/to/options.json; optionsPrefix = "programs.example"; urlPrefix = "https://git.example.com/blob/main/"; name = "Example Module"; }
-  #   ];
-  # };
+  # also update README examples
   mkMultiSearch = { scopes, baseHref ? "/", title ? "NüschtOS Search" }:
     runCommand "nuscht-search"
       { nativeBuildInputs = [ xorg.lndir ]; }
@@ -61,9 +54,7 @@ rec {
         ln -s ${mkSearchData scopes}/{meta,index.ixx} $out
       '';
 
-  # mkSearch { modules = [ self.inputs.nixos-modules.nixosModule ]; urlPrefix = "https://github.com/NuschtOS/nixos-modules/blob/main/"; }
-  # mkSearch { optionsJSON = ./path/to/options.json; optionsPrefix = "programs.example"; urlPrefix = "https://git.example.com/blob/main/"; }
-  # mkSearch { optionsJSON = ./path/to/options.json; urlPrefix = "https://git.example.com/blob/main/"; baseHref = "/search/"; title = "Custom Search"; }
+  # also update README examples
   mkSearch = { baseHref ? "/", title ? "NüschtOS Search", ... }@args:
     mkMultiSearch {
       inherit baseHref title;

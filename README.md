@@ -9,9 +9,49 @@ Simple and fast static-page NixOS option search
 - NixVim <https://nix-community.github.io/nixvim/search>
 - Nixidy <https://arnarg.github.io/nixidy/options/search>
 
-## How to use
+## Usage
 
-Until we have written proper instructions please take a look at the following examples:
+There are two functions exposeed to build the directory containing the static search:
+- `mkMultiSearch` to build a search with multiple scopes (modules).
+  It takes the `baseHref`, `title` and `scopes` option.
+- `mkSearch` is a thin wrapper around `mkMultiSearch` to only use one scope (module).
+  It takes the `modules`, `optionsJSON`, `optionsPrefix`, `urlPrefix`, `baseHref` and `title` option.
+
+### Explanation of options
+
+- `baseHref` - The directory to where the search is going to be deployed relative to the domain. Defaults to `/`.
+- `title` - The title on the top left. Defaults to `NüschtOS Search`.
+- `modules` - A list of NixOS modules as an attrset or file similar to the `nixosSystem` function. Exclusive with `optionsJSON`.
+- `optionsJSON` - Path to a pre-generated `options.json` file. Exclusive with `modules`.
+- `optionsPrefix` - A static prefix to append to all options. An extra `dot` is always appended. Defaults to being empty.
+- `urlPrefix` - The prefix which is prepended to the declaration link. This is usually a link to a git.
+
+- `scopes` is a list of attributes which each takes `name`, `modules`, `optionsJSON`, `optionsPrefix` or `urlPrefix` option.
+
+### Examples
+
+```nix
+mkMultiSearch {
+  baseHref = "/search/";
+  title = "Custom Search";
+  scopes = [ {
+    name = "NixOS Modules";
+    modules = [ self.inputs.nixos-modules.nixosModule ];
+    urlPrefix = "https://github.com/NuschtOS/nixos-modules/blob/main/";
+  } {
+    name = "Example Module";
+    optionsJSON = ./path/to/options.json;
+    optionsPrefix = "programs.example";
+    urlPrefix = "https://git.example.com/blob/main/";
+  } ];
+};
+```
+
+```nix
+mkSearch { modules = [ self.inputs.nixos-modules.nixosModule ]; urlPrefix = "https://github.com/NuschtOS/nixos-modules/blob/main/"; }
+mkSearch { optionsJSON = ./path/to/options.json; optionsPrefix = "programs.example"; urlPrefix = "https://git.example.com/blob/main/"; }
+mkSearch { optionsJSON = ./path/to/options.json; urlPrefix = "https://git.example.com/blob/main/"; baseHref = "/search/"; title = "Custom Search"; }
+```
 - Static page with GitHub Actions and Cloudflare/GitHub Pages https://github.com/NuschtOS/search.nuschtos.de/blob/main/.github/workflows/gh-pages.yaml https://github.com/NuschtOS/search.nuschtos.de/blob/main/flake.nix
 - Deployed with NixOS https://gitea.c3d2.de/c3d2/nix-config/src/branch/master/hosts/nixos-misc/default.nix#L48-L103
 
@@ -24,11 +64,11 @@ but without the need to deploy an Elasticsearch. Ideally it should be just a sta
 
 ### Missing declaration
 
-This is most often caused by using nix' `import` keyword to load a module in the flake instead of referenceing it via the path type.
+This is most often caused by using nix' `import` keyword to load a module in the flake instead of referencing it via the path type.
 This causes the module system to no longer be aware of the origin of the module and the missing declaration.
 
 If no arguments are being hand over, this can be easily fixed by removing the `import` keyword. (e.g. [change in sops-nix](https://github.com/Mic92/sops-nix/pull/645))
-If arguements are being hand over, the module needs to be slightly refactored.
+If arguments are being hand over, the module needs to be slightly refactored.
 It is often the easiest to move everything depending on the arguments into the `flake.nix` and loading the module via the module systems `imports` variable. (e.g. [change in ifstate.nix](https://codeberg.org/m4rc3l/ifstate.nix/pulls/9))
 
 ### default/example is a string/has extra surrounding quotes
