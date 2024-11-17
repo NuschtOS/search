@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [ "unstable", "stable" ]
+        target: [ "24.05", "24.11", "unstable" ]
 
     steps:
       - uses: actions/checkout@v4
@@ -30,12 +30,12 @@ jobs:
           use-flakehub: false
 
       - name: build stable
-        if: matrix.target == 'stable'
+        if: matrix.target != 'unstable'
         run: |
           nix build -L \
-            --override-input nixpkgs github:NixOS/nixpkgs/nixos-24.05
+            --override-input nixpkgs github:NixOS/nixpkgs/nixos-${{ matrix.target }}
 
       - name: build unstable
-        if: matrix.target != 'stable'
+        if: matrix.target == 'unstable'
         run: |
           nix build -L
