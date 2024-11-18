@@ -1,7 +1,7 @@
-{ lib, nixosOptionsDoc, nuscht-search, ixxPkgs, runCommand, xorg }:
+{ ixxPkgs, lib, nuscht-search, pkgs }:
 
 rec {
-  mkOptionsJSON = { modules, specialArgs }: (nixosOptionsDoc {
+  mkOptionsJSON = pkgs.callPackage ({ modules, specialArgs, nixosOptionsDoc }: (nixosOptionsDoc {
     inherit ((lib.evalModules {
       modules = modules ++ [
         ({ lib, ... }: {
@@ -14,9 +14,9 @@ rec {
       inherit specialArgs;
     })) options;
     warningsAreErrors = false;
-  }).optionsJSON + /share/doc/nixos/options.json;
+  }).optionsJSON + /share/doc/nixos/options.json);
 
-  mkSearchData = scopes:
+  mkSearchData = pkgs.callPackage ({ scopes, runCommand }:
     let
       config.scopes = map (scope: {
         inherit (scope) urlPrefix;
@@ -42,22 +42,22 @@ rec {
           --meta-output $out/meta \
           --chunk-size 500 \
           $configPath
-      '';
+      '');
 
   # also update README examples
-  mkMultiSearch = { scopes, baseHref ? "/", title ? "NüschtOS Search" }:
-    runCommand "nuscht-search"
-      { nativeBuildInputs = [ xorg.lndir ]; }
-      ''
-        mkdir $out
-        lndir ${nuscht-search.override { inherit baseHref title; }} $out
-        ln -s ${mkSearchData scopes}/{meta,index.ixx} $out
-      '';
+  mkMultiSearch = pkgs.callPackage ({ scopes, baseHref ? "/", title ? "NüschtOS Search", runCommand, xorg }:
+    runCommand "nuscht-search" {
+      nativeBuildInputs = [ xorg.lndir ];
+    } ''
+      mkdir $out
+      lndir ${nuscht-search.override { inherit baseHref title; }} $out
+      ln -s ${mkSearchData { inherit scopes; }}/{meta,index.ixx} $out
+    '');
 
   # also update README examples
-  mkSearch = { baseHref ? "/", title ? "NüschtOS Search", ... }@args:
+  mkSearch = pkgs.callPackage ({ baseHref ? "/", title ? "NüschtOS Search", ... }@args:
     mkMultiSearch {
       inherit baseHref title;
       scopes = [ (lib.removeAttrs args [ "baseHref" "title" ]) ];
-    };
+    });
 }
