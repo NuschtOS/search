@@ -20,9 +20,7 @@
     },
     "ixx": {
       "inputs": {
-        "flake-utils": [
-          "flake-utils"
-        ],
+        "flake-utils": "flake-utils",
         "nixpkgs": [
           "nixpkgs"
         ]
@@ -60,7 +58,6 @@
     },
     "root": {
       "inputs": {
-        "flake-utils": "flake-utils",
         "ixx": "ixx",
         "nixpkgs": "nixpkgs"
       }
