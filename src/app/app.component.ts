@@ -4,12 +4,11 @@ import { OptionComponent } from './core/components/option/option.component';
 import { TITLE } from './core/config.domain';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [SearchComponent, OptionComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-root',
+    imports: [SearchComponent, OptionComponent],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
 
