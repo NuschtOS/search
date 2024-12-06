@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [ "24.05", "24.11", "unstable" ]
+        target: [ "24.11", "unstable" ]
 
     steps:
       - uses: actions/checkout@v4
