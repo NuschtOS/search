@@ -28,12 +28,11 @@ function prefix(options: SearchedOption[]): string {
 }
 
 @Component({
-  selector: 'app-search',
-  standalone: true,
-  imports: [ReactiveFormsModule, TextFieldComponent, NgIf, AsyncPipe, NgFor, RouterLink, DropdownComponent],
-  templateUrl: './search.component.html',
-  styleUrl: './search.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-search',
+    imports: [ReactiveFormsModule, TextFieldComponent, NgIf, AsyncPipe, NgFor, RouterLink, DropdownComponent],
+    templateUrl: './search.component.html',
+    styleUrl: './search.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchComponent implements OnInit, AfterViewInit, OnDestroy {
 

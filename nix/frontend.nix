@@ -1,11 +1,7 @@
-{ callPackage, lib, path, stdenv, nodejs, baseHref ? "/", title ? "NuschtOS Search" }:
+{ lib, stdenv, nodejs, pnpm, baseHref ? "/", title ? "NuschtOS Search" }:
 
 let
   manifest = lib.importJSON ../package.json;
-  pnpm = callPackage (path + "/pkgs/development/tools/pnpm/generic.nix") {
-    version = "9.12.3";
-    hash = "sha256-JCNXcsxKyCpiYnzUf4NMcmZ6LOh3mahG7E6OVV4tS4s=";
-  };
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = manifest.name;
@@ -25,7 +21,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   pnpmDeps = pnpm.fetchDeps {
     inherit (finalAttrs) pname version src;
-    hash = "sha256-gSCyJ7dK63z0WYIXHvj4YXI7azp5pFOhsIXRbwdyRVU=";
+    hash = "sha256-iv0pNO/pIFvxoKweViX0tkXlK0EEvYs656MQdREqb6U=";
   };
 
   nativeBuildInputs = [ nodejs pnpm.configHook ];

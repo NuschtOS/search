@@ -5,12 +5,11 @@ import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { SearchService } from '../../data/search.service';
 
 @Component({
-  selector: 'app-option',
-  standalone: true,
-  imports: [NgIf, NgFor, AsyncPipe, RouterLink],
-  templateUrl: './option.component.html',
-  styleUrl: './option.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-option',
+    imports: [NgIf, NgFor, AsyncPipe, RouterLink],
+    templateUrl: './option.component.html',
+    styleUrl: './option.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OptionComponent {
 
