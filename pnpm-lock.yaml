@@ -40,10 +40,10 @@ importers:
         version: 0.0.30(@angular/common@19.0.3(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.3(rxjs@7.8.1)(zone.js@0.15.0))
       '@fontsource/dm-mono':
         specifier: ^5.1.0
-        version: 5.1.0
+        version: 5.1.1
       '@fontsource/dm-sans':
         specifier: ^5.1.0
-        version: 5.1.0
+        version: 5.1.1
       '@nuschtos/fixx':
         specifier: ^0.0.6
         version: 0.0.6
@@ -1092,11 +1092,11 @@ packages:
       '@angular/common': ^18.0.0
       '@angular/core': ^18.0.0
 
-  '@fontsource/dm-mono@5.1.0':
-    resolution: {integrity: sha512-cfowZUJJDHjgVFOEQmIn2KHtQ8LDXnTGgTTunUImzzg3Xf6V92MlYR/pmkqIt7lXq7lfP/pQZ9ph/9JeLDRsCQ==}
+  '@fontsource/dm-mono@5.1.1':
+    resolution: {integrity: sha512-blj8dgPQ63UqOdt0beSL1oV5r0/AASsQTGBOI5lTryb6XBzWUsOiIZCfHENtbCuGXjCblxVc+1/zkb13lwYF+g==}
 
-  '@fontsource/dm-sans@5.1.0':
-    resolution: {integrity: sha512-YpGtZ8Rbh+/84rn7o/rzBBFnikoLjhjtzKYAMZhSRr7xWU0piZDBFhUdI14M4Ub8emh0TSG/gU2pJOMUe9TGYA==}
+  '@fontsource/dm-sans@5.1.1':
+    resolution: {integrity: sha512-xApcrecLZkQMM6bl7U+Eokg8Y4LeYMiR+cQUTUNx4Adun5ZpiIlPB9+JEXg/k1gFea/72nmn30AekCBA+HhUCA==}
 
   '@inquirer/checkbox@4.0.3':
     resolution: {integrity: sha512-CEt9B4e8zFOGtc/LYeQx5m8nfqQeG/4oNNv0PUvXGG0mys+wR/WbJ3B4KfSQ4Fcr3AQfpiuFOi3fVvmPfvNbxw==}
@@ -5417,9 +5417,9 @@ snapshots:
       '@angular/core': 19.0.3(rxjs@7.8.1)(zone.js@0.15.0)
       tslib: 2.8.1
 
-  '@fontsource/dm-mono@5.1.0': {}
+  '@fontsource/dm-mono@5.1.1': {}
 
-  '@fontsource/dm-sans@5.1.0': {}
+  '@fontsource/dm-sans@5.1.1': {}
 
   '@inquirer/checkbox@4.0.3(@types/node@22.10.1)':
     dependencies:
