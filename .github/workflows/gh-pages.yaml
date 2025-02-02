@@ -28,7 +28,7 @@ jobs:
       - name: Install Nix
         uses: cachix/install-nix-action@v30
 
-      - uses: DeterminateSystems/magic-nix-cache-action@v8
+      - uses: DeterminateSystems/magic-nix-cache-action@v9
         with:
           diagnostic-endpoint: false
           use-flakehub: false
