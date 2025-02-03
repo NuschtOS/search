@@ -3,40 +3,62 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
     ixx = {
       # match version with npm package
       url = "github:NuschtOS/ixx/v0.0.6";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "flake-utils";
       };
     };
   };
 
-  outputs = { nixpkgs, flake-utils, ixx, ... }:
-    flake-utils.lib.eachDefaultSystem
-      (system:
+  outputs =
+    { nixpkgs, ixx, ... }:
+    let
+      inherit (nixpkgs) lib;
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "x86_64-darwin"
+        "aarch64-darwin"
+      ];
+
+      forAllSystems = lib.genAttrs systems;
+      nixpkgsFor = nixpkgs.legacyPackages;
+    in
+    {
+      devShells = forAllSystems (
+        system:
         let
-          pkgs = (import nixpkgs) {
-            inherit system;
-          };
-          ixxPkgs = ixx.packages.${system};
+          pkgs = nixpkgsFor.${system};
         in
         {
-          devShells.default = pkgs.mkShell {
+          default = pkgs.mkShell {
             nativeBuildInputs = with pkgs; [
               nodejs
               pnpm
               ixxPkgs.ixx
             ];
           };
-
-          packages = rec {
-            nuscht-search = pkgs.callPackage ./nix/frontend.nix { };
-            inherit (pkgs.callPackages ./nix/wrapper.nix { inherit ixxPkgs nuscht-search; }) mkOptionsJSON mkSearchJSON mkSearch mkMultiSearch;
-            default = nuscht-search;
-          };
         }
       );
+
+      packages = forAllSystems (
+        system:
+        let
+          pkgs = nixpkgsFor.${system};
+          ixxPkgs = ixx.packages.${system};
+        in
+        rec {
+          nuscht-search = pkgs.callPackage ./nix/frontend.nix { };
+          inherit (pkgs.callPackages ./nix/wrapper.nix { inherit ixxPkgs nuscht-search; })
+            mkOptionsJSON
+            mkSearchJSON
+            mkSearch
+            mkMultiSearch
+            ;
+          default = nuscht-search;
+        }
+      );
+    };
 }
