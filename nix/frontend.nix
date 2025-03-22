@@ -18,9 +18,9 @@ stdenv.mkDerivation (finalAttrs: {
 
   postPatch = ''
     substituteInPlace src/app/core/config.domain.ts \
-      --replace-fail '##TITLE##' '${title}'
+      --replace-fail '##TITLE##' ${lib.escapeShellArg title}
     substituteInPlace src/index.html \
-      --replace-fail '##TITLE##' '${title}'
+      --replace-fail '##TITLE##' ${lib.escapeShellArg title}
   '';
 
   pnpmDeps = pnpm.fetchDeps {
