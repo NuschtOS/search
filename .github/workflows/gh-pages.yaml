@@ -26,12 +26,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v31
+        uses: nixbuild/nix-quick-install-action@v30
 
-      - uses: DeterminateSystems/magic-nix-cache-action@v9
+      - uses: nix-community/cache-nix-action@v6
         with:
-          diagnostic-endpoint: false
-          use-flakehub: false
+          primary-key: nix-${{ runner.os }}-${{ hashFiles('**/*.nix', '**/flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}
 
       - name: Build search
         run: nix build -L github:NuschtOS/search.nuschtos.de --override-input search .
