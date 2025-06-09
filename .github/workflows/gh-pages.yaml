@@ -25,13 +25,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # NOTE: not using the nix-daemon causes different hashes in FOD
+      # - name: Install Nix
+      #   uses: nixbuild/nix-quick-install-action@v30
+      #
+      # - uses: nix-community/cache-nix-action@v6
+      #   with:
+      #     primary-key: nix-${{ runner.os }}-${{ matrix.target }}-${{ hashFiles('**/*.nix', '**/flake.lock') }}
+      #     restore-prefixes-first-match: nix-${{ runner.os }}-${{ matrix.target }}-
       - name: Install Nix
-        uses: nixbuild/nix-quick-install-action@v30
-
-      - uses: nix-community/cache-nix-action@v6
-        with:
-          primary-key: nix-${{ runner.os }}-${{ hashFiles('**/*.nix', '**/flake.lock') }}
-          restore-prefixes-first-match: nix-${{ runner.os }}
+        uses: cachix/install-nix-action@v31
 
       - name: Build search
         run: nix build -L github:NuschtOS/search.nuschtos.de --override-input search .
