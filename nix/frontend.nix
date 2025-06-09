@@ -48,7 +48,7 @@ stdenv.mkDerivation (finalAttrs: {
   installPhase = ''
     runHook preInstall
     mkdir -p $out
-    cp -r ./dist/browser/* $out/
+    cp -rL ./dist/browser/* $out/
     runHook postInstall
   '';
 })
