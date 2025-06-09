@@ -1,24 +1,34 @@
 <form [formGroup]="search">
   <feel-text-field formControlName="query" label="Search" />
-  <ng-container *ngIf="(scopes | async) as scopes">
-    <feel-dropdown formControlName="scope" label="Scope" *ngIf="scopes.length > 1">
-      <option value="-1">All</option>
-      <option *ngFor="let scope of scopes; index as idx" [value]="idx.toString()">
-        {{scope}}
-      </option>
-    </feel-dropdown>
-  </ng-container>
+  @if ((scopes | async); as scopes) {
+    @if (scopes.length > 1) {
+      <feel-dropdown formControlName="scope" label="Scope">
+        <option value="-1">All</option>
+        @for (scope of scopes; track scope; let idx = $index) {
+          <option [value]="idx.toString()">
+            {{scope}}
+          </option>
+        }
+      </feel-dropdown>
+    }
+  }
 </form>
 
-<div class="scroll" *ngIf="(results | async) as options">
-  <ul>
-    <li *ngFor="let option of options; trackBy trackBy">
-      <a [routerLink]="[]" [title]="option.name" [queryParams]="{option_scope: option.scope_id, option: option.name}" queryParamsHandling="merge"
-        [class.active]="isActive(option) | async">
-        <code>{{option.displayName}}</code>
-      </a>
-    </li>
-  </ul>
-  <p *ngIf="options.length == maxSearchResults">Only showing the first {{maxSearchResults}} results. Make your search
-    term more concise.</p>
-</div>
+@if ((results | async); as options) {
+  <div class="scroll">
+    <ul>
+      @for (option of options; track option) {
+        <li>
+          <a [routerLink]="[]" [title]="option.name" [queryParams]="{option_scope: option.scope_id, option: option.name}" queryParamsHandling="merge"
+            [class.active]="isActive(option) | async">
+            <code>{{option.displayName}}</code>
+          </a>
+        </li>
+      }
+    </ul>
+    @if (options.length == maxSearchResults) {
+      <p>Only showing the first {{maxSearchResults}} results. Make your search
+      term more concise.</p>
+    }
+  </div>
+}
