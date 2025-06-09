@@ -1,6 +1,7 @@
-@import "theme";
-@include theme();
-@import "scss/kanagawa";
+@use "sass:meta";
+@use "../node_modules/@feel/style/global/_theme.scss";
+@include theme.theme();
+@include meta.load-css("scss/kanagawa");
 
 * {
   box-sizing: border-box;
