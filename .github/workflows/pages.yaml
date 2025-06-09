@@ -39,12 +39,14 @@ jobs:
       - name: Build search
         run: nix build -L github:NuschtOS/search.nuschtos.de --override-input search .
 
+      - uses: nicknovitski/nix-develop@v1
+
       - name: Publish to Cloudflare Pages
         if: "github.repository_owner == 'NuschtOS'"
-        uses: cloudflare/pages-action@v1
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: 2a09613716e511a8fe8ca74abc084762
-          projectName: nuschtos-search
-          directory: result
+          command: pages deploy result --project-name=nuschtos-search
           gitHubToken: ${{ github.token }}
+          packageManager: pnpm
