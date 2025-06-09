@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { switchMap, map } from 'rxjs';
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { SearchService } from '../../data/search.service';
 
 @Component({
     selector: 'app-option',
-    imports: [NgIf, NgFor, AsyncPipe, RouterLink],
+    imports: [AsyncPipe, RouterLink],
     templateUrl: './option.component.html',
     styleUrl: './option.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush

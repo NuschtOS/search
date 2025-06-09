@@ -4,7 +4,7 @@ import { Observable, Subject, combineLatest, debounceTime, filter, map, switchMa
 import { MAX_SEARCH_RESULTS, SearchService, SearchedOption } from '../../data/search.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DropdownComponent, TextFieldComponent } from "@feel/form";
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 function getQuery(): { query: string | null, scope: string | null } {
   const params = new URL(location.href).searchParams;
@@ -29,7 +29,7 @@ function prefix(options: SearchedOption[]): string {
 
 @Component({
     selector: 'app-search',
-    imports: [ReactiveFormsModule, TextFieldComponent, NgIf, AsyncPipe, NgFor, RouterLink, DropdownComponent],
+    imports: [ReactiveFormsModule, TextFieldComponent, AsyncPipe, RouterLink, DropdownComponent],
     templateUrl: './search.component.html',
     styleUrl: './search.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush

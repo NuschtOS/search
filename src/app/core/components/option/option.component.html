@@ -1,48 +1,58 @@
-<div *ngIf="(option | async) as option; else notFound" class="typography">
-  <h2><code>{{option.name}}</code></h2>
-  <table>
-    <tbody>
-      <tr>
-        <td>Declarations</td>
-        <td>
-          <ul *ngIf="option.declarations.length > 1; else singleDeclaration">
-            <li *ngFor="let declaration of option.declarations">
-              <a target="_blank" [href]="declaration">{{declaration}}</a>
-            </li>
-          </ul>
-          <ng-template #singleDeclaration>
-            <a target="_blank" [href]="option.declarations[0]">{{option.declarations[0]}}</a>
-          </ng-template>
-        </td>
-      </tr>
-      <tr *ngIf="(scope | async) as scope">
-        <td>Scope</td>
-        <td><a [routerLink]="[]" [queryParams]="{scope}" queryParamsHandling="merge">{{scope}}</a></td>
-      </tr>
-      <tr>
-        <td>Description</td>
-        <td [innerHTML]="option.description"></td>
-      </tr>
-      <tr>
-        <td>Type</td>
-        <td><code>{{option.type}}</code></td>
-      </tr>
-      <tr *ngIf="option.default">
-        <td>Default</td>
-        <td>
-          <pre><code [innerHTML]="option.default"></code></pre>
-        </td>
-      </tr>
-      <tr *ngIf="option.example">
-        <td>Example</td>
-        <td>
-          <pre><code [innerHTML]="option.example"></code></pre>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<ng-template #notFound>
+@if ((option | async); as option) {
+  <div class="typography">
+    <h2><code>{{option.name}}</code></h2>
+    <table>
+      <tbody>
+        <tr>
+          <td>Declarations</td>
+          <td>
+            @if (option.declarations.length > 1) {
+              <ul>
+                @for (declaration of option.declarations; track declaration) {
+                  <li>
+                    <a target="_blank" [href]="declaration">{{declaration}}</a>
+                  </li>
+                }
+              </ul>
+            } @else {
+              <a target="_blank" [href]="option.declarations[0]">{{option.declarations[0]}}</a>
+            }
+          </td>
+        </tr>
+        @if ((scope | async); as scope) {
+          <tr>
+            <td>Scope</td>
+            <td><a [routerLink]="[]" [queryParams]="{scope}" queryParamsHandling="merge">{{scope}}</a></td>
+          </tr>
+        }
+        <tr>
+          <td>Description</td>
+          <td [innerHTML]="option.description"></td>
+        </tr>
+        <tr>
+          <td>Type</td>
+          <td><code>{{option.type}}</code></td>
+        </tr>
+        @if (option.default) {
+          <tr>
+            <td>Default</td>
+            <td>
+              <pre><code [innerHTML]="option.default"></code></pre>
+            </td>
+          </tr>
+        }
+        @if (option.example) {
+          <tr>
+            <td>Example</td>
+            <td>
+              <pre><code [innerHTML]="option.example"></code></pre>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+} @else {
   <p>Try searching for something!</p>
-</ng-template>
+}
+
