@@ -1,7 +1,7 @@
 { ixxPkgs, lib, nuscht-search, pkgs }:
 
 rec {
-  mkOptionsJSON = pkgs.callPackage ({ modules, specialArgs, nixosOptionsDoc, overrideEvalModulesArgs }: (nixosOptionsDoc {
+  mkOptionsJSON = pkgs.callPackage ({ modules, specialArgs, nixosOptionsDoc, overrideEvalModulesArgs ? { } }: (nixosOptionsDoc {
     inherit ((lib.evalModules ({
       modules = modules ++ [
         ({ lib, ... }: {
