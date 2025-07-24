@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
-  workflow_dispatch:
 
 permissions:
   actions: read
@@ -20,6 +18,7 @@ concurrency:
 jobs:
   build:
     name: Build search
+    if: github.repository_owner == 'NuschtOS'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
