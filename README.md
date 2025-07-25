@@ -36,7 +36,7 @@ There are two functions exposeed to build the directory containing the static se
 ### Examples
 
 ```nix
-mkMultiSearch {4
+mkMultiSearch {
   baseHref = "/search/";
   title = "Custom Search";
   scopes = [ {
