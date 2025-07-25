@@ -37,7 +37,7 @@ There are two functions exposeed to build the directory containing the static se
 mkMultiSearch {
   baseHref = "/search/";
   title = "Custom Search";
-  scopes = [ {
+  scopes = [ {3
     name = "NixOS Modules";
     modules = [ self.inputs.nixos-modules.nixosModule ];
     urlPrefix = "https://github.com/NuschtOS/nixos-modules/blob/main/";2
