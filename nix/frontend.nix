@@ -1,4 +1,4 @@
-{ callPackage, callPackages, path, lib, stdenv, nodejs, baseHref ? "/", title ? "NuschtOS Search" }:
+{ callPackage, callPackages, path, lib, stdenv, nodejs, emptyDirectory, baseHref ? "/", title ? "NuschtOS Search", data ? emptyDirectory }:
 
 let
   manifest = lib.importJSON ../package.json;
@@ -21,19 +21,20 @@ stdenv.mkDerivation (finalAttrs: {
   inherit (manifest) version;
 
   src = lib.cleanSourceWith {
-    filter = name: type: ((!lib.hasSuffix ".nix" name) && (builtins.baseNameOf name) != "options.json" && (builtins.dirOf name) != "node_modules");
+    filter = name: _: ((!lib.hasSuffix ".nix" name) && (builtins.dirOf name) != "node_modules");
     src = lib.cleanSource ./..;
   };
 
   postPatch = ''
     substituteInPlace src/app/core/config.domain.ts src/index.html \
       --replace-fail '##TITLE##' ${lib.escapeShellArg title}
+    ln -s ${data}/{meta,index.ixx} public
   '';
 
   pnpmDeps = pnpm.fetchDeps {
     inherit (finalAttrs) pname version src;
     fetcherVersion = "2";
-    hash = "sha256-GXP46VvvUJHfOwszTDEf0trtz4sCNldb0jd/AE3+G30=";
+    hash = "sha256-0cP9A1hnFNzFPg7LTFk4GxhfaGsRO+1Opgx55E/RuyY=";
   };
 
   nativeBuildInputs = [ nodejs pnpm.configHook ];
@@ -50,6 +51,7 @@ stdenv.mkDerivation (finalAttrs: {
     runHook preInstall
     mkdir -p $out
     cp -rL ./dist/browser/* $out/
+    cp ./dist/3rdpartylicenses.txt $out
     runHook postInstall
   '';
 })
