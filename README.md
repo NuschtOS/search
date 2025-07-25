@@ -46,6 +46,12 @@ mkMultiSearch {
     optionsJSON = ./path/to/options.json;
     optionsPrefix = "programs.example";
     urlPrefix = "https://git.example.com/blob/main/";
+    specialArgs = {
+      custom = "foo";
+    };
+    overrideEvalModulesArgs = {
+      class = "nixos";
+    };
   } ];
 };
 ```
