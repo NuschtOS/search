@@ -28,6 +28,8 @@ There are two functions exposeed to build the directory containing the static se
 | `modules` | A list of NixOS modules as an attrset or file similar to the `nixosSystem` function. Exclusive with `optionsJSON`. |
 | `optionsJSON` | Path to a pre-generated `options.json` file. Exclusive with `modules`. |
 | `optionsPrefix` | A static prefix to append to all options. An extra `dot` is always appended. Defaults to being empty. |
+| `overrideEvalModulesArgs` | Allows overriding the arguments given to `lib.evalModules`. It can be used to eg. set the class of the module evaluation. |
+| `specialArgs` | works exactly like `specialArgs` in the module system. It allows adding extra arguments like `modulesPath`, `pkgs` or other variables. |
 | `urlPrefix` | The prefix which is prepended to the declaration link. This is usually a link to a git. |
 | `scopes` | is a list of attributes which each takes `name`, `modules`, `optionsJSON`, `optionsPrefix` or `urlPrefix` option. |
 
@@ -46,6 +48,12 @@ mkMultiSearch {
     optionsJSON = ./path/to/options.json;
     optionsPrefix = "programs.example";
     urlPrefix = "https://git.example.com/blob/main/";
+    specialArgs = {
+      custom = "foo";
+    };
+    overrideEvalModulesArgs = {
+      class = "nixos";
+    };
   } ];
 };
 ```

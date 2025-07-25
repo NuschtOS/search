@@ -1,8 +1,8 @@
 { ixxPkgs, lib, nuscht-search, pkgs }:
 
 rec {
-  mkOptionsJSON = pkgs.callPackage ({ modules, specialArgs, nixosOptionsDoc }: (nixosOptionsDoc {
-    inherit ((lib.evalModules {
+  mkOptionsJSON = pkgs.callPackage ({ modules, specialArgs, nixosOptionsDoc, overrideEvalModulesArgs ? { } }: (nixosOptionsDoc {
+    inherit ((lib.evalModules ({
       modules = modules ++ [
         ({ lib, ... }: {
           options._module.args = lib.mkOption {
@@ -12,7 +12,8 @@ rec {
         })
       ];
       inherit specialArgs;
-    })) options;
+    } // overrideEvalModulesArgs ))
+    ) options;
     warningsAreErrors = false;
   }).optionsJSON + /share/doc/nixos/options.json);
 
@@ -26,6 +27,7 @@ rec {
         optionsJson = scope.optionsJSON or (mkOptionsJSON {
           modules = scope.modules or (throw "A scope requires either optionsJSON or module!");
           specialArgs = scope.specialArgs or { };
+          overrideEvalModulesArgs = scope.overrideEvalModulesArgs or { };
         });
       }) scopes;
     in
