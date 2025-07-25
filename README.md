@@ -31,7 +31,7 @@ There are two functions exposeed to build the directory containing the static se
 | `urlPrefix` | The prefix which is prepended to the declaration link. This is usually a link to a git. |
 | `scopes` | is a list of attributes which each takes `name`, `modules`, `optionsJSON`, `optionsPrefix` or `urlPrefix` option. |
 
-### Examples
+### Examples5
 
 ```nix
 mkMultiSearch {4
