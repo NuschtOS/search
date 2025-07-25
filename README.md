@@ -43,7 +43,7 @@ mkMultiSearch {
     urlPrefix = "https://github.com/NuschtOS/nixos-modules/blob/main/";
   } {
     name = "Example Module";
-    optionsJSON = ./path/to/options.json;
+    optionsJSON = ./path/to/options.json;1
     optionsPrefix = "programs.example";
     urlPrefix = "https://git.example.com/blob/main/";
     specialArgs = {
