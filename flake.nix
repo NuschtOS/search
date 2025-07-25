@@ -6,7 +6,7 @@
     flake-utils.url = "github:numtide/flake-utils";
     ixx = {
       # match version with npm package
-      url = "github:NuschtOS/ixx/v0.0.8";
+      url = "github:NuschtOS/ixx/v0.1.0";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "flake-utils";
@@ -32,11 +32,22 @@
             ];
           };
 
-          packages = rec {
-            nuscht-search = pkgs.callPackage ./nix/frontend.nix { };
-            inherit (pkgs.callPackages ./nix/wrapper.nix { inherit ixxPkgs nuscht-search; }) mkOptionsJSON mkSearchJSON mkSearch mkMultiSearch;
-            default = nuscht-search;
-          };
+          packages =
+            let
+              nuscht-search-unwrapped = pkgs.callPackage ./nix/frontend.nix { };
+            in
+            rec {
+              inherit (pkgs.callPackages ./nix/wrapper.nix {
+                inherit ixxPkgs;
+                nuscht-search = nuscht-search-unwrapped;
+              }) mkOptionsJSON mkSearchJSON mkSearch mkMultiSearch;
+              nixpkgs-search = mkSearch {
+                optionsJSON = (import "${nixpkgs}/nixos/release.nix" { }).options + /share/doc/nixos/options.json;
+                name = "NixOS";
+                urlPrefix = "https://github.com/NixOS/nixpkgs/tree/master/";
+              };
+              default = nixpkgs-search;
+            };
         }
       );
 }
