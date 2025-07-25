@@ -28,22 +28,24 @@ There are two functions exposeed to build the directory containing the static se
 | `modules` | A list of NixOS modules as an attrset or file similar to the `nixosSystem` function. Exclusive with `optionsJSON`. |
 | `optionsJSON` | Path to a pre-generated `options.json` file. Exclusive with `modules`. |
 | `optionsPrefix` | A static prefix to append to all options. An extra `dot` is always appended. Defaults to being empty. |
+| `overrideEvalModulesArgs` | Allows overriding the arguments given to `lib.evalModules`. It can be used to eg. set the class of the module evaluation. |
+| `specialArgs` | works exactly like `specialArgs` in the module system. It allows adding extra arguments like `modulesPath`, `pkgs` or other variables. |
 | `urlPrefix` | The prefix which is prepended to the declaration link. This is usually a link to a git. |
 | `scopes` | is a list of attributes which each takes `name`, `modules`, `optionsJSON`, `optionsPrefix` or `urlPrefix` option. |
 
-### Examples5
+### Examples
 
 ```nix
 mkMultiSearch {4
   baseHref = "/search/";
   title = "Custom Search";
-  scopes = [ {3
+  scopes = [ {
     name = "NixOS Modules";
     modules = [ self.inputs.nixos-modules.nixosModule ];
-    urlPrefix = "https://github.com/NuschtOS/nixos-modules/blob/main/";2
+    urlPrefix = "https://github.com/NuschtOS/nixos-modules/blob/main/";
   } {
     name = "Example Module";
-    optionsJSON = ./path/to/options.json;1
+    optionsJSON = ./path/to/options.json;
     optionsPrefix = "programs.example";
     urlPrefix = "https://git.example.com/blob/main/";
     specialArgs = {
