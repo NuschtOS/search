@@ -40,7 +40,7 @@ mkMultiSearch {
   scopes = [ {
     name = "NixOS Modules";
     modules = [ self.inputs.nixos-modules.nixosModule ];
-    urlPrefix = "https://github.com/NuschtOS/nixos-modules/blob/main/";
+    urlPrefix = "https://github.com/NuschtOS/nixos-modules/blob/main/";2
   } {
     name = "Example Module";
     optionsJSON = ./path/to/options.json;1
