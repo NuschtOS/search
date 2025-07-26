@@ -2,10 +2,6 @@
 @include theme();
 @import "scss/kanagawa";
 
-* {
-  box-sizing: border-box;
-}
-
 pre {
   white-space: pre-wrap;
 }

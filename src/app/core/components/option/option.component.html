@@ -53,6 +53,12 @@
     </table>
   </div>
 } @else {
-  <p>Try searching for something!</p>
+  @if (loading | async) {
+    <div class="loading-wrapper">
+      <app-loading-indicator/>
+    </div>
+  } @else {
+    <p>Try searching for something!</p>
+  }
 }
 
