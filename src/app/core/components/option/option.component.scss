@@ -1,3 +1,8 @@
+:host {
+  // needed, that the loading wrapper takes the full width
+  width: 100%;
+}
+
 h2 code {
   font-size: unset;
   word-break: break-all;
@@ -10,4 +15,11 @@ td {
     text-align: right;
     font-weight: bold;
   }
+}
+
+.loading-wrapper {
+  width: 100%;
+  height: 20vh;
+  display: grid;
+  place-items: center;
 }
