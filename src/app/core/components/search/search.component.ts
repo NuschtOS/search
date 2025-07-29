@@ -6,16 +6,15 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DropdownComponent, TextFieldComponent } from "@feel/form";
 import { AsyncPipe } from '@angular/common';
 
-function getQuery(route: ActivatedRoute): { query: string | null, scope: string | null } {
-  const params = route.snapshot.queryParamMap;
+function getQuery(): { query: string | null, scope: string | null } {
+  const params = new URL(location.href).searchParams;
   const query = (params.get("query") ?? '').trim();
   const scope = (params.get("scope") ?? '').trim();
   return { query: query.length > 0 ? query : null, scope: scope.length > 0 ? scope : null };
 }
-
 /**
- * @see <https://stackoverflow.com/a/68703218>
- */
+  * @see <https://stackoverflow.com/a/68703218>
+  */
 function prefix(options: SearchedOption[]): string {
   // check border cases size 1 array and empty first word)
   if (!options[0] || options.length == 1) return options[0].name || "";
@@ -29,11 +28,11 @@ function prefix(options: SearchedOption[]): string {
 }
 
 @Component({
-  selector: 'app-search',
-  imports: [ReactiveFormsModule, TextFieldComponent, AsyncPipe, RouterLink, DropdownComponent],
-  templateUrl: './search.component.html',
-  styleUrl: './search.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-search',
+    imports: [ReactiveFormsModule, TextFieldComponent, AsyncPipe, RouterLink, DropdownComponent],
+    templateUrl: './search.component.html',
+    styleUrl: './search.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -44,7 +43,7 @@ export class SearchComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private readonly formValue = new Subject<{ query: string | null, scope: number | null }>();
 
-  protected readonly scopes;
+  protected readonly scopes = this.searchService.getScopes();
   protected readonly results = this.formValue.pipe(
     switchMap(formValue => this.searchService.search(
       formValue.scope === null ? undefined : formValue.scope,
@@ -65,7 +64,7 @@ export class SearchComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   );
 
-  protected readonly selectedOption;
+  protected readonly selectedOption = this.activatedRoute.queryParams.pipe(map(({ option_scope, option }) => ({ scope_id: Number(option_scope), name: option })));
   protected readonly maxSearchResults = MAX_SEARCH_RESULTS;
 
   private readonly destroy = new Subject<void>();
@@ -75,13 +74,6 @@ export class SearchComponent implements OnInit, AfterViewInit, OnDestroy {
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
   ) {
-    this.scopes = this.searchService.getScopes();
-    this.selectedOption = this.activatedRoute.queryParams.pipe(
-      map(({ option_scope, option }) => ({
-        scope_id: Number(option_scope),
-        name: option
-      }))
-    );
   }
 
   public ngOnInit(): void {
@@ -105,7 +97,7 @@ export class SearchComponent implements OnInit, AfterViewInit, OnDestroy {
           scope: form.scope === null ? null : scopes[form.scope]
         };
 
-        const urlValue = getQuery(this.activatedRoute);
+        const urlValue = getQuery();
         if (form !== urlValue) {
           this.router.navigate([], {
             queryParams: formValue,
@@ -116,7 +108,7 @@ export class SearchComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public ngAfterViewInit(): void {
-    const { query, scope } = getQuery(this.activatedRoute);
+    const { query, scope } = getQuery();
     this.scopes.pipe(takeUntil(this.destroy), filter(scopes => scopes.length > 0))
       .subscribe(scopes => {
         const idx = scopes.findIndex(s => s === scope);
