@@ -12,25 +12,24 @@ rec {
         })
       ];
       inherit specialArgs;
-    } // overrideEvalModulesArgs))) options;
+    } // overrideEvalModulesArgs ))
+    ) options;
     warningsAreErrors = false;
   }).optionsJSON + /share/doc/nixos/options.json);
 
   mkSearchData = pkgs.callPackage ({ scopes, runCommand }:
     let
-      config.scopes = map
-        (scope: {
-          inherit (scope) urlPrefix;
-        } // lib.optionalAttrs (scope?name) { inherit (scope) name; }
+      config.scopes = map (scope: {
+        inherit (scope) urlPrefix;
+      } // lib.optionalAttrs (scope?name) { inherit (scope) name; }
         // lib.optionalAttrs (scope?optionsPrefix) { inherit (scope) optionsPrefix; }
         // {
-          optionsJson = scope.optionsJSON or (mkOptionsJSON {
-            modules = scope.modules or (throw "A scope requires either optionsJSON or module!");
-            specialArgs = scope.specialArgs or { };
-            overrideEvalModulesArgs = scope.overrideEvalModulesArgs or { };
-          });
-        })
-        scopes;
+        optionsJson = scope.optionsJSON or (mkOptionsJSON {
+          modules = scope.modules or (throw "A scope requires either optionsJSON or module!");
+          specialArgs = scope.specialArgs or { };
+          overrideEvalModulesArgs = scope.overrideEvalModulesArgs or { };
+        });
+      }) scopes;
     in
     runCommand "search-meta"
       {
@@ -43,21 +42,24 @@ rec {
         ixx index \
           --index-output $out/index.ixx \
           --meta-output $out/meta \
-          --chunk-size 300 \
+          --chunk-size 500 \
           $configPath
       '');
 
   # also update README examples
-  mkMultiSearch = { scopes, baseHref ? "/", title ? "NüschtOS Search" }:
-    nuscht-search.override {
-      inherit baseHref title;
-      data = mkSearchData { inherit scopes; };
-    };
+  mkMultiSearch = pkgs.callPackage ({ scopes, baseHref ? "/", title ? "NüschtOS Search", runCommand, xorg }:
+    runCommand "nuscht-search" {
+      nativeBuildInputs = [ xorg.lndir ];
+    } ''
+      mkdir $out
+      lndir ${nuscht-search.override { inherit baseHref title; }} $out
+      ln -s ${mkSearchData { inherit scopes; }}/{meta,index.ixx} $out
+    '');
 
   # also update README examples
-  mkSearch = { baseHref ? "/", title ? "NüschtOS Search", ... }@args:
+  mkSearch = pkgs.callPackage ({ baseHref ? "/", title ? "NüschtOS Search", ... }@args:
     mkMultiSearch {
       inherit baseHref title;
       scopes = [ (lib.removeAttrs args [ "baseHref" "title" ]) ];
-    };
+    });
 }

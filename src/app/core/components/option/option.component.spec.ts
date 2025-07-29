@@ -10,7 +10,7 @@ describe('OptionComponent', () => {
     await TestBed.configureTestingModule({
       imports: [OptionComponent]
     })
-      .compileComponents();
+    .compileComponents();
 
     fixture = TestBed.createComponent(OptionComponent);
     component = fixture.componentInstance;

@@ -1,10 +1,6 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
-  "cli": {
-    "packageManager": "pnpm",
-    "analytics": false
-  },
   "newProjectRoot": "projects",
   "projects": {
     "nuscht-search": {
@@ -21,6 +17,8 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
+            "outputPath": "dist/nuscht-search",
+            "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
               "zone.js"
@@ -42,16 +40,12 @@
               "node_modules/@feel/style/main.scss",
               "src/styles.scss"
             ],
+            "scripts": [],
             "stylePreprocessorOptions": {
               "includePaths": [
                 "node_modules/@feel/style/global",
                 "src/scss/global"
               ]
-            },
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "ssr": {
-              "entry": "src/server.ts"
             }
           },
           "configurations": {
@@ -64,8 +58,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "2kB",
+                  "maximumError": "4kB"
                 }
               ],
               "outputHashing": "all"
@@ -117,6 +111,7 @@
               "node_modules/@feel/style/main.scss",
               "src/styles.scss"
             ],
+            "scripts": [],
             "stylePreprocessorOptions": {
               "includePaths": [
                 "node_modules/@feel/style/global",
@@ -126,6 +121,36 @@
           }
         }
       }
+    }
+  },
+  "cli": {
+    "analytics": false,
+    "packageManager": "pnpm"
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "type": "component"
+    },
+    "@schematics/angular:directive": {
+      "type": "directive"
+    },
+    "@schematics/angular:service": {
+      "type": "service"
+    },
+    "@schematics/angular:guard": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:interceptor": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:module": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:pipe": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:resolver": {
+      "typeSeparator": "."
     }
   }
 }
