@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import __wbg_init, { Index } from '@nuschtos/fixx';
-import { BehaviorSubject, Observable, from, map, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, forkJoin, from, map, Observable, of, switchMap, tap } from 'rxjs';
+import { LocationStrategy } from '@angular/common';
 
 export interface SearchedOption {
   idx: number;
@@ -31,11 +32,14 @@ export class SearchService {
   private readonly data = new BehaviorSubject<Record<number, Option[]>>({});
 
   constructor(
+    private locationStrategy: LocationStrategy,
     private readonly http: HttpClient,
   ) {
-    from(__wbg_init(`${document.getElementsByTagName('base')[0].href}fixx_bg.wasm`))
-      .pipe(switchMap(() => this.http.get(`${document.getElementsByTagName('base')[0].href}index.ixx`, { responseType: 'arraybuffer' })))
-      .subscribe(data => this.index.next(Index.read(new Uint8Array(data))));
+    forkJoin({
+      wasm: this.http.get(`${this.locationStrategy.getBaseHref()}fixx_bg.wasm`, { responseType: 'arraybuffer' }).pipe(switchMap(data => from(__wbg_init(data)))),
+      index: this.http.get(`${this.locationStrategy.getBaseHref()}index.ixx`, { responseType: 'arraybuffer' })
+    })
+      .subscribe(({ index }) => this.index.next(Index.read(new Uint8Array(index))));
   }
 
   public search(scope_id: number | undefined, query: string): Observable<SearchedOption[]> {
@@ -72,7 +76,7 @@ export class SearchService {
         let options = entries[chunk];
 
         if (typeof options === "undefined") {
-          return this.http.get<Option[]>(`${document.getElementsByTagName('base')[0].href}meta/${chunk}.json`)
+          return this.http.get<Option[]>(`${this.locationStrategy.getBaseHref()}meta/${chunk}.json`)
             .pipe(tap(options => {
               entries[chunk] = options;
               return this.data.next(entries);
