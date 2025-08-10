@@ -26,6 +26,7 @@
         {
           devShells.default = pkgs.mkShell {
             nativeBuildInputs = with pkgs; [
+              http-server
               nodejs
               pnpm
               ixxPkgs.ixx

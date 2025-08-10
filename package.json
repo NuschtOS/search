@@ -8,6 +8,7 @@
     "build:ci": "ng build --output-path ./dist",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "serve:result": "http-server ./result -p 4200 -c-1",
     "serve:ssr:nuscht-search": "node dist/nuscht-search/server/server.mjs"
   },
   "private": true,
