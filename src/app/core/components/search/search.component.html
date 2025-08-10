@@ -1,5 +1,5 @@
 <form [formGroup]="search">
-  <feel-text-field formControlName="query" label="Search" />
+  <feel-text-field formControlName="query" label="Search" [autofocus]="true" />
   @if ((scopes | async); as scopes) {
     @if (scopes.length > 1) {
       <feel-dropdown formControlName="scope" label="Scope">
