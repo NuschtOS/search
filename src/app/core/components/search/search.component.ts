@@ -121,7 +121,12 @@ export class SearchComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe(scopes => {
         const idx = scopes.findIndex(s => s === scope);
         this.search.setValue({ query, scope: idx.toString() })
-      })
+      });
+
+    // TODO: replace with angular directive or similar
+    if (typeof document !== "undefined") {
+      document.querySelector("a.active")?.scrollIntoView();
+    }
   }
 
   public ngOnDestroy(): void {
