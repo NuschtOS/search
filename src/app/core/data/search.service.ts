@@ -32,14 +32,23 @@ export class SearchService {
   private readonly data = new BehaviorSubject<Record<number, Option[]>>({});
 
   constructor(
-    private locationStrategy: LocationStrategy,
     private readonly http: HttpClient,
   ) {
     forkJoin({
-      wasm: this.http.get(`${this.locationStrategy.getBaseHref()}fixx_bg.wasm`, { responseType: 'arraybuffer' }).pipe(switchMap(data => from(__wbg_init(data)))),
-      index: this.http.get(`${this.locationStrategy.getBaseHref()}index.ixx`, { responseType: 'arraybuffer' })
+      wasm: this.http.get(`${this.getBaseHref()}fixx_bg.wasm`, { responseType: 'arraybuffer' }).pipe(switchMap(data => from(__wbg_init(data)))),
+      index: this.http.get(`${this.getBaseHref()}index.ixx`, { responseType: 'arraybuffer' })
     })
       .subscribe(({ index }) => this.index.next(Index.read(new Uint8Array(index))));
+  }
+
+
+  // NOTE: Can not use Angulars LocationStrategy, because its broken on SSR, because for some reason SSR does not respect base href's.
+  private getBaseHref(): string {
+    if (typeof document !== "undefined") {
+      return document.getElementsByTagName('base')[0].href;
+    } else {
+      return "/";
+    }
   }
 
   public search(scope_id: number | undefined, query: string): Observable<SearchedOption[]> {
@@ -76,7 +85,7 @@ export class SearchService {
         let options = entries[chunk];
 
         if (typeof options === "undefined") {
-          return this.http.get<Option[]>(`${this.locationStrategy.getBaseHref()}meta/${chunk}.json`)
+          return this.http.get<Option[]>(`${this.getBaseHref()}meta/${chunk}.json`)
             .pipe(tap(options => {
               entries[chunk] = options;
               return this.data.next(entries);
