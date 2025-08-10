@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { afterNextRender, AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable, Subject, combineLatest, debounceTime, filter, map, switchMap, takeUntil } from 'rxjs';
 import { MAX_SEARCH_RESULTS, SearchService, SearchedOption } from '../../data/search.service';
@@ -82,6 +82,16 @@ export class SearchComponent implements OnInit, AfterViewInit, OnDestroy {
         name: option
       }))
     );
+
+    afterNextRender(() => {
+      // HACK: setTimeout is needes because hydration? somehow updates the view
+      //       after the item was scrolled into view
+      setTimeout(() => {
+        const element = document.querySelector("a.active");
+        console.log(element);
+        element?.scrollIntoView({ behavior: "smooth" });
+      }, 300);
+    });
   }
 
   public ngOnInit(): void {
@@ -122,11 +132,6 @@ export class SearchComponent implements OnInit, AfterViewInit, OnDestroy {
         const idx = scopes.findIndex(s => s === scope);
         this.search.setValue({ query, scope: idx.toString() })
       });
-
-    // TODO: replace with angular directive or similar
-    if (typeof document !== "undefined") {
-      document.querySelector("a.active")?.scrollIntoView();
-    }
   }
 
   public ngOnDestroy(): void {
