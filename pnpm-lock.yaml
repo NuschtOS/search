@@ -45,8 +45,8 @@ importers:
         specifier: ^5.2.6
         version: 5.2.6
       '@nuschtos/fixx':
-        specifier: ^0.1.0
-        version: 0.1.0
+        specifier: ^0.1.1
+        version: 0.1.1
       express:
         specifier: ^5.1.0
         version: 5.1.0
@@ -950,8 +950,8 @@ packages:
     resolution: {integrity: sha512-aoNSbxtkePXUlbZB+anS1LqsJdctG5n3UVhfU47+CDdwMi6uNTBMF9gPcQRnqghQd2FGzcwwIFBruFMxjhBewg==}
     engines: {node: ^18.17.0 || >=20.5.0}
 
-  '@nuschtos/fixx@0.1.0':
-    resolution: {integrity: sha512-WqbKagMQ/y3GooxCxfL/ZvLEKq6wTI6oiUZzP6/RVpOD0LONpZ0Fb0M2b9r5tED0tqzaGIeAAkLkwfXtVoRUFA==}
+  '@nuschtos/fixx@0.1.1':
+    resolution: {integrity: sha512-cHfiabDtqVetPVwGRGfIy482YXdL0wqtjQUnyo0AHgYyQcYboAJFDI9UC8dp/pM4IE2K1AZkxr6V7EivpvSMSg==}
 
   '@parcel/watcher-android-arm64@2.5.1':
     resolution: {integrity: sha512-KF8+j9nNbUN8vzOFDpRMsaKBHZ/mcjEjMToVMJOhTozkDonQFFrRcfdLWn6yWKCmJKmdVxSgHiYvTCef4/qcBA==}
@@ -3744,7 +3744,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@nuschtos/fixx@0.1.0': {}
+  '@nuschtos/fixx@0.1.1': {}
 
   '@parcel/watcher-android-arm64@2.5.1':
     optional: true
