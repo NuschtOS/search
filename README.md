@@ -8,7 +8,6 @@ Simple and fast static-page NixOS option search
 - All flakes used at C3D2 <https://search.nixos.c3d2.de>
 - NixVim <https://nix-community.github.io/nixvim/search>
 - Nixidy <https://arnarg.github.io/nixidy/options/search>
-- catppuccin/nix <https://nix.catppuccin.com/search/index.html>
 
 ## Usage
 
