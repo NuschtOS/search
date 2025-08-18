@@ -39,9 +39,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   nativeBuildInputs = [ nodejs pnpm.configHook ];
 
-  passthru = {
-    inherit pnpm;
-  };
+  __darwinAllowLocalNetworking = true;
 
   buildPhase = ''
     pnpm run build:ci --base-href ${baseHref}
@@ -54,4 +52,8 @@ stdenv.mkDerivation (finalAttrs: {
     cp ./dist/3rdpartylicenses.txt $out
     runHook postInstall
   '';
+
+  passthru = {
+    inherit pnpm;
+  };
 })
