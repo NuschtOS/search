@@ -20,7 +20,7 @@
     "@angular/platform-browser": "^20.1.6",
     "@angular/platform-server": "^20.1.6",
     "@angular/router": "^20.1.6",
-    "@angular/ssr": "^20.1.5",
+    "@angular/ssr": "^20.3.0",
     "@feel/form": "^0.2.3",
     "@feel/style": "^0.2.3",
     "@fontsource/dm-mono": "^5.2.6",
