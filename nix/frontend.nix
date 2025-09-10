@@ -34,6 +34,7 @@ stdenv.mkDerivation (finalAttrs: {
   pnpmDeps = pnpm.fetchDeps {
     inherit (finalAttrs) pname version src;
     fetcherVersion = 2;
+    pnpmInstallFlags = [ "--package-import-method=hardlink" ]; # Fixes 
     hash = "sha256-Yj3y9veN3DpzjND1wr9dXilXAJfEHtCq8aQfeuRix0Y=";
   };
 
