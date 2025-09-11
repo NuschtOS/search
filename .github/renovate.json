@@ -28,7 +28,7 @@
     }
   ],
   "postUpgradeTasks": {
-    "commands": ["./nix/update-pnpm-hash.sh"],
+    "commands": ["bash ./nix/update-pnpm-hash.sh"],
     "executionMode": "branch",
     "fileFilters": ["nix/frontend.nix"]
   },
