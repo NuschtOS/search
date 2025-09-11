@@ -5,8 +5,8 @@ let
   # pin pnpm version to avoid hash mismatches with differing pnpm versions
   # on nixos stable and unstable
   pnpm' = callPackage (path + "/pkgs/development/tools/pnpm/generic.nix") {
-    version = "10.13.1";
-    hash = "sha256-D57UjYCJlq4AeDX7XEZBz5owDe8u3cnpV9m75HaMXyg=";
+    version = "10.15.0";
+    hash = "sha256-hMGeeI19fuJI5Ka3FS+Ou6D0/nOApfRDyhfXbAMAUtI=";
   };
   pnpm = pnpm' // {
     passthru = pnpm'.passthru // {
@@ -34,7 +34,7 @@ stdenv.mkDerivation (finalAttrs: {
   pnpmDeps = pnpm.fetchDeps {
     inherit (finalAttrs) pname version src;
     fetcherVersion = 2;
-    hash = "sha256-Yj3y9veN3DpzjND1wr9dXilXAJfEHtCq8aQfeuRix0Y=";
+    hash = "sha256-mxE+ptzSunn5w2sxaWhqfsTBnAHTe2a1VqrZzsLfNvk=";
   };
 
   nativeBuildInputs = [ nodejs pnpm.configHook ];
