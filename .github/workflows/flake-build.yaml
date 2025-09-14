@@ -21,7 +21,7 @@ jobs:
     runs-on: ${{ matrix.os }}-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       # NOTE: not using the nix-daemon causes different hashes in FOD
       # - name: Install Nix
