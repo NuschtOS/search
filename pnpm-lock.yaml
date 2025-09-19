@@ -40,10 +40,10 @@ importers:
         version: 0.2.3(@angular/common@20.3.1(@angular/core@20.3.1(@angular/compiler@20.3.1)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.3.1(@angular/compiler@20.3.1)(rxjs@7.8.2)(zone.js@0.15.1))
       '@fontsource/dm-mono':
         specifier: ^5.2.6
-        version: 5.2.6
+        version: 5.2.7
       '@fontsource/dm-sans':
         specifier: ^5.2.6
-        version: 5.2.7
+        version: 5.2.8
       '@nuschtos/fixx':
         specifier: ^0.1.1
         version: 0.1.1
@@ -584,11 +584,11 @@ packages:
       '@angular/common': ^20.0.0
       '@angular/core': ^20.0.0
 
-  '@fontsource/dm-mono@5.2.6':
-    resolution: {integrity: sha512-d38urf08wZ/UcAM13kmuPkhr9xGEo0S9undlZ/99nBb7dK5+w1uqriP6VVJ8T7pYiNtRtZq7NxV/2KI/6Obsog==}
+  '@fontsource/dm-mono@5.2.7':
+    resolution: {integrity: sha512-Ma1az2atTVgQWuOWwjuxx26p/6A6CU9HBNKq1CFV6YKpKhpswnf9ry9Ql4+T6bTZzkdtSfS6tjJvqZOljVzIFQ==}
 
-  '@fontsource/dm-sans@5.2.7':
-    resolution: {integrity: sha512-Sqkl2t9Z99NivygpGUO9i5bcAQ0WMUcO2c8yq19Q4Dxsz9xfHH36Hk4Rohx3VViaEHqFHZTp0KdmtwBVFz/Pig==}
+  '@fontsource/dm-sans@5.2.8':
+    resolution: {integrity: sha512-tlovG42m9ESG28WiHpLq3F5umAlm64rv0RkqTbYowRn70e9OlRr5a3yTJhrhrY+k5lftR/OFJjPzOLQzk8EfCA==}
 
   '@inquirer/ansi@1.0.0':
     resolution: {integrity: sha512-JWaTfCxI1eTmJ1BIv86vUfjVatOdxwD0DAVKYevY8SazeUUZtW+tNbsdejVO1GYE0GXJW1N1ahmiC3TFd+7wZA==}
@@ -3548,9 +3548,9 @@ snapshots:
       '@angular/core': 20.3.1(@angular/compiler@20.3.1)(rxjs@7.8.2)(zone.js@0.15.1)
       tslib: 2.8.1
 
-  '@fontsource/dm-mono@5.2.6': {}
+  '@fontsource/dm-mono@5.2.7': {}
 
-  '@fontsource/dm-sans@5.2.7': {}
+  '@fontsource/dm-sans@5.2.8': {}
 
   '@inquirer/ansi@1.0.0': {}
 
