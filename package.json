@@ -23,8 +23,8 @@
     "@angular/ssr": "^20.3.5",
     "@feel/form": "^0.2.3",
     "@feel/style": "^0.2.3",
-    "@fontsource/dm-mono": "^5.2.6",
-    "@fontsource/dm-sans": "^5.2.6",
+    "@fontsource/dm-mono": "^5.2.7",
+    "@fontsource/dm-sans": "^5.2.8",
     "@nuschtos/fixx": "^0.1.1",
     "express": "^5.1.0",
     "rxjs": "~7.8.2",
@@ -37,13 +37,13 @@
     "@angular/compiler-cli": "^20.3.4",
     "@types/express": "^5.0.3",
     "@types/jasmine": "~5.1.9",
-    "@types/node": "^22.18.1",
-    "jasmine-core": "~5.10.0",
+    "@types/node": "^22.18.10",
+    "jasmine-core": "~5.12.0",
     "karma": "~6.4.4",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.1",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.3"
   }
 }
