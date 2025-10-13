@@ -5,8 +5,8 @@ let
   # pin pnpm version to avoid hash mismatches with differing pnpm versions
   # on nixos stable and unstable
   pnpm' = callPackage (path + "/pkgs/development/tools/pnpm/generic.nix") {
-    version = "10.15.0";
-    hash = "sha256-hMGeeI19fuJI5Ka3FS+Ou6D0/nOApfRDyhfXbAMAUtI=";
+    version = "10.18.0";
+    hash = "sha256-OWej7+KQnfMF/sS4M6ME38oXw4C2u3dnL02sTyzdN4g=";
   };
   pnpm = pnpm' // {
     passthru = pnpm'.passthru // {
