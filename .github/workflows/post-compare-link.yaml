@@ -12,7 +12,7 @@ jobs:
   post-compare-link:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: NuschtOS/flake-lock-compare-action@main
