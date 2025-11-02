@@ -1,10 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
 import __wbg_init, { Index } from '@nuschtos/fixx';
 import { BehaviorSubject, forkJoin, from, map, Observable, of, switchMap, tap } from 'rxjs';
-import { LocationStrategy } from '@angular/common';
 
-export interface SearchedOption {
+export interface SearchedResult {
   idx: number;
   scope_id: number;
   name: string;
@@ -12,31 +10,18 @@ export interface SearchedOption {
 
 export const MAX_SEARCH_RESULTS = 500;
 
-// https://transform.tools/json-to-typescript
-export interface Option {
-  declarations: string[]
-  default?: string
-  description: string
-  example?: string
-  readOnly: boolean
-  type: string
-  name: string
-}
-
-@Injectable({
-  providedIn: 'root'
-})
-export class SearchService {
+export abstract class SearchService<T> {
 
   private readonly index = new BehaviorSubject<Index | null>(null);
-  private readonly data = new BehaviorSubject<Record<number, Option[]>>({});
+  private readonly data = new BehaviorSubject<Record<number, T[]>>({});
 
   constructor(
     private readonly http: HttpClient,
+    private readonly kind: string,
   ) {
     forkJoin({
       wasm: this.http.get(`${this.getBaseHref()}fixx_bg.wasm`, { responseType: 'arraybuffer' }).pipe(switchMap(data => from(__wbg_init(data)))),
-      index: this.http.get(`${this.getBaseHref()}index.ixx`, { responseType: 'arraybuffer' })
+      index: this.http.get(`${this.getBaseHref()}${this.kind}/index.ixx`, { responseType: 'arraybuffer' })
     })
       .subscribe(({ index }) => this.index.next(Index.read(new Uint8Array(index))));
   }
@@ -51,11 +36,11 @@ export class SearchService {
     }
   }
 
-  public search(scope_id: number | undefined, query: string): Observable<SearchedOption[]> {
+  public search(scope_id: number | undefined, query: string): Observable<SearchedResult[]> {
     return this.index.pipe(
       map(index => {
-        return index ? index.search(scope_id, query, MAX_SEARCH_RESULTS).map(option => {
-          const opt = ({ idx: option.idx(), scope_id: option.scope_id(), name: option.name() });
+        return index ? index.search(scope_id, query, MAX_SEARCH_RESULTS).map(entry => {
+          const opt = ({ idx: entry.idx(), scope_id: entry.scope_id(), name: entry.name() });
           //      option.free();
           return opt;
         }) : [];
@@ -63,7 +48,7 @@ export class SearchService {
     );
   }
 
-  public getByName(scope_id: number, name: string | undefined): Observable<Option | undefined> {
+  public getByName(scope_id: number, name: string | undefined): Observable<T | undefined> {
     if (typeof name === "undefined" || name.length == 0) {
       return of(undefined);
     }
@@ -76,7 +61,7 @@ export class SearchService {
     );
   }
 
-  private getByIdx(idx: number, chunk_size: number): Observable<Option | undefined> {
+  private getByIdx(idx: number, chunk_size: number): Observable<T | undefined> {
     const idx_in_chunk = idx % chunk_size;
     const chunk = (idx - idx_in_chunk) / chunk_size;
 
@@ -85,7 +70,7 @@ export class SearchService {
         let options = entries[chunk];
 
         if (typeof options === "undefined") {
-          return this.http.get<Option[]>(`${this.getBaseHref()}meta/${chunk}.json`)
+          return this.http.get<T[]>(`${this.getBaseHref()}${this.kind}/meta/${chunk}.json`)
             .pipe(tap(options => {
               entries[chunk] = options;
               return this.data.next(entries);

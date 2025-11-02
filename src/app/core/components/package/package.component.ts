@@ -1,29 +1,27 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { switchMap, map, merge, of, BehaviorSubject, tap } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
-import { SearchService } from '../../data/search.service';
+import { BehaviorSubject, map, merge, of, switchMap, tap } from 'rxjs';
+import { PackagesService } from '../../data/packages.service';
+import { AsyncPipe, JsonPipe } from '@angular/common';
 import { LoadingIndicatorComponent } from "../loading-indicator/loading-indicator.component";
-import { OptionsService } from '../../data/options.service';
 
 @Component({
-  selector: 'app-option',
-  imports: [AsyncPipe, RouterLink, LoadingIndicatorComponent],
-  templateUrl: './option.component.html',
-  styleUrl: './option.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-package',
+  imports: [AsyncPipe, RouterLink, LoadingIndicatorComponent, JsonPipe],
+  templateUrl: './package.component.html',
+  styleUrl: './package.component.scss'
 })
-export class OptionComponent {
+export class PackageComponent {
 
   protected readonly loading = new BehaviorSubject(false);
-  protected readonly option;
+  protected readonly package;
   protected readonly scope;
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
-    private readonly searchService: OptionsService,
+    private readonly searchService: PackagesService,
   ) {
-    this.option = this.activatedRoute.queryParams.pipe(
+    this.package = this.activatedRoute.queryParams.pipe(
       tap(() => this.loading.next(true)),
       switchMap(({ option_scope, option }) => merge(of(null), this.searchService.getByName(Number(option_scope), option))),
       tap(() => this.loading.next(false)),

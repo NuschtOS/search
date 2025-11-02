@@ -1,10 +1,12 @@
-import { afterNextRender, AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { afterNextRender, AfterViewInit, ChangeDetectionStrategy, Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable, Subject, combineLatest, debounceTime, filter, map, switchMap, takeUntil } from 'rxjs';
-import { MAX_SEARCH_RESULTS, SearchService, SearchedOption } from '../../data/search.service';
+import { MAX_SEARCH_RESULTS, SearchService, SearchedResult } from '../../data/search.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DropdownComponent, TextFieldComponent } from "@feel/form";
 import { AsyncPipe } from '@angular/common';
+import { Package } from '../../data/packages.service';
+import { Option } from '../../data/options.service';
 
 function getQuery(route: ActivatedRoute): { query: string | null, scope: string | null } {
   const params = route.snapshot.queryParamMap;
@@ -16,8 +18,8 @@ function getQuery(route: ActivatedRoute): { query: string | null, scope: string 
 /**
  * @see <https://stackoverflow.com/a/68703218>
  */
-function prefix(options: SearchedOption[]): string {
-  // check border cases size 1 array and empty first word)
+function prefix(options: SearchedResult[]): string {
+  // check border cases size 1 array and empty first word)    missing field `homepage` at line 62 column 3
   if (!options[0] || options.length == 1) return options[0].name || "";
   let i = 0;
   // while all words have the same character at position i, increment i
@@ -35,7 +37,7 @@ function prefix(options: SearchedOption[]): string {
   styleUrl: './search.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SearchComponent implements OnInit, AfterViewInit, OnDestroy {
+export class SearchComponent<T> implements OnInit, AfterViewInit, OnDestroy {
 
   protected readonly search = new FormGroup({
     query: new FormControl<string>(""),
@@ -44,7 +46,7 @@ export class SearchComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private readonly formValue = new Subject<{ query: string | null, scope: number | null }>();
 
-  protected readonly scopes;
+  protected scopes!: Observable<string[]>;
   protected readonly results = this.formValue.pipe(
     switchMap(formValue => this.searchService.search(
       formValue.scope === null ? undefined : formValue.scope,
@@ -70,12 +72,13 @@ export class SearchComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private readonly destroy = new Subject<void>();
 
+  @Input()
+  public searchService!: SearchService<T>;
+
   constructor(
-    private readonly searchService: SearchService,
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
   ) {
-    this.scopes = this.searchService.getScopes();
     this.selectedOption = this.activatedRoute.queryParams.pipe(
       map(({ option_scope, option }) => ({
         scope_id: Number(option_scope),
@@ -126,6 +129,8 @@ export class SearchComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public ngAfterViewInit(): void {
+    this.scopes = this.searchService.getScopes();
+
     const { query, scope } = getQuery(this.activatedRoute);
     this.scopes.pipe(takeUntil(this.destroy), filter(scopes => scopes.length > 0))
       .subscribe(scopes => {
@@ -139,11 +144,11 @@ export class SearchComponent implements OnInit, AfterViewInit, OnDestroy {
     this.destroy.complete();
   }
 
-  protected trackBy(_idx: number, option: SearchedOption): number {
+  protected trackBy(_idx: number, option: SearchedResult): number {
     return option.idx;
   }
 
-  protected isActive(opt: SearchedOption): Observable<boolean> {
+  protected isActive(opt: SearchedResult): Observable<boolean> {
     return this.selectedOption.pipe(map(option => option.scope_id === opt.scope_id && option.name === opt.name));
   }
 }

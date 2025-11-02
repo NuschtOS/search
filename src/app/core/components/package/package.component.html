@@ -1,0 +1,67 @@
+@if ((package | async); as package) {
+<div class="typography">
+  <h2><code>{{package.attr_name}}</code></h2>
+  <table>
+    <tbody>
+      @if ((scope | async); as scope) {
+      <tr>
+        <td>Scope</td>
+        <td><a [routerLink]="[]" [queryParams]="{scope}" queryParamsHandling="merge">{{scope}}</a></td>
+      </tr>
+      }
+      <tr>
+        <td>Description</td>
+        <td [innerHTML]="package.description"></td>
+      </tr>
+      <tr>
+        <td>Homepage</td>
+        <td>
+          @if (package.homepages.length > 1) {
+          <ul>
+            @for (homepage of package.homepages; track homepage) {
+            <li>
+              <a target="_blank" [href]="homepage">{{homepage}}</a>
+            </li>
+            }
+          </ul>
+          } @else {
+          <a target="_blank" [href]="package.homepages[0]">{{package.homepages[0]}}</a>
+          }
+        </td>
+      </tr>
+      <tr>
+      <td>Outputs</td>
+      <td>
+      @for (output of package.outputs; track output) {
+        <code>{{output}}</code>
+      }
+      </td>
+      </tr>
+      @if (package.pname != package.attr_name) {
+      <tr>
+        <td>Package Name</td>
+        <td>{{package.pname}}</td>
+      </tr>
+      }
+      <tr>
+        <td>Version</td>
+        <td>{{package.version}}</td>
+      </tr>
+      @if (`${package.pname}-${package.version}` != package.name) {
+      <tr>
+        <td>Name</td>
+        <td>{{package.name}}</td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
+} @else {
+@if (loading | async) {
+<div class="loading-wrapper">
+  <app-loading-indicator />
+</div>
+} @else {
+<p>Try searching for something!</p>
+}
+}

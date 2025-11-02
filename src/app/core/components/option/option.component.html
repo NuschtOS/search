@@ -33,6 +33,12 @@
           <td>Type</td>
           <td><code>{{option.type}}</code></td>
         </tr>
+        @if (option.read_only) {
+          <tr>
+            <td>Readonly</td>
+            <td><code>{{option.read_only}}</code></td>
+          </tr>
+        }
         @if (option.default) {
           <tr>
             <td>Default</td>
