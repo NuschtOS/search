@@ -25,12 +25,12 @@ export class OptionComponent {
   ) {
     this.option = this.activatedRoute.queryParams.pipe(
       tap(() => this.loading.next(true)),
-      switchMap(({ option_scope, option }) => merge(of(null), this.searchService.getByName(Number(option_scope), option))),
+      switchMap(({ scope_id, name }) => merge(of(null), this.searchService.getByName(Number(scope_id), name))),
       tap(() => this.loading.next(false)),
     );
 
     this.scope = this.activatedRoute.queryParams.pipe(
-      switchMap(({ option_scope }) => merge(of(null), this.searchService.getScopes().pipe(map(scopes => scopes[Number(option_scope)])))),
+      switchMap(({ scope_id }) => merge(of(null), this.searchService.getScopes().pipe(map(scopes => scopes[Number(scope_id)])))),
     );
   }
 }

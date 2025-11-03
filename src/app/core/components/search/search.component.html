@@ -17,11 +17,16 @@
 @if ((results | async); as options) {
   <div class="scroll">
     <ul>
-      @for (option of options; track option) {
+      @for (option of options; track option.idx) {
         <li>
-          <a [routerLink]="[]" [title]="option.name" [queryParams]="{option_scope: option.scope_id, option: option.name}" queryParamsHandling="merge"
-            [class.active]="isActive(option) | async">
-            <code>{{option.displayName}}</code>
+          <a
+            [routerLink]="[]"
+            [title]="option.name"
+            [queryParams]="{scope_id: option.scope_id, name: option.name}"
+            queryParamsHandling="merge"
+            [class.active]="isActive(option) | async"
+          >
+            <code>{{option.displayName ?? option.name}}</code>
           </a>
         </li>
       }
