@@ -23,8 +23,8 @@ rec {
           map extractLicense lic
         else if lib.isAttrs lic then
           lic.shortName or lic.fullName
-          # TODO: try to remove after https://github.com/NixOS/nixpkgs/pull/458238 and https://github.com/NixOS/nixpkgs/pull/458240 is merged
-          or lic.url
+            # TODO: try to remove after https://github.com/NixOS/nixpkgs/pull/458238 and https://github.com/NixOS/nixpkgs/pull/458240 is merged
+            or lic.url
         else if lib.isString lic then
           lic
         else
@@ -59,6 +59,8 @@ rec {
               || name == "haskellPackages"
               # as pythonPackahes inside
               || name == "mopidyPackages"
+              # infinite recursion
+              || name == "stdenv"
             then acc
             else
               let
