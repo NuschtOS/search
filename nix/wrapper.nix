@@ -19,7 +19,7 @@ rec {
   mkPackagesJSON =
     let
       mkPackage = attrName: derv:
-        { inherit attrName; inherit (derv) name; }
+        { attrName = builtins.concatStringsSep "." attrName; inherit (derv) name; }
         // lib.optionalAttrs (derv ? pname) { inherit (derv) pname; }
         # toString because of fetchpatch and fetchpatch2
         // lib.optionalAttrs (derv ? version) { version = toString derv.version; }
@@ -37,28 +37,37 @@ rec {
       mkPackageSet = attrPrefix: pkgs:
         lib.foldlAttrs
           (acc: name: value:
-            builtins.trace "${toString attrPrefix}.${name}" (
-              if name == "CuboCore" || name == "__splicedPackages" || name == "_cuda" || name == "_experimental-update-script-combinators" || name == "_internalCallByNamePackageFile"
+            builtins.trace (if attrPrefix == null then name else "${builtins.concatStringsSep "." attrPrefix}.${name}") (
+              if attrPrefix != null && builtins.elemAt attrPrefix (builtins.length attrPrefix - 1) == name || name == "__splicedPackages" || name == "buildPackages" || name == "lib" || name == "pkgs" || name == "tests" || name == "scope" || name == "nixosTests" || name == "vm-variant" || name == "bintoolsNoLibc"
+                # alias to pkgs in stable; throw in unusable
+                || name == "gitAndTools"
+                # uses to mouch ram
+                || name == "haskell"
+                || name == "haskellPackages"
+                # as pythonPackahes inside
+                || name == "mopidyPackages"
               then acc
               else
                 let
                   evalResult = builtins.tryEval value;
                   newName =
                     if attrPrefix == null
-                    then name
-                    else "${attrPrefix}.${name}";
+                    then [ name ]
+                    else attrPrefix ++ [ name ];
                 in
                 acc ++ (
                   if evalResult.success
                   then
-                    if evalResult.value ? name
-                    then [ (mkPackage newName evalResult.value) ]
+                    if !(builtins.isAttrs evalResult.value)
+                    then [ ]
                     else
-                      let
-                        evalResult = builtins.tryEval (mkPackageSet newName evalResult.value);
-                      in
-                      if evalResult.success then evalResult.value else [{ attrName = name; type = "pkgset"; evalError = true; }]
-                  else [{ attrName = name; evalError = true; }]
+                      if evalResult.value ? name
+                      then [ (mkPackage newName evalResult.value) ]
+                      else
+                        if evalResult.value ? AAAAAASomeThingsFailToEvaluate
+                        then [ ]
+                        else mkPackageSet newName evalResult.value
+                  else [{ attrName = builtins.concatStringsSep "." name; evalError = true; }]
                 )
             ))
           [ ]
