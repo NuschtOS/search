@@ -30,22 +30,20 @@ rec {
               if evalResult.success && evalResult.value ? name then
                 (
                   { inherit (evalResult.value) name; }
-                  // (if evalResult.value? pname then { inherit (evalResult.value) pname; } else { })
+                  // lib.optionalAttrs (evalResult.value? pname) { inherit (evalResult.value) pname; }
                   # toString because of fetchpatch and fetchpatch2
-                  // (if evalResult.value? version then { version = toString evalResult.value.version; } else { })
-                  // (if evalResult.value? outputs then { inherit (evalResult.value) outputs; } else { })
-                  // (if evalResult.value? meta then
+                  // lib.optionalAttrs (evalResult.value? version) { version = toString evalResult.value.version; }
+                  // lib.optionalAttrs (evalResult.value? outputs) { inherit (evalResult.value) outputs; }
+                  // lib.optionalAttrs (evalResult.value? meta)
                     (
-                      (if evalResult.value.meta? description then { inherit (evalResult.value.meta) description; } else { })
-                      // (if evalResult.value.meta?homepage then { inherit (evalResult.value.meta) homepage; } else { })
-                      // (if evalResult.value.meta?broken then { inherit (evalResult.value.meta) broken; } else { })
-                      // (if evalResult.value.meta?license then { inherit (evalResult.value.meta) license; } else { })
-                      // (if evalResult.value.meta?insecure then { inherit (evalResult.value.meta) insecure; } else { })
-                      // (if evalResult.value.meta?maintainers then { inherit (evalResult.value.meta) maintainers; } else { })
-                      // (if evalResult.value.meta?unfree then { inherit (evalResult.value.meta) unfree; } else { })
-
-
-                    ) else { })
+                      lib.optionalAttrs (evalResult.value.meta? description) { inherit (evalResult.value.meta) description; }
+                      // lib.optionalAttrs (evalResult.value.meta?homepage) { inherit (evalResult.value.meta) homepage; }
+                      // lib.optionalAttrs (evalResult.value.meta?broken) { inherit (evalResult.value.meta) broken; }
+                      // lib.optionalAttrs (evalResult.value.meta?license) { inherit (evalResult.value.meta) license; }
+                      // lib.optionalAttrs (evalResult.value.meta?insecure) { inherit (evalResult.value.meta) insecure; }
+                      // lib.optionalAttrs (evalResult.value.meta?maintainers) { inherit (evalResult.value.meta) maintainers; }
+                      // lib.optionalAttrs (evalResult.value.meta?unfree) { inherit (evalResult.value.meta) unfree; }
+                    )
                 )
               else { evalError = true; }
             )
