@@ -18,6 +18,15 @@ rec {
 
   mkPackagesJSON =
     let
+      extractLicense = lic: if lib.isList lic then
+        map extractLicense lic
+      else if lib.isAttrs lic then
+        lic.shortName or lic.fullName
+      else if lib.isString lic then
+        lic
+      else
+        throw "Don't know how to handle ${toString lic}";
+
       mkPackage = attrName: derv:
         { attrName = builtins.concatStringsSep "." attrName; inherit (derv) name; }
         // lib.optionalAttrs (derv ? pname) { inherit (derv) pname; }
@@ -29,11 +38,13 @@ rec {
             lib.optionalAttrs (derv.meta ? description) { inherit (derv.meta) description; }
             // lib.optionalAttrs (derv.meta ? homepage) { inherit (derv.meta) homepage; }
             // lib.optionalAttrs (derv.meta ? broken) { inherit (derv.meta) broken; }
-            // lib.optionalAttrs (derv.meta ? license) { inherit (derv.meta) license; }
+            // lib.optionalAttrs (derv.meta ? license) { licenses = [ (extractLicense derv.meta.license) ]; }
+            // lib.optionalAttrs (derv.meta ? licenses) { licenses = map extractLicense derv.meta.licenses; }
             // lib.optionalAttrs (derv.meta ? insecure) { inherit (derv.meta) insecure; }
             // lib.optionalAttrs (derv.meta ? maintainers) { inherit (derv.meta) maintainers; }
             // lib.optionalAttrs (derv.meta ? unfree) { inherit (derv.meta) unfree; }
           );
+
       mkPackageSet = attrPrefix: pkgs:
         lib.foldlAttrs
           (acc: name: value:
