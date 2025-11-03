@@ -67,7 +67,7 @@ rec {
                         if evalResult.value ? AAAAAASomeThingsFailToEvaluate
                         then [ ]
                         else mkPackageSet newName evalResult.value
-                  else [{ attrName = builtins.concatStringsSep "." name; evalError = true; }]
+                  else [{ attrName = builtins.concatStringsSep "." newName; evalError = true; }]
                 )
             ))
           [ ]
