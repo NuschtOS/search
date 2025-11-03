@@ -18,14 +18,15 @@ rec {
 
   mkPackagesJSON =
     let
-      extractLicense = lic: if lib.isList lic then
-        map extractLicense lic
-      else if lib.isAttrs lic then
-        lic.shortName or lic.fullName
-      else if lib.isString lic then
-        lic
-      else
-        throw "Don't know how to handle ${toString lic}";
+      extractLicense = lic:
+        if lib.isList lic then
+          map extractLicense lic
+        else if lib.isAttrs lic then
+          lic.shortName or lic.fullName
+        else if lib.isString lic then
+          lic
+        else
+          throw "Don't know how to handle ${toString lic}";
 
       mkPackage = attrName: derv:
         { attrName = builtins.concatStringsSep "." attrName; inherit (derv) name; }
@@ -48,48 +49,48 @@ rec {
       mkPackageSet = attrPrefix: pkgs:
         lib.foldlAttrs
           (acc: name: value:
-            builtins.trace (if attrPrefix == null then name else "${builtins.concatStringsSep "." attrPrefix}.${name}") (
-              if attrPrefix != null && builtins.elemAt attrPrefix (builtins.length attrPrefix - 1) == name || name == "__splicedPackages" || name == "buildPackages" || name == "lib" || name == "pkgs" || name == "tests" || name == "scope" || name == "nixosTests" || name == "vm-variant" || name == "bintoolsNoLibc"
-                # alias to pkgs in stable; throw in unusable
-                || name == "gitAndTools"
-                # uses to mouch ram
-                || name == "haskell"
-                || name == "haskellPackages"
-                # as pythonPackahes inside
-                || name == "mopidyPackages"
-              then acc
-              else
-                let
-                  evalResult = builtins.tryEval value;
-                  newName =
-                    if attrPrefix == null
-                    then [ name ]
-                    else attrPrefix ++ [ name ];
-                in
-                acc ++ (
-                  if evalResult.success
-                  then
-                    if !(builtins.isAttrs evalResult.value)
-                    then [ ]
+            if attrPrefix != null && builtins.elemAt attrPrefix (builtins.length attrPrefix - 1) == name || name == "__splicedPackages" || name == "buildPackages" || name == "lib" || name == "pkgs" || name == "tests" || name == "scope" || name == "nixosTests" || name == "vm-variant" || name == "bintoolsNoLibc"
+              # alias to pkgs in stable; throw in unusable
+              || name == "gitAndTools"
+              # uses to mouch ram
+              || name == "haskell"
+              || name == "haskellPackages"
+              # as pythonPackahes inside
+              || name == "mopidyPackages"
+            then acc
+            else
+              let
+                evalResult = builtins.tryEval value;
+                newName =
+                  if attrPrefix == null
+                  then [ name ]
+                  else attrPrefix ++ [ name ];
+              in
+              acc ++ (
+                if evalResult.success
+                then
+                  if !(builtins.isAttrs evalResult.value)
+                  then [ ]
+                  else
+                    if evalResult.value ? name
+                    then
+                      let
+                        pkg = mkPackage newName evalResult.value;
+                        pkgEvalResult = builtins.tryEval (builtins.deepSeq pkg pkg);
+                      in
+                      [
+                        (if pkgEvalResult.success then pkgEvalResult.value else {
+                          attrName = builtins.concatStringsSep "." newName;
+                          evalError = true;
+                        })
+                      ]
                     else
-                      if evalResult.value ? name
-                      then
-                        let
-                          pkgEvalResult = builtins.tryEval (mkPackage newName evalResult.value);
-                        in
-                        [
-                          (if pkgEvalResult.success then pkgEvalResult.value else {
-                            attrName = builtins.concatStringsSep "." newName;
-                            evalError = true;
-                          })
-                        ]
-                      else
-                        if evalResult.value ? AAAAAASomeThingsFailToEvaluate
-                        then [ ]
-                        else mkPackageSet newName evalResult.value
-                  else [{ attrName = builtins.concatStringsSep "." newName; evalError = true; }]
-                )
-            ))
+                      if evalResult.value ? AAAAAASomeThingsFailToEvaluate
+                      then [ ]
+                      else mkPackageSet newName evalResult.value
+                else [{ attrName = builtins.concatStringsSep "." newName; evalError = true; }]
+              )
+          )
           [ ]
           pkgs;
     in
