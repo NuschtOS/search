@@ -62,7 +62,16 @@ rec {
                     then [ ]
                     else
                       if evalResult.value ? name
-                      then [ (mkPackage newName evalResult.value) ]
+                      then
+                        let
+                          pkgEvalResult = builtins.tryEval (mkPackage newName evalResult.value);
+                        in
+                        [
+                          (if pkgEvalResult.success then pkgEvalResult.value else {
+                            attrName = builtins.concatStringsSep "." newName;
+                            evalError = true;
+                          })
+                        ]
                       else
                         if evalResult.value ? AAAAAASomeThingsFailToEvaluate
                         then [ ]
