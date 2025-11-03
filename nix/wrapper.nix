@@ -16,40 +16,57 @@ rec {
     warningsAreErrors = false;
   }).optionsJSON + /share/doc/nixos/options.json);
 
-  mkPackagesJSON = { name, pkgs }:
-    pkgs.writeText name (
-      builtins.toJSON (
-        lib.mapAttrsToList
-          (name: value:
-            let
-              evalResult = builtins.tryEval value;
-            in
-            {
-              attrName = name;
-            } // (
-              if evalResult.success && evalResult.value ? name then
-                (
-                  { inherit (evalResult.value) name; }
-                  // lib.optionalAttrs (evalResult.value? pname) { inherit (evalResult.value) pname; }
-                  # toString because of fetchpatch and fetchpatch2
-                  // lib.optionalAttrs (evalResult.value? version) { version = toString evalResult.value.version; }
-                  // lib.optionalAttrs (evalResult.value? outputs) { inherit (evalResult.value) outputs; }
-                  // lib.optionalAttrs (evalResult.value? meta)
-                    (
-                      lib.optionalAttrs (evalResult.value.meta? description) { inherit (evalResult.value.meta) description; }
-                      // lib.optionalAttrs (evalResult.value.meta?homepage) { inherit (evalResult.value.meta) homepage; }
-                      // lib.optionalAttrs (evalResult.value.meta?broken) { inherit (evalResult.value.meta) broken; }
-                      // lib.optionalAttrs (evalResult.value.meta?license) { inherit (evalResult.value.meta) license; }
-                      // lib.optionalAttrs (evalResult.value.meta?insecure) { inherit (evalResult.value.meta) insecure; }
-                      // lib.optionalAttrs (evalResult.value.meta?maintainers) { inherit (evalResult.value.meta) maintainers; }
-                      // lib.optionalAttrs (evalResult.value.meta?unfree) { inherit (evalResult.value.meta) unfree; }
-                    )
+  mkPackagesJSON =
+    let
+      mkPackage = attrName: derv:
+        { inherit attrName; inherit (derv) name; }
+        // lib.optionalAttrs (derv ? pname) { inherit (derv) pname; }
+        # toString because of fetchpatch and fetchpatch2
+        // lib.optionalAttrs (derv ? version) { version = toString derv.version; }
+        // lib.optionalAttrs (derv ? outputs) { inherit (derv) outputs; }
+        // lib.optionalAttrs (derv ? meta)
+          (
+            lib.optionalAttrs (derv.meta ? description) { inherit (derv.meta) description; }
+            // lib.optionalAttrs (derv.meta ? homepage) { inherit (derv.meta) homepage; }
+            // lib.optionalAttrs (derv.meta ? broken) { inherit (derv.meta) broken; }
+            // lib.optionalAttrs (derv.meta ? license) { inherit (derv.meta) license; }
+            // lib.optionalAttrs (derv.meta ? insecure) { inherit (derv.meta) insecure; }
+            // lib.optionalAttrs (derv.meta ? maintainers) { inherit (derv.meta) maintainers; }
+            // lib.optionalAttrs (derv.meta ? unfree) { inherit (derv.meta) unfree; }
+          );
+      mkPackageSet = attrPrefix: pkgs:
+        lib.foldlAttrs
+          (acc: name: value:
+            builtins.trace "${toString attrPrefix}.${name}" (
+              if name == "CuboCore" || name == "__splicedPackages" || name == "_cuda" || name == "_experimental-update-script-combinators" || name == "_internalCallByNamePackageFile"
+              then acc
+              else
+                let
+                  evalResult = builtins.tryEval value;
+                  newName =
+                    if attrPrefix == null
+                    then name
+                    else "${attrPrefix}.${name}";
+                in
+                acc ++ (
+                  if evalResult.success
+                  then
+                    if evalResult.value ? name
+                    then [ (mkPackage newName evalResult.value) ]
+                    else
+                      let
+                        evalResult = builtins.tryEval (mkPackageSet newName evalResult.value);
+                      in
+                      if evalResult.success then evalResult.value else [{ attrName = name; type = "pkgset"; evalError = true; }]
+                  else [{ attrName = name; evalError = true; }]
                 )
-              else { evalError = true; }
-            )
-          )
-          pkgs
-      )
+            ))
+          [ ]
+          pkgs;
+    in
+    { name, pkgs }:
+    pkgs.writeText name (
+      builtins.toJSON (mkPackageSet null pkgs)
     );
 
   mkSearchData = pkgs.callPackage ({ scopes, runCommand }:
