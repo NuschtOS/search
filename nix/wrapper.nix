@@ -60,7 +60,7 @@ rec {
 builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "." attrPrefix}.${name}" (
             if attrPrefix != [ ] && builtins.elemAt attrPrefix (builtins.length attrPrefix - 1) == name
               # TODO: go through this and sort and comment
-              || name == "scope" || name == "bintoolsNoLibc"
+              || name == "scope"
               # we are not noogle, yet
               || name == "lib"
               # TODO: list tests
