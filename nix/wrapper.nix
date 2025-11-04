@@ -85,12 +85,15 @@ builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "
               let
                 evalResult = builtins.tryEval value;
                 newName = attrPrefix ++ [ name ];
+                createEvalError = newName: {
+                  attrName = builtins.concatStringsSep "." newName;
+                  evalError = true;
+                };
               in
               acc ++ (
-                if evalResult.success
-                then
-                  if !(builtins.isAttrs evalResult.value)
-                  then [ ]
+                if evalResult.success then
+                  if !(builtins.isAttrs evalResult.value) then
+                    [ ]
                   else
                     # NOTE: running deepSeq on any derivation results in an infinite recursion due to stdenv.passthru generating a warning
                     if lib.isDerivation evalResult.value
@@ -101,16 +104,18 @@ builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "
                         pkgEvalResult = builtins.tryEval (builtins.deepSeq pkg pkg);
                       in
                       [
-                        (if pkgEvalResult.success then pkgEvalResult.value else {
-                          attrName = builtins.concatStringsSep "." newName;
-                          evalError = true;
-                        })
+                        (if pkgEvalResult.success then
+                          pkgEvalResult.value
+                        else
+                          createEvalError newName)
                       ]
                     else
+                      # Do not recurse more pkgs-like attrsets
                       if evalResult.value ? AAAAAASomeThingsFailToEvaluate
                       then [ ]
                       else mkPackageSet newName evalResult.value
-                else [{ attrName = builtins.concatStringsSep "." newName; evalError = true; }]
+                else
+                  createEvalError newName
               )
           ))
           [ ]
