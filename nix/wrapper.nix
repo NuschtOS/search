@@ -73,9 +73,6 @@ builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "
               || name == "haskellPackages"
               # as pythonPackahes inside
               || name == "mopidyPackages"
-              # infinite recursion with:
-              #  Use `stdenv.tests` instead. `passthru` is a `mkDerivation` detail.
-              || name == "rPackages"
             then acc
             else
               let
@@ -91,10 +88,12 @@ builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "
                   if !(builtins.isAttrs evalResult.value)
                   then [ ]
                   else
-                    if evalResult.value ? name
+                    # there is a package rPackages.name ...
+                    if evalResult.value ? name && builtins.isString evalResult.value.name
                     then
                       let
                         pkg = mkPackage newName evalResult.value;
+                        # NOTE: running deepSeq on any derivation results in an infinite recursion due to stdenv.passthru generating a warning
                         pkgEvalResult = builtins.tryEval (builtins.deepSeq pkg pkg);
                       in
                       [
