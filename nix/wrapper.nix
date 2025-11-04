@@ -60,13 +60,15 @@ rec {
 builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "." attrPrefix}.${name}" (
             if attrPrefix != [ ] && builtins.elemAt attrPrefix (builtins.length attrPrefix - 1) == name
               # TODO: go through this and sort and comment
-              || name == "scope" || name == "__functionArgs"
+              || name == "scope"
               # we are not noogle, yet
               || name == "lib"
               # TODO: list tests
               || name == "tests" || name == "nixosTests" || name == "vm-variant"
               # avoid infinite recursions when traversing package sets
               || name == "pkgs"
+              # override infrastructure
+              || name == "override" || name == "__functionArgs" || name == "__functor" || name == "overrideDerivation"
               # cross-compilation infrastructure
               || name == "__splicedPackages" || name == "buildPackages"
               # alias to pkgs in stable; throw in unusable
