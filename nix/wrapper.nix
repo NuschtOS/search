@@ -47,7 +47,9 @@ rec {
             // lib.optionalAttrs (derv.meta ? license) { licenses = [ (extractLicense derv.meta.license) ]; }
             // lib.optionalAttrs (derv.meta ? licenses) { licenses = map extractLicense derv.meta.licenses; }
             // lib.optionalAttrs (derv.meta ? insecure) { inherit (derv.meta) insecure; }
-            // lib.optionalAttrs (derv.meta ? maintainers) { inherit (derv.meta) maintainers; }
+            // lib.optionalAttrs (derv.meta ? maintainers) {
+              maintainers = map (m: m.githubId) (derv.meta.maintainers.members or derv.meta.maintainers);
+            }
             // lib.optionalAttrs (derv.meta ? unfree) { inherit (derv.meta) unfree; }
           );
 
