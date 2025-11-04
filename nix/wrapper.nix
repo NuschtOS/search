@@ -112,7 +112,7 @@ builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "
                   else
                     [ ]
                 else
-                  createEvalError newName
+                  [ createEvalError newName ]
               )
           ))
           [ ]
