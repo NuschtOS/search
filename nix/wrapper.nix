@@ -128,12 +128,13 @@ builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "
           inherit (scope) urlPrefix;
         } // lib.optionalAttrs (scope?name) { inherit (scope) name; }
         // lib.optionalAttrs (scope?optionsPrefix) { inherit (scope) optionsPrefix; }
-        // {
+        // lib.optionalAttrs (scope?optionsJSON || scope?modules) {
           optionsJson = scope.optionsJSON or (mkOptionsJSON {
             modules = scope.modules or (throw "A scope requires either optionsJSON or module!");
             specialArgs = scope.specialArgs or { };
             overrideEvalModulesArgs = scope.overrideEvalModulesArgs or { };
           });
+        } // lib.optionalAttrs (scope?pkgs) {
           packagesJson = mkPackagesJSON {
             name = "${scope.name}-packages.json";
             inherit (scope) pkgs;
