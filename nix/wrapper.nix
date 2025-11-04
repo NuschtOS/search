@@ -70,8 +70,9 @@ builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "
               || name == "haskellPackages"
               # as pythonPackahes inside
               || name == "mopidyPackages"
-              # infinite recursion
-              || name == "stdenv"
+              # infinite recursion with:
+              #  Use `stdenv.tests` instead. `passthru` is a `mkDerivation` detail.
+              || name == "rPackages"
             then acc
             else
               let
