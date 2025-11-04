@@ -92,9 +92,7 @@ builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "
               in
               acc ++ (
                 if evalResult.success then
-                  if !(builtins.isAttrs evalResult.value) then
-                    [ ]
-                  else
+                  if builtins.isAttrs evalResult.value then
                     # NOTE: running deepSeq on any derivation results in an infinite recursion due to stdenv.passthru generating a warning
                     if lib.isDerivation evalResult.value
                     then
@@ -113,6 +111,8 @@ builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "
                       if evalResult.value ? AAAAAASomeThingsFailToEvaluate
                       then [ ]
                       else mkPackageSet newName evalResult.value
+                  else
+                    [ ]
                 else
                   createEvalError newName
               )
