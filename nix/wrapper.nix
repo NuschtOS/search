@@ -98,13 +98,12 @@ builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "
                     # NOTE: running deepSeq on any derivation results in an infinite recursion due to stdenv.passthru generating a warning
                     if lib.isDerivation evalResult.value
                     then
-                      let
-                        pkg = mkPackage newName evalResult.value;
-                        # tryEval (deepSeq ...) makes sure we catch all potential throws in all attributes early on
-                        pkgEvalResult = builtins.tryEval (builtins.deepSeq pkg pkg);
-                      in
                       [
-                        (if pkgEvalResult.success then
+                        (let
+                          pkg = mkPackage newName evalResult.value;
+                          # tryEval (deepSeq ...) makes sure we catch all potential throws in all attributes early on
+                          pkgEvalResult = builtins.tryEval (builtins.deepSeq pkg pkg);
+                        in if pkgEvalResult.success then
                           pkgEvalResult.value
                         else
                           createEvalError newName)
