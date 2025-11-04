@@ -42,7 +42,10 @@ rec {
         // lib.optionalAttrs (derv ? meta)
           (
             lib.optionalAttrs (derv.meta ? description) { inherit (derv.meta) description; }
-            // lib.optionalAttrs (derv.meta ? homepage) { inherit (derv.meta) homepage; }
+            // lib.optionalAttrs (derv.meta ? homepage
+              # TODO: remove when https://github.com/NixOS/nixpkgs/pull/458597 is merged
+              && derv.meta.homepage != "")
+              { inherit (derv.meta) homepage; }
             // lib.optionalAttrs (derv.meta ? broken) { inherit (derv.meta) broken; }
             // lib.optionalAttrs (derv.meta ? license) { licenses = [ (extractLicense derv.meta.license) ]; }
             // lib.optionalAttrs (derv.meta ? licenses) { licenses = map extractLicense derv.meta.licenses; }
