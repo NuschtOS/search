@@ -103,7 +103,7 @@ builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "
                       if pkgEvalResult.success then
                         [ pkgEvalResult.value ]
                       else
-                        [ createEvalError newName ]
+                        [ (createEvalError newName) ]
                     else
                       # Do not recurse more pkgs-like attrsets
                       if evalResult.value ? AAAAAASomeThingsFailToEvaluate
@@ -112,16 +112,14 @@ builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "
                   else
                     [ ]
                 else
-                  [ createEvalError newName ]
+                  [ (createEvalError newName) ]
               )
           ))
           [ ]
           pkgs;
     in
     { name, pkgs }:
-    pkgs.writeText name (
-      builtins.toJSON (mkPackageSet [ ] pkgs)
-    );
+      pkgs.writers.writeJSON name (mkPackageSet [ ] pkgs);
 
   mkSearchData = pkgs.callPackage ({ scopes, runCommand }:
     let
