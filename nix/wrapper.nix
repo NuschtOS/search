@@ -88,12 +88,16 @@ builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "
                   if !(builtins.isAttrs evalResult.value)
                   then [ ]
                   else
-                    # there is a package rPackages.name ...
-                    if evalResult.value ? name && builtins.isString evalResult.value.name
+                    # NOTE: running deepSeq on any derivation results in an infinite recursion due to stdenv.passthru generating a warning
+                    # We cannot detect a package by just checking if it has the name attr as there is a package with the name name: rPackages.name ...
+                    let
+                      maybePkg = builtins.tryEval evalResult.value;
+                    in
+                    if evalResult.value ? name && maybePkg.success && builtins.isString maybePkg.value.name
                     then
                       let
                         pkg = mkPackage newName evalResult.value;
-                        # NOTE: running deepSeq on any derivation results in an infinite recursion due to stdenv.passthru generating a warning
+                        # tryEval (deepSeq ...) makes sure we catch all potential throws in all attributes early on
                         pkgEvalResult = builtins.tryEval (builtins.deepSeq pkg pkg);
                       in
                       [
