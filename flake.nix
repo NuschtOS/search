@@ -14,7 +14,7 @@
     };
   };
 
-  outputs = { nixpkgs, flake-utils, ixx, ... }:
+  outputs = { nixpkgs, flake-utils, ixx, self, ... }:
     flake-utils.lib.eachDefaultSystem
       (system:
         let
@@ -56,5 +56,5 @@
               default = nixpkgs-search;
             };
         }
-      );
+      ) // { inherit self; };
 }
