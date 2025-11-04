@@ -108,7 +108,7 @@ builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "
                       else mkPackageSet newName evalResult.value
                 else [{ attrName = builtins.concatStringsSep "." newName; evalError = true; }]
               )
-          )
+          ))
           [ ]
           pkgs;
     in
