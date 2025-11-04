@@ -51,10 +51,21 @@ rec {
       mkPackageSet = attrPrefix: pkgs:
         lib.foldlAttrs
           (acc: name: value:
-            if attrPrefix != null && builtins.elemAt attrPrefix (builtins.length attrPrefix - 1) == name || name == "__splicedPackages" || name == "buildPackages" || name == "lib" || name == "pkgs" || name == "tests" || name == "scope" || name == "nixosTests" || name == "vm-variant" || name == "bintoolsNoLibc"
+builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "." attrPrefix}.${name}" (
+            if attrPrefix != null && builtins.elemAt attrPrefix (builtins.length attrPrefix - 1) == name
+              # TODO: go through this and sort and comment
+              || name == "scope" || name == "bintoolsNoLibc"
+              # we are not noogle, yet
+              || name == "lib"
+              # TODO: list tests
+              || name == "tests" || name == "nixosTests" || name == "vm-variant"
+              # avoid infinite recursions when traversing package sets
+              || name == "pkgs"
+              # cross-compilation infrastructure
+              || name == "__splicedPackages" || name == "buildPackages"
               # alias to pkgs in stable; throw in unusable
               || name == "gitAndTools"
-              # uses to mouch ram
+              # uses to much ram
               || name == "haskell"
               || name == "haskellPackages"
               # as pythonPackahes inside
