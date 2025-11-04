@@ -93,9 +93,9 @@ builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "
                     # NOTE: running deepSeq on any derivation results in an infinite recursion due to stdenv.passthru generating a warning
                     # We cannot detect a package by just checking if it has the name attr as there is a package with the name name: rPackages.name ...
                     let
-                      maybePkg = builtins.tryEval evalResult.value;
+                      maybeName = builtins.tryEval evalResult.value.name;
                     in
-                    if evalResult.value ? name && maybePkg.success && builtins.isString maybePkg.value.name
+                    if evalResult.value ? name && maybeName.success && builtins.isString maybeName.value
                     then
                       let
                         pkg = mkPackage newName evalResult.value;
