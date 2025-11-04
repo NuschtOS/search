@@ -57,7 +57,7 @@ rec {
         lib.foldlAttrs
           (acc: name: value:
 builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "." attrPrefix}.${name}" (
-            if attrPrefix != null && builtins.elemAt attrPrefix (builtins.length attrPrefix - 1) == name
+            if attrPrefix != [ ] && builtins.elemAt attrPrefix (builtins.length attrPrefix - 1) == name
               # TODO: go through this and sort and comment
               || name == "scope" || name == "bintoolsNoLibc"
               # we are not noogle, yet
@@ -79,10 +79,7 @@ builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "
             else
               let
                 evalResult = builtins.tryEval value;
-                newName =
-                  if attrPrefix == null
-                  then [ name ]
-                  else attrPrefix ++ [ name ];
+                newName = attrPrefix ++ [ name ];
               in
               acc ++ (
                 if evalResult.success
@@ -116,7 +113,7 @@ builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "
     in
     { name, pkgs }:
     pkgs.writeText name (
-      builtins.toJSON (mkPackageSet null pkgs)
+      builtins.toJSON (mkPackageSet [ ] pkgs)
     );
 
   mkSearchData = pkgs.callPackage ({ scopes, runCommand }:
