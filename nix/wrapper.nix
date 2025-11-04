@@ -76,8 +76,8 @@ builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "
               # uses to much ram
               || name == "haskell"
               || name == "haskellPackages"
-              # don't recurse into pythonPackages a second time
-              || (attrPrefix == [ "mopidyPackages" ] && name == "pythonPackages")
+              # don't recurse into pythonPackages a nth time and just assume and attrPrefix ending in Packages (eg. python311Packages or mopidyPackages) is not what we want
+              || (attrPrefix != [ ] && lib.hasSuffix "Packages" (lib.head attrPrefix) && name == "pythonPackages")
             then acc
             else
               let
