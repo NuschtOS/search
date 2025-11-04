@@ -37,7 +37,7 @@ rec {
         }
         // lib.optionalAttrs (derv ? pname) { inherit (derv) pname; }
         # toString because of fetchpatch and fetchpatch2
-        // lib.optionalAttrs (derv ? version) { version = if builtins.isString derv.version then derv.version else toString derv.version; }
+        // lib.optionalAttrs (derv ? version) { version = toString derv.version; }
         // lib.optionalAttrs (derv ? outputs) { inherit (derv) outputs; }
         // lib.optionalAttrs (derv ? meta)
           (
