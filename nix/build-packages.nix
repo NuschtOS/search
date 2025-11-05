@@ -69,5 +69,5 @@ map
   else
     createEvalError attrName
   )
-  (import ./partition.nix)
+  (builtins.fromJSON (builtins.readFile ./partition.json))
 

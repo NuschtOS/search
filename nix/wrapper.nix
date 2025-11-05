@@ -105,12 +105,8 @@ rec {
           }
           ''
             cp ${./build-packages.nix} build-packages.nix
-            cp $partitionPath partition.nix
+            cp $partitionPath partition.json
             cp ${pkgs} pkgs.nix
-            echo ===
-            cat partition.nix
-            echo ===
-            ls -la
             NIX_STATE_DIR=$TMPDIR NIX_PATH= nix \
               --extra-experimental-features nix-command \
               eval \
