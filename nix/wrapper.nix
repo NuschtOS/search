@@ -104,9 +104,9 @@ rec {
             nativeBuildInputs = [ nixpkgsPkgs.nixVersions.nix_2_32 ];
           }
           ''
-            ln -s ${./build-packages.nix} build-packages.nix
-            ln -s $partitionPath partition.nix
-            ln -s ${pkgs} pkgs.nix
+            cp ${./build-packages.nix} build-packages.nix
+            cp $partitionPath partition.nix
+            cp ${pkgs} pkgs.nix
             echo ===
             cat partition.nix
             echo ===
