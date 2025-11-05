@@ -106,7 +106,7 @@ rec {
               --impure \
               --show-trace \
               --expr \
-              'import ./build-packages.nix { lib = import ${self.inputs.nixpkgs}; }' \
+              'import ./build-packages.nix { inherit (import ${self.inputs.nixpkgs} {}) lib; }' \
               > $out
           '')
       partedList;
