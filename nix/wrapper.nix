@@ -155,9 +155,7 @@ rec {
             if pkgEvalResult.success then
               pkgEvalResult.value
             else
-            # TODO: !!!
-            # createEvalError attrName;
-              "asdasdasd"
+              createEvalError attrName
           )
           attrNames)
       )
