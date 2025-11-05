@@ -135,9 +135,11 @@ rec {
     in
     { name, pkgs }:
     let
-      list = listPackages [ ] pkgs;
-
-      partedList = partitionPackageNames list;
+      partedList =
+        let
+          list = listPackages [ ] pkgs;
+        in
+        partitionPackageNames list;
     in
     lib.mapAttrsToList
       (part: attrNames:
