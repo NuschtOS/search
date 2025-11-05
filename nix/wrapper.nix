@@ -2,64 +2,53 @@
 
 let
   nixpkgsPkgs = pkgs;
+
+  shouldRemoved = attrPrefix: name: value:
+    attrPrefix != [ ]
+    && builtins.elemAt attrPrefix (builtins.length attrPrefix - 1) == name
+    # TODO: go through this and sort and comment
+    || name == "scope"
+    # TODO: list tests
+    || name == "tests" || name == "nixosTests" || name == "vm-variant"
+    # we are not noogle, yet
+    || name == "lib"
+    # formatter types
+    || name == "functor"
+    # avoid infinite recursions when traversing package sets
+    || name == "pkgs"
+    # override infrastructure
+    || name == "override" || name == "__functionArgs" || name == "__functor" || name == "overrideDerivation"
+    # cross-compilation infrastructure
+    || name == "__splicedPackages" || name == "buildPackages"
+    # alias to pkgs in stable; throw in unusable
+    || name == "gitAndTools"
+    # uses to much ram
+    || name == "haskell"
+    || name == "haskellPackages"
+    # don't recurse into pythonPackages a nth time and just assume and attrPrefix ending in Packages (eg. python311Packages or mopidyPackages) is not what we want
+    || (attrPrefix != [ ] && lib.hasSuffix "Packages" (lib.head attrPrefix) && name == "pythonPackages")
+    || !(builtins.isAttrs value);
+
   listPackages = attrPrefix: pkgs:
-    lib.foldlAttrs
-      (acc: name: value:
-        #builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "." attrPrefix}.${name}"
-        (
-          if attrPrefix != [ ] && builtins.elemAt attrPrefix (builtins.length attrPrefix - 1) == name
-            # TODO: go through this and sort and comment
-            || name == "scope"
-            # TODO: list tests
-            || name == "tests" || name == "nixosTests" || name == "vm-variant"
-            # we are not noogle, yet
-            || name == "lib"
-            # formatter types
-            || name == "functor"
-            # avoid infinite recursions when traversing package sets
-            || name == "pkgs"
-            # override infrastructure
-            || name == "override" || name == "__functionArgs" || name == "__functor" || name == "overrideDerivation"
-            # cross-compilation infrastructure
-            || name == "__splicedPackages" || name == "buildPackages"
-            # alias to pkgs in stable; throw in unusable
-            || name == "gitAndTools"
-            # uses to much ram
-            || name == "haskell"
-            || name == "haskellPackages"
-            # don't recurse into pythonPackages a nth time and just assume and attrPrefix ending in Packages (eg. python311Packages or mopidyPackages) is not what we want
-            || (attrPrefix != [ ] && lib.hasSuffix "Packages" (lib.head attrPrefix) && name == "pythonPackages")
-          then acc
-          else
-            acc ++ (
-              let
-                newName = attrPrefix ++ [ name ];
-                # in if lib.isDerivation value then
-                evalResult = builtins.tryEval (
-                  if builtins.isAttrs value
-                  then
-                    if lib.isDerivation value
-                    then [ newName ]
-                    else
-                    # We cannot handle other things like functions or plain values
-                    # Do not recurse more copies of pkgs multiple times
-                      if builtins.hasAttr "AAAAAASomeThingsFailToEvaluate" value
-                      then builtins.trace "Skipping copy of top-level pkgs: ${builtins.concatStringsSep "." newName}" [ ]
-                      else listPackages newName value
-                  else
-                    [ ]
-                );
-              in
-              if !evalResult.success then
-                builtins.trace "Failed to evaluate pkg: ${builtins.concatStringsSep "." newName}"
-                  # TODO: add eval Error to package list
-                  [ ]
-              else
-                evalResult.value
-            )
-        ))
-      [ ]
-      pkgs;
+    let
+      pkgsAndPkgSets = lib.filterAttrs (name: value: !(builtins.tryEval (shouldRemoved attrPrefix name value)).value) pkgs;
+      rawPkgNames = builtins.attrNames (lib.filterAttrs (_name: value: !(builtins.tryEval (!(lib.isDerivation value))).value) pkgsAndPkgSets);
+    in
+    (
+      let
+        finalPkgs = map (name: attrPrefix ++ [ name ]) rawPkgNames;
+      in
+      finalPkgs
+    ) ++ (
+      let
+        finalPkgs =
+          let
+            pkgSets = lib.filterAttrs (name: value: !(builtins.elem name rawPkgNames) && !(builtins.tryEval (builtins.hasAttr "AAAAAASomeThingsFailToEvaluate" value)).value) pkgsAndPkgSets;
+          in
+          lib.mapAttrs (name: value: listPackages (attrPrefix ++ [ name ]) value) pkgSets;
+      in
+      builtins.concatMap (x: x) (builtins.attrValues finalPkgs)
+    );
 
   partitionPackageNames = pkgNames:
     builtins.groupBy
@@ -68,7 +57,8 @@ let
         let
           last = builtins.head (lib.sublist (builtins.length name - 1) 1 name);
         in
-        builtins.substring 0 1 last)
+        builtins.substring 0 1 last
+      )
       pkgNames;
 in
 rec {
