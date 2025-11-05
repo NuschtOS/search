@@ -57,7 +57,12 @@ rec {
             // lib.optionalAttrs (derv.meta ? unfree) { inherit (derv.meta) unfree; }
           );
 
-      mkPackageSet = attrPrefix: pkgs:
+      createEvalError = newName: {
+        attrName = builtins.concatStringsSep "." newName;
+        evalError = true;
+      };
+
+      listPackages = attrPrefix: pkgs:
         lib.foldlAttrs
           (acc: name: value:
 builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "." attrPrefix}.${name}" (
@@ -85,44 +90,65 @@ builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "
               || (attrPrefix != [ ] && lib.hasSuffix "Packages" (lib.head attrPrefix) && name == "pythonPackages")
             then acc
             else
-              let
-                evalResult = builtins.tryEval value;
-                newName = attrPrefix ++ [ name ];
-                createEvalError = newName: {
-                  attrName = builtins.concatStringsSep "." newName;
-                  evalError = true;
-                };
-
-                pkg = mkPackage newName evalResult.value;
-                # tryEval (deepSeq ...) makes sure we catch all potential throws in all attributes early on
-                pkgEvalResult = builtins.tryEval (builtins.deepSeq pkg pkg);
-              in
               acc ++ (
-                if evalResult.success then
-                  if builtins.isAttrs evalResult.value then
-                    # NOTE: running deepSeq on any derivation results in an infinite recursion due to stdenv.passthru generating a warning
-                    if lib.isDerivation evalResult.value
-                    then
-                      if pkgEvalResult.success then
-                        [ pkgEvalResult.value ]
-                      else
-                        [ (createEvalError newName) ]
-                    else
-                      # Do not recurse more pkgs-like attrsets
-                      if evalResult.value ? AAAAAASomeThingsFailToEvaluate
-                      then [ ]
-                      else mkPackageSet newName evalResult.value
-                  else
+                let
+                  # NOTE: takes a shit ton of memory
+                  evalResult = (builtins.tryEval value).value;
+                  newName = attrPrefix ++ [ name ];
+                # in if lib.isDerivation value then
+                in if lib.isDerivation evalResult then
+                  [ newName ]
+                else if builtins.isAttrs evalResult then
+                  # Do not recurse more pkgs multiple times
+                  if builtins.hasAttr "AAAAAASomeThingsFailToEvaluate" evalResult then
                     [ ]
+                  else
+                    listPackages newName evalResult
                 else
-                  [ (createEvalError newName) ]
+                  # We cannot handle other things like functions or plain values
+                  [ ]
               )
           ))
           [ ]
           pkgs;
     in
     { name, pkgs }:
-      pkgs.writers.writeJSON name (mkPackageSet [ ] pkgs);
+      let
+        list = listPackages [ ] pkgs;
+
+        partedList = builtins.groupBy (el: let
+          # TODO: inline???
+          partString = if builtins.isList el then
+            builtins.elemAt el 0
+          else
+            throw "Do not know what to do with: ${el}";
+        in
+          # TODO: partition python3XX
+          lib.toLower (builtins.substring 0 1 partString)) list;
+
+        jsonParts = lib.mapAttrsToList (part: attrNames:
+          pkgs.writers.writeJSON "${name}-${part}" (map (attrName:
+          let
+            derv = lib.getAttrFromPath attrName pkgs;
+            pkg = mkPackage attrName derv;
+            # tryEval (deepSeq ...) makes sure we catch all potential throws in all attributes early on
+            # NOTE: running deepSeq on any derivation results in an infinite recursion due to stdenv.passthru generating a warning
+            pkgEvalResult = builtins.tryEval (builtins.deepSeq pkg pkg);
+          in
+            if pkgEvalResult.success then
+              pkgEvalResult.value
+            else
+              # TODO: !!!
+              # createEvalError attrName;
+              "asdasdasd"
+          ) attrNames)
+        ) partedList;
+        in pkgs.runCommand name { } (''
+          mkdir $out
+        ''
+        + lib.concatMapStringsSep " " (p: let
+          partName = lib.concatStringsSep "-" (lib.drop 1 (lib.splitString "-" p));
+        in "cp ${p} $out/${partName}\n") jsonParts);
 
   mkSearchData = pkgs.callPackage ({ scopes, runCommand }:
     let
