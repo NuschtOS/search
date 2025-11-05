@@ -16,7 +16,7 @@ rec {
     warningsAreErrors = false;
   }).optionsJSON + /share/doc/nixos/options.json);
 
-  mkPackagesJSON =
+  mkPackagesJSONs =
     let
       extractLicense = lic:
         if lib.isList lic then
@@ -136,40 +136,28 @@ rec {
       list = listPackages [ ] pkgs;
 
       partedList = partitionPackageNames list;
-
-      jsonParts = lib.mapAttrsToList
-        (part: attrNames:
-          pkgs.writers.writeJSON "${name}-${part}" (map
-            (attrName:
-              let
-                derv = lib.getAttrFromPath attrName pkgs;
-                pkg = mkPackage attrName derv;
-                # tryEval (deepSeq ...) makes sure we catch all potential throws in all attributes early on
-                # NOTE: running deepSeq on any derivation results in an infinite recursion due to stdenv.passthru generating a warning
-                pkgEvalResult = builtins.tryEval (builtins.deepSeq pkg pkg);
-              in
-              if pkgEvalResult.success then
-                pkgEvalResult.value
-              else
-              # TODO: !!!
-              # createEvalError attrName;
-                "asdasdasd"
-            )
-            attrNames)
-        )
-        partedList;
-
     in
-    pkgs.runCommand name { } (''
-      mkdir $out
-    ''
-    + lib.concatMapStringsSep " "
-      (p:
-        let
-          partName = lib.concatStringsSep "-" (lib.drop 1 (lib.splitString "-" p));
-        in
-        "cp ${p} $out/${partName}\n")
-      jsonParts);
+    lib.mapAttrsToList
+      (part: attrNames:
+        pkgs.writers.writeJSON "${name}-${part}" (map
+          (attrName:
+            let
+              derv = lib.getAttrFromPath attrName pkgs;
+              pkg = mkPackage attrName derv;
+              # tryEval (deepSeq ...) makes sure we catch all potential throws in all attributes early on
+              # NOTE: running deepSeq on any derivation results in an infinite recursion due to stdenv.passthru generating a warning
+              pkgEvalResult = builtins.tryEval (builtins.deepSeq pkg pkg);
+            in
+            if pkgEvalResult.success then
+              pkgEvalResult.value
+            else
+            # TODO: !!!
+            # createEvalError attrName;
+              "asdasdasd"
+          )
+          attrNames)
+      )
+      partedList;
 
   mkSearchData = pkgs.callPackage ({ scopes, runCommand }:
     let
@@ -185,7 +173,7 @@ rec {
             overrideEvalModulesArgs = scope.overrideEvalModulesArgs or { };
           });
         } // lib.optionalAttrs (scope?pkgs) {
-          packagesJson = mkPackagesJSON {
+          packagesJsons = mkPackagesJSONs {
             name = "${scope.name}-packages.json";
             inherit (scope) pkgs;
           };
