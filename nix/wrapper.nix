@@ -94,27 +94,29 @@ rec {
               else
                 acc ++ (
                   let
-                    evalResult = builtins.tryEval value;
                     newName = attrPrefix ++ [ name ];
                     # in if lib.isDerivation value then
+                    evalResult = builtins.tryEval (
+                      if lib.isDerivation value
+                      then [ newName ]
+                      else
+                      # We cannot handle other things like functions or plain values
+                        if builtins.isAttrs value
+                        then
+                        # Do not recurse more copies of pkgs multiple times
+                          if builtins.hasAttr "AAAAAASomeThingsFailToEvaluate" value
+                          then builtins.trace "Skipping copy of top-level pkgs: ${builtins.concatStringsSep "." newName}" [ ]
+                          else listPackages newName value
+                        else
+                          builtins.trace "Pkg is not an attr?!: ${builtins.concatStringsSep "." newName}" [ ]
+                    );
                   in
                   if !evalResult.success then
                     builtins.trace "Failed to evaluate pkg: ${builtins.concatStringsSep "." newName}"
                       # TODO: add eval Error to package list
                       [ ]
-                  else if lib.isDerivation evalResult.value then
-                    [ newName ]
-                  else if builtins.isAttrs evalResult.value then
-                  # Do not recurse more copies of pkgs multiple times
-                    if builtins.hasAttr "AAAAAASomeThingsFailToEvaluate" evalResult.value then
-                      builtins.trace "Skipping copy of top-level pkgs: ${builtins.concatStringsSep "." newName}"
-                        [ ]
-                    else
-                      listPackages newName evalResult.value
                   else
-                    builtins.trace "Pkg is not an attr?!: ${builtins.concatStringsSep "." newName}"
-                      # We cannot handle other things like functions or plain values
-                      [ ]
+                    evalResult.value
                 )
             ))
           [ ]
