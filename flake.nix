@@ -2,7 +2,7 @@
   description = "Simple and fast static-page NixOS option search";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/cebe312dcfefde35f93532584701cc5fa9c1f236";
     flake-utils.url = "github:numtide/flake-utils";
     ixx = {
       # match version with npm package
