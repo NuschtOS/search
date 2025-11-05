@@ -92,18 +92,16 @@ builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "
             else
               acc ++ (
                 let
-                  # NOTE: takes a shit ton of memory
-                  evalResult = (builtins.tryEval value).value;
                   newName = attrPrefix ++ [ name ];
                 # in if lib.isDerivation value then
-                in if lib.isDerivation evalResult then
+                in if lib.isDerivation value then
                   [ newName ]
-                else if builtins.isAttrs evalResult then
-                  # Do not recurse more pkgs multiple times
-                  if builtins.hasAttr "AAAAAASomeThingsFailToEvaluate" evalResult then
+                else if builtins.isAttrs value then
+                  # Do not recurse more copies of pkgs multiple times
+                  if builtins.hasAttr "AAAAAASomeThingsFailToEvaluate" value then
                     [ ]
                   else
-                    listPackages newName evalResult
+                    listPackages newName value
                 else
                   # We cannot handle other things like functions or plain values
                   [ ]
@@ -111,20 +109,19 @@ builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "
           ))
           [ ]
           pkgs;
+
+          partitionPackageNames = pkgNames:
+            builtins.groupBy
+                # TODO: partition python3XX
+              (name: builtins.substring 0 1 (builtins.head name))
+              pkgNames;
+
     in
     { name, pkgs }:
       let
         list = listPackages [ ] pkgs;
 
-        partedList = builtins.groupBy (el: let
-          # TODO: inline???
-          partString = if builtins.isList el then
-            builtins.elemAt el 0
-          else
-            throw "Do not know what to do with: ${el}";
-        in
-          # TODO: partition python3XX
-          lib.toLower (builtins.substring 0 1 partString)) list;
+        partedList = partitionPackageNames list;
 
         jsonParts = lib.mapAttrsToList (part: attrNames:
           pkgs.writers.writeJSON "${name}-${part}" (map (attrName:
@@ -143,6 +140,7 @@ builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "
               "asdasdasd"
           ) attrNames)
         ) partedList;
+
         in pkgs.runCommand name { } (''
           mkdir $out
         ''
