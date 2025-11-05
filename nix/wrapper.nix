@@ -127,7 +127,7 @@ rec {
           # TODO: partition python3XX
           (name:
             let
-              last = lib.sublist (builtins.length name - 1) 1 name;
+              last = builtins.head (lib.sublist (builtins.length name - 1) 1 name);
             in
             builtins.substring 0 2 last)
           pkgNames;
