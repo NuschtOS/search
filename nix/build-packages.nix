@@ -21,6 +21,7 @@ let
       throw "Don't know how to handle ${toString lic}";
 
   mkPackage = attrName: derv:
+  builtins.trace "${builtins.concatStringsSep "." attrName} ${derv.name}"
     {
       attrName = builtins.concatStringsSep "." attrName;
       inherit (derv) name;
