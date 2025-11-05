@@ -20,13 +20,20 @@ rec {
     let
       extractLicense = lic:
         if lib.isList lic then
-          map extractLicense lic
+          builtins.foldl'
+            (acc: curr: acc ++ (extractLicense curr))
+            [ ]
+            lic
         else if lib.isAttrs lic then
-          lic.shortName or lic.fullName
-            # TODO: try to remove after https://github.com/NixOS/nixpkgs/pull/458238 and https://github.com/NixOS/nixpkgs/pull/458240 is merged
-            or lic.url
+          [
+            (
+              lic.shortName or lic.fullName
+                # TODO: try to remove after https://github.com/NixOS/nixpkgs/pull/458238 and https://github.com/NixOS/nixpkgs/pull/458240 is merged
+                or lic.url
+            )
+          ]
         else if lib.isString lic then
-          lic
+          [ lic ]
         else
           throw "Don't know how to handle ${toString lic}";
 
@@ -48,8 +55,8 @@ rec {
               && derv.meta.homepage != "")
               { inherit (derv.meta) homepage; }
             // lib.optionalAttrs (derv.meta ? broken) { inherit (derv.meta) broken; }
-            // lib.optionalAttrs (derv.meta ? license) { licenses = [ (extractLicense derv.meta.license) ]; }
-            // lib.optionalAttrs (derv.meta ? licenses) { licenses = map extractLicense derv.meta.licenses; }
+            // lib.optionalAttrs (derv.meta ? license) { licenses = extractLicense derv.meta.license; }
+            // lib.optionalAttrs (derv.meta ? licenses) { licenses = extractLicense derv.meta.licenses; }
             // lib.optionalAttrs (derv.meta ? insecure) { inherit (derv.meta) insecure; }
             // lib.optionalAttrs (derv.meta ? maintainerIDs) {
               # NOTE: meta.teams is already contained in meta.maintainers
@@ -97,18 +104,18 @@ rec {
                     newName = attrPrefix ++ [ name ];
                     # in if lib.isDerivation value then
                     evalResult = builtins.tryEval (
-                      if lib.isDerivation value
-                      then [ newName ]
-                      else
-                      # We cannot handle other things like functions or plain values
-                        if builtins.isAttrs value
-                        then
+                      if builtins.isAttrs value
+                      then
+                        if lib.isDerivation value
+                        then [ newName ]
+                        else
+                        # We cannot handle other things like functions or plain values
                         # Do not recurse more copies of pkgs multiple times
                           if builtins.hasAttr "AAAAAASomeThingsFailToEvaluate" value
                           then builtins.trace "Skipping copy of top-level pkgs: ${builtins.concatStringsSep "." newName}" [ ]
                           else listPackages newName value
-                        else
-                          builtins.trace "Pkg is not an attr?!: ${builtins.concatStringsSep "." newName}" [ ]
+                      else
+                        [ ]
                     );
                   in
                   if !evalResult.success then
