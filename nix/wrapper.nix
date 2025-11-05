@@ -42,7 +42,8 @@ rec {
         // lib.optionalAttrs (derv ? meta)
           (
             lib.optionalAttrs (derv.meta ? description) { inherit (derv.meta) description; }
-            // lib.optionalAttrs (derv.meta ? homepage
+            // lib.optionalAttrs
+              (derv.meta ? homepage
               # TODO: remove when https://github.com/NixOS/nixpkgs/pull/458597 is merged
               && derv.meta.homepage != "")
               { inherit (derv.meta) homepage; }
@@ -65,96 +66,106 @@ rec {
       listPackages = attrPrefix: pkgs:
         lib.foldlAttrs
           (acc: name: value:
-#builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "." attrPrefix}.${name}"
-          (
-            if attrPrefix != [ ] && builtins.elemAt attrPrefix (builtins.length attrPrefix - 1) == name
-              # TODO: go through this and sort and comment
-              || name == "scope"
-              # TODO: list tests
-              || name == "tests" || name == "nixosTests" || name == "vm-variant"
-              # we are not noogle, yet
-              || name == "lib"
-              # formatter types
-              || name == "functor"
-              # avoid infinite recursions when traversing package sets
-              || name == "pkgs"
-              # override infrastructure
-              || name == "override" || name == "__functionArgs" || name == "__functor" || name == "overrideDerivation"
-              # cross-compilation infrastructure
-              || name == "__splicedPackages" || name == "buildPackages"
-              # alias to pkgs in stable; throw in unusable
-              || name == "gitAndTools"
-              # uses to much ram
-              || name == "haskell"
-              || name == "haskellPackages"
-              # don't recurse into pythonPackages a nth time and just assume and attrPrefix ending in Packages (eg. python311Packages or mopidyPackages) is not what we want
-              || (attrPrefix != [ ] && lib.hasSuffix "Packages" (lib.head attrPrefix) && name == "pythonPackages")
-            then acc
-            else
-              acc ++ (
-                let
-                  evalResult = builtins.tryEval value;
-                  newName = attrPrefix ++ [ name ];
-                # in if lib.isDerivation value then
-                in  if !evalResult.success then
-                  builtins.trace "Failed to evaluate pkg: ${builtins.concatStringsSep "." newName}"
-                  # TODO: add eval Error to package list
-                  []
-                else if lib.isDerivation evalResult.value then
-                  [ newName ]
-                else if builtins.isAttrs evalResult.value then
+            #builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "." attrPrefix}.${name}"
+            (
+              if attrPrefix != [ ] && builtins.elemAt attrPrefix (builtins.length attrPrefix - 1) == name
+                # TODO: go through this and sort and comment
+                || name == "scope"
+                # TODO: list tests
+                || name == "tests" || name == "nixosTests" || name == "vm-variant"
+                # we are not noogle, yet
+                || name == "lib"
+                # formatter types
+                || name == "functor"
+                # avoid infinite recursions when traversing package sets
+                || name == "pkgs"
+                # override infrastructure
+                || name == "override" || name == "__functionArgs" || name == "__functor" || name == "overrideDerivation"
+                # cross-compilation infrastructure
+                || name == "__splicedPackages" || name == "buildPackages"
+                # alias to pkgs in stable; throw in unusable
+                || name == "gitAndTools"
+                # uses to much ram
+                || name == "haskell"
+                || name == "haskellPackages"
+                # don't recurse into pythonPackages a nth time and just assume and attrPrefix ending in Packages (eg. python311Packages or mopidyPackages) is not what we want
+                || (attrPrefix != [ ] && lib.hasSuffix "Packages" (lib.head attrPrefix) && name == "pythonPackages")
+              then acc
+              else
+                acc ++ (
+                  let
+                    evalResult = builtins.tryEval value;
+                    newName = attrPrefix ++ [ name ];
+                    # in if lib.isDerivation value then
+                  in
+                  if !evalResult.success then
+                    builtins.trace "Failed to evaluate pkg: ${builtins.concatStringsSep "." newName}"
+                      # TODO: add eval Error to package list
+                      [ ]
+                  else if lib.isDerivation evalResult.value then
+                    [ newName ]
+                  else if builtins.isAttrs evalResult.value then
                   # Do not recurse more copies of pkgs multiple times
-                  if builtins.hasAttr "AAAAAASomeThingsFailToEvaluate" evalResult.value then
-                    builtins.trace "Skipping copy of top-level pkgs: ${builtins.concatStringsSep "." newName}"
-                    [ ]
+                    if builtins.hasAttr "AAAAAASomeThingsFailToEvaluate" evalResult.value then
+                      builtins.trace "Skipping copy of top-level pkgs: ${builtins.concatStringsSep "." newName}"
+                        [ ]
+                    else
+                      listPackages newName evalResult.value
                   else
-                    listPackages newName evalResult.value
-                else
-                  builtins.trace "Pkg is not an attr?!: ${builtins.concatStringsSep "." newName}"
-                  # We cannot handle other things like functions or plain values
-                  [ ]
-              )
-          ))
+                    builtins.trace "Pkg is not an attr?!: ${builtins.concatStringsSep "." newName}"
+                      # We cannot handle other things like functions or plain values
+                      [ ]
+                )
+            ))
           [ ]
           pkgs;
 
-          partitionPackageNames = pkgNames:
-            builtins.groupBy
-                # TODO: partition python3XX
-              (name: builtins.substring 0 1 (builtins.head name))
-              pkgNames;
+      partitionPackageNames = pkgNames:
+        builtins.groupBy
+          # TODO: partition python3XX
+          (name: builtins.substring 0 1 (builtins.head name))
+          pkgNames;
 
     in
     { name, pkgs }:
-      let
-        list = listPackages [ ] pkgs;
+    let
+      list = listPackages [ ] pkgs;
 
-        partedList = partitionPackageNames list;
+      partedList = partitionPackageNames list;
 
-        jsonParts = lib.mapAttrsToList (part: attrNames:
-          pkgs.writers.writeJSON "${name}-${part}" (map (attrName:
-          let
-            derv = lib.getAttrFromPath attrName pkgs;
-            pkg = mkPackage attrName derv;
-            # tryEval (deepSeq ...) makes sure we catch all potential throws in all attributes early on
-            # NOTE: running deepSeq on any derivation results in an infinite recursion due to stdenv.passthru generating a warning
-            pkgEvalResult = builtins.tryEval (builtins.deepSeq pkg pkg);
-          in
-            if pkgEvalResult.success then
-              pkgEvalResult.value
-            else
+      jsonParts = lib.mapAttrsToList
+        (part: attrNames:
+          pkgs.writers.writeJSON "${name}-${part}" (map
+            (attrName:
+              let
+                derv = lib.getAttrFromPath attrName pkgs;
+                pkg = mkPackage attrName derv;
+                # tryEval (deepSeq ...) makes sure we catch all potential throws in all attributes early on
+                # NOTE: running deepSeq on any derivation results in an infinite recursion due to stdenv.passthru generating a warning
+                pkgEvalResult = builtins.tryEval (builtins.deepSeq pkg pkg);
+              in
+              if pkgEvalResult.success then
+                pkgEvalResult.value
+              else
               # TODO: !!!
               # createEvalError attrName;
-              "asdasdasd"
-          ) attrNames)
-        ) partedList;
+                "asdasdasd"
+            )
+            attrNames)
+        )
+        partedList;
 
-        in pkgs.runCommand name { } (''
-          mkdir $out
-        ''
-        + lib.concatMapStringsSep " " (p: let
+    in
+    pkgs.runCommand name { } (''
+      mkdir $out
+    ''
+    + lib.concatMapStringsSep " "
+      (p:
+        let
           partName = lib.concatStringsSep "-" (lib.drop 1 (lib.splitString "-" p));
-        in "cp ${p} $out/${partName}\n") jsonParts);
+        in
+        "cp ${p} $out/${partName}\n")
+      jsonParts);
 
   mkSearchData = pkgs.callPackage ({ scopes, runCommand }:
     let
