@@ -65,7 +65,8 @@ rec {
       listPackages = attrPrefix: pkgs:
         lib.foldlAttrs
           (acc: name: value:
-builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "." attrPrefix}.${name}" (
+#builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "." attrPrefix}.${name}"
+          (
             if attrPrefix != [ ] && builtins.elemAt attrPrefix (builtins.length attrPrefix - 1) == name
               # TODO: go through this and sort and comment
               || name == "scope"
@@ -92,17 +93,24 @@ builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "
             else
               acc ++ (
                 let
+                  evalResult = builtins.tryEval value;
                   newName = attrPrefix ++ [ name ];
                 # in if lib.isDerivation value then
-                in if lib.isDerivation value then
+                in  if !evalResult.success then
+                  builtins.trace "Failed to evaluate pkg: ${builtins.concatStringsSep "." newName}"
+                  # TODO: add eval Error to package list
+                  []
+                else if lib.isDerivation evalResult.value then
                   [ newName ]
-                else if builtins.isAttrs value then
+                else if builtins.isAttrs evalResult.value then
                   # Do not recurse more copies of pkgs multiple times
-                  if builtins.hasAttr "AAAAAASomeThingsFailToEvaluate" value then
+                  if builtins.hasAttr "AAAAAASomeThingsFailToEvaluate" evalResult.value then
+                    builtins.trace "Skipping copy of top-level pkgs: ${builtins.concatStringsSep "." newName}"
                     [ ]
                   else
-                    listPackages newName value
+                    listPackages newName evalResult.value
                 else
+                  builtins.trace "Pkg is not an attr?!: ${builtins.concatStringsSep "." newName}"
                   # We cannot handle other things like functions or plain values
                   [ ]
               )
