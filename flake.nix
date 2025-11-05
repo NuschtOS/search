@@ -39,19 +39,19 @@
             in
             rec {
               inherit (pkgs.callPackages ./nix/wrapper.nix {
-                inherit ixxPkgs;
+                inherit self ixxPkgs;
                 nuscht-search = nuscht-search-unwrapped;
               }) mkOptionsJSON mkPackagesJSON mkSearchJSON mkSearch mkMultiSearch;
               nixpkgs-search = mkSearch {
                 optionsJSON = (import "${nixpkgs}/nixos/release.nix" { }).options + /share/doc/nixos/options.json;
                 name = "NixOS";
                 urlPrefix = "https://github.com/NixOS/nixpkgs/tree/master/";
-                pkgs = (import nixpkgs) {
-                  inherit system;
-                  config = {
-                    allowBroken = true;
-                  };
-                };
+                pkgs = pkgs.writeText "pkgs.nix" /* nix */ ''
+                  (import ${nixpkgs}) {
+                    system = "x86_64-linux";
+                    config.allowBroken = true;
+                  }
+                '';
               };
               default = nixpkgs-search;
             };

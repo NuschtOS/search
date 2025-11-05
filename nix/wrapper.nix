@@ -1,5 +1,76 @@
-{ ixxPkgs, lib, nuscht-search, pkgs }:
+{ self, ixxPkgs, lib, nuscht-search, pkgs }:
 
+let
+  nixpkgsPkgs = pkgs;
+  listPackages = attrPrefix: pkgs:
+    lib.foldlAttrs
+      (acc: name: value:
+        #builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "." attrPrefix}.${name}"
+        (
+          if attrPrefix != [ ] && builtins.elemAt attrPrefix (builtins.length attrPrefix - 1) == name
+            # TODO: go through this and sort and comment
+            || name == "scope"
+            # TODO: list tests
+            || name == "tests" || name == "nixosTests" || name == "vm-variant"
+            # we are not noogle, yet
+            || name == "lib"
+            # formatter types
+            || name == "functor"
+            # avoid infinite recursions when traversing package sets
+            || name == "pkgs"
+            # override infrastructure
+            || name == "override" || name == "__functionArgs" || name == "__functor" || name == "overrideDerivation"
+            # cross-compilation infrastructure
+            || name == "__splicedPackages" || name == "buildPackages"
+            # alias to pkgs in stable; throw in unusable
+            || name == "gitAndTools"
+            # uses to much ram
+            || name == "haskell"
+            || name == "haskellPackages"
+            # don't recurse into pythonPackages a nth time and just assume and attrPrefix ending in Packages (eg. python311Packages or mopidyPackages) is not what we want
+            || (attrPrefix != [ ] && lib.hasSuffix "Packages" (lib.head attrPrefix) && name == "pythonPackages")
+          then acc
+          else
+            acc ++ (
+              let
+                newName = attrPrefix ++ [ name ];
+                # in if lib.isDerivation value then
+                evalResult = builtins.tryEval (
+                  if builtins.isAttrs value
+                  then
+                    if lib.isDerivation value
+                    then [ newName ]
+                    else
+                    # We cannot handle other things like functions or plain values
+                    # Do not recurse more copies of pkgs multiple times
+                      if builtins.hasAttr "AAAAAASomeThingsFailToEvaluate" value
+                      then builtins.trace "Skipping copy of top-level pkgs: ${builtins.concatStringsSep "." newName}" [ ]
+                      else listPackages newName value
+                  else
+                    [ ]
+                );
+              in
+              if !evalResult.success then
+                builtins.trace "Failed to evaluate pkg: ${builtins.concatStringsSep "." newName}"
+                  # TODO: add eval Error to package list
+                  [ ]
+              else
+                evalResult.value
+            )
+        ))
+      [ ]
+      pkgs;
+
+  partitionPackageNames = pkgNames:
+    builtins.groupBy
+      # TODO: partition python3XX
+      (name:
+        let
+          last = builtins.head (lib.sublist (builtins.length name - 1) 1 name);
+        in
+        builtins.substring 0 1 last)
+      pkgNames;
+in
 rec {
   mkOptionsJSON = pkgs.callPackage ({ modules, specialArgs, nixosOptionsDoc, overrideEvalModulesArgs ? { } }: (nixosOptionsDoc {
     inherit ((lib.evalModules ({
@@ -16,156 +87,42 @@ rec {
     warningsAreErrors = false;
   }).optionsJSON + /share/doc/nixos/options.json);
 
-  mkPackagesJSONs =
-    let
-      extractLicense = lic:
-        if lib.isList lic then
-          builtins.foldl'
-            (acc: curr: acc ++ (extractLicense curr))
-            [ ]
-            lic
-        else if lib.isAttrs lic then
-          [
-            (
-              lic.shortName or lic.fullName
-                # TODO: try to remove after https://github.com/NixOS/nixpkgs/pull/458238 and https://github.com/NixOS/nixpkgs/pull/458240 is merged
-                or lic.url
-            )
-          ]
-        else if lib.isString lic then
-          [ lic ]
-        else
-          throw "Don't know how to handle ${toString lic}";
-
-      mkPackage = attrName: derv:
-        {
-          attrName = builtins.concatStringsSep "." attrName;
-          inherit (derv) name;
-        }
-        // lib.optionalAttrs (derv ? pname) { inherit (derv) pname; }
-        # toString because of fetchpatch and fetchpatch2
-        // lib.optionalAttrs (derv ? version) { version = toString derv.version; }
-        // lib.optionalAttrs (derv ? outputs) { inherit (derv) outputs; }
-        // lib.optionalAttrs (derv ? meta)
-          (
-            lib.optionalAttrs (derv.meta ? description) { inherit (derv.meta) description; }
-            // lib.optionalAttrs
-              (derv.meta ? homepage
-              # TODO: remove when https://github.com/NixOS/nixpkgs/pull/458597 is merged
-              && derv.meta.homepage != "")
-              { inherit (derv.meta) homepage; }
-            // lib.optionalAttrs (derv.meta ? broken) { inherit (derv.meta) broken; }
-            // lib.optionalAttrs (derv.meta ? license) { licenses = extractLicense derv.meta.license; }
-            // lib.optionalAttrs (derv.meta ? licenses) { licenses = extractLicense derv.meta.licenses; }
-            // lib.optionalAttrs (derv.meta ? insecure) { inherit (derv.meta) insecure; }
-            // lib.optionalAttrs (derv.meta ? maintainerIDs) {
-              # NOTE: meta.teams is already contained in meta.maintainers
-              maintainers = map (m: m.githubId) (derv.meta.maintainers.members or derv.meta.maintainers);
-            }
-            // lib.optionalAttrs (derv.meta ? unfree) { inherit (derv.meta) unfree; }
-          );
-
-      createEvalError = newName: {
-        attrName = builtins.concatStringsSep "." newName;
-        evalError = true;
-      };
-
-      listPackages = attrPrefix: pkgs:
-        lib.foldlAttrs
-          (acc: name: value:
-            #builtins.trace "${if attrPrefix == null then "" else builtins.concatStringsSep "." attrPrefix}.${name}"
-            (
-              if attrPrefix != [ ] && builtins.elemAt attrPrefix (builtins.length attrPrefix - 1) == name
-                # TODO: go through this and sort and comment
-                || name == "scope"
-                # TODO: list tests
-                || name == "tests" || name == "nixosTests" || name == "vm-variant"
-                # we are not noogle, yet
-                || name == "lib"
-                # formatter types
-                || name == "functor"
-                # avoid infinite recursions when traversing package sets
-                || name == "pkgs"
-                # override infrastructure
-                || name == "override" || name == "__functionArgs" || name == "__functor" || name == "overrideDerivation"
-                # cross-compilation infrastructure
-                || name == "__splicedPackages" || name == "buildPackages"
-                # alias to pkgs in stable; throw in unusable
-                || name == "gitAndTools"
-                # uses to much ram
-                || name == "haskell"
-                || name == "haskellPackages"
-                # don't recurse into pythonPackages a nth time and just assume and attrPrefix ending in Packages (eg. python311Packages or mopidyPackages) is not what we want
-                || (attrPrefix != [ ] && lib.hasSuffix "Packages" (lib.head attrPrefix) && name == "pythonPackages")
-              then acc
-              else
-                acc ++ (
-                  let
-                    newName = attrPrefix ++ [ name ];
-                    # in if lib.isDerivation value then
-                    evalResult = builtins.tryEval (
-                      if builtins.isAttrs value
-                      then
-                        if lib.isDerivation value
-                        then [ newName ]
-                        else
-                        # We cannot handle other things like functions or plain values
-                        # Do not recurse more copies of pkgs multiple times
-                          if builtins.hasAttr "AAAAAASomeThingsFailToEvaluate" value
-                          then builtins.trace "Skipping copy of top-level pkgs: ${builtins.concatStringsSep "." newName}" [ ]
-                          else listPackages newName value
-                      else
-                        [ ]
-                    );
-                  in
-                  if !evalResult.success then
-                    builtins.trace "Failed to evaluate pkg: ${builtins.concatStringsSep "." newName}"
-                      # TODO: add eval Error to package list
-                      [ ]
-                  else
-                    evalResult.value
-                )
-            ))
-          [ ]
-          pkgs;
-
-      partitionPackageNames = pkgNames:
-        builtins.groupBy
-          # TODO: partition python3XX
-          (name:
-            let
-              last = builtins.head (lib.sublist (builtins.length name - 1) 1 name);
-            in
-            builtins.substring 0 1 last)
-          pkgNames;
-
-    in
-    { name, pkgs }:
+  mkPackagesJSONs = { name, pkgs }:
     let
       partedList =
         let
-          list = listPackages [ ] pkgs;
+          list = listPackages [ ] (import pkgs);
         in
         partitionPackageNames list;
     in
     lib.mapAttrsToList
       (part: attrNames:
-        pkgs.writers.writeJSON "${name}-${part}" (map
-          (attrName:
-            let
-              derv = lib.getAttrFromPath attrName pkgs;
-              pkg = mkPackage attrName derv;
-              # tryEval (deepSeq ...) makes sure we catch all potential throws in all attributes early on
-              # NOTE: running deepSeq on any derivation results in an infinite recursion due to stdenv.passthru generating a warning
-              pkgEvalResult = builtins.tryEval (builtins.deepSeq pkg pkg);
-            in
-            if pkgEvalResult.success then
-              pkgEvalResult.value
-            else
-              createEvalError attrName
-          )
-          attrNames)
-      )
+        nixpkgsPkgs.runCommand "${name}-${part}.json"
+          {
+            partition = builtins.toJSON attrNames;
+            passAsFile = [ "partition" ];
+            nativeBuildInputs = [ nixpkgsPkgs.nixVersions.nix_2_32 ];
+          }
+          ''
+            ln -s ${./build-packages.nix} build-packages.nix
+            ln -s $partitionPath partition.nix
+            ln -s ${pkgs} pkgs.nix
+            echo ===
+            cat partition.nix
+            echo ===
+            ls -la
+            NIX_STATE_DIR=$TMPDIR NIX_PATH= nix \
+              --extra-experimental-features nix-command \
+              eval \
+              --quiet \
+              --json \
+              --read-only \
+              --impure \
+              --show-trace \
+              --expr \
+              'import ./build-packages.nix { lib = import ${self.inputs.nixpkgs}; }' \
+              > $out
+          '')
       partedList;
 
   mkSearchData = pkgs.callPackage ({ scopes, runCommand }:
