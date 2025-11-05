@@ -123,7 +123,11 @@ rec {
       partitionPackageNames = pkgNames:
         builtins.groupBy
           # TODO: partition python3XX
-          (name: builtins.substring 0 1 (builtins.head name))
+          (name:
+            let
+              last = lib.sublist (builtins.length name - 1) 1 name;
+            in
+            builtins.substring 0 2 last)
           pkgNames;
 
     in
