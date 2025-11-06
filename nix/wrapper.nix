@@ -52,7 +52,6 @@ let
 
   partitionPackageNames = pkgNames:
     builtins.groupBy
-      # TODO: partition python3XX
       (name:
         let
           last = builtins.head (lib.sublist (builtins.length name - 1) 1 name);
