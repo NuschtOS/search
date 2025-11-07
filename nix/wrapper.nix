@@ -115,6 +115,16 @@ rec {
       config.scopes = map
         (scope: {
           inherit (scope) urlPrefix;
+
+          licenseMapping = scope.licenseMapping or
+            builtins.toJSON (lib.mapAttrs (_n: v:
+              lib.removeAttrs v [ "deprecated" "shortName" ]
+            ) lib.licenses);
+
+          maintainerMapping = scope.maintainerMapping or
+            builtins.toJSON (lib.mapAttrs' (_n: v:
+              lib.nameValuePair (toString v.githubId) (lib.removeAttrs v [ "githubId" "keys" ])
+            ) lib.maintainers);
         } // lib.optionalAttrs (scope?name) { inherit (scope) name; }
         // lib.optionalAttrs (scope?optionsPrefix) { inherit (scope) optionsPrefix; }
         // lib.optionalAttrs (scope?optionsJSON || scope?modules) {
