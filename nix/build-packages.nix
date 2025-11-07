@@ -47,6 +47,7 @@ let
           maintainers = map (m: m.githubId) (derv.meta.maintainers.members or derv.meta.maintainers);
         }
         // lib.optionalAttrs (derv.meta ? unfree) { inherit (derv.meta) unfree; }
+        // lib.optionalAttrs (derv.meta ? position) { declaration = derv.meta.position; }
       );
 
   createEvalError = newName: {
