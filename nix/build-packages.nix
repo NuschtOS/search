@@ -46,7 +46,7 @@ let
           maintainers = map (m: toString m.githubId) derv.meta.maintainers;
         }
         // lib.optionalAttrs (derv.meta ? teams) {
-          teams = map (m: m.shortName) derv.meta.teams;
+          teams = map (m: m.shortName or "Meta for ${derv.name} is wrong!") derv.meta.teams;
         }
         // lib.optionalAttrs (derv.meta ? unfree) { inherit (derv.meta) unfree; }
         // lib.optionalAttrs (derv.meta ? position) { declaration = derv.meta.position; }
