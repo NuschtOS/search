@@ -121,9 +121,28 @@ rec {
     '';
   in
     pkgs.runCommand "man-derivations" { }
-      (lib.concatMapStringsSep "\n" (p: ''
+      (lib.concatMapStringsSep "\n" (p: let
+        pMan = lib.getMan p;
+      in /* bash */ ''
         mkdir -p $out/${p.name}
-        cp -rv --no-preserve=all ${p}/share/man/man* $out/${p.name}/
+        echo ${lib.getMan p}/share/man/man
+
+        shopt -s nullglob
+        dirs=(${pMan}/*/share/man)
+
+        if [[ -d ${lib.getMan p}/share/man ]]; then
+          cp -rv --no-preserve=all ${pMan}/share/man/man* $out/${p.name}/
+        elif (( ''${#dirs[@]} )); then
+          for d in "''${dirs[@]}"; do
+              if [[ -d "$d" ]]; then
+                  cp -rv --no-preserve=all $d/man* $out/${p.name}/
+                  break
+              fi
+          done
+        else
+          echo "Where is the man page?"
+          exit 4
+        fi
       '')
       (lib.filter (p: p != null)
         (map
