@@ -36,6 +36,14 @@
 
     <table>
       <tbody>
+        @if (package.declaration) {
+        <tr>
+          <td>Declaration</td>
+          <td>
+            <a target="_blank" [href]="package.declaration">{{package.declaration}}</a>
+          </td>
+        </tr>
+        }
         @if ((scope | async); as scope) {
         <tr>
           <td>Scope</td>
