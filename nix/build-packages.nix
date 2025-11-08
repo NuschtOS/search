@@ -9,11 +9,7 @@ let
         lic
     else if lib.isAttrs lic then
       [
-        (
-          lic.shortName or lic.fullName
-            # TODO: try to remove after https://github.com/NixOS/nixpkgs/pull/458238 and https://github.com/NixOS/nixpkgs/pull/458240 is merged
-            or lic.url
-        )
+        (lic.shortName or lic.fullName or lic.url)
       ]
     else if lib.isString lic then
       [ lic ]
