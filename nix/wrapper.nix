@@ -1,4 +1,4 @@
-{ self, ixxPkgs, lib, nuscht-search, pkgs }:
+{ self, ixxPkgs, lib, nix-index-database, nuscht-search, pkgs }:
 
 let
   nixpkgsPkgs = pkgs;
@@ -110,6 +110,21 @@ rec {
               > $out
           '')
       partedList;
+
+  mkCollectManDerivations = let
+    list = pkgs.runCommand "list-man-derivations" {
+      nativeBuildInputs = [ pkgs.nix-index ];
+    } ''
+      mkdir tmp
+      ln -s ${nix-index-database} tmp/files
+      NIX_INDEX_DATABASE=tmp nix-locate share/man/man | awk '{print $1}' | grep .man | sort -u > $out
+    '';
+  in
+    lib.concatMapStringsSep "\n" (p: "cp ${p}/share/man/man* $out/${p.name}/")
+    (map
+      (p: lib.attrByPath (lib.splitString "." p) (throw "How did this happen?") pkgs)
+      (lib.splitString "\n" (lib.readFile list))
+    );
 
   mkSearchData = pkgs.callPackage ({ scopes, runCommand }:
     let

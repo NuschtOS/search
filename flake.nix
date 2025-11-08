@@ -2,7 +2,6 @@
   description = "Simple and fast static-page NixOS option and packages search";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/cebe312dcfefde35f93532584701cc5fa9c1f236";
     flake-utils.url = "github:numtide/flake-utils";
     ixx = {
       # match version with npm package
@@ -12,9 +11,14 @@
         flake-utils.follows = "flake-utils";
       };
     };
+    nix-index-database = {
+      url = "github:Mic92/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixpkgs.url = "github:NixOS/nixpkgs/cebe312dcfefde35f93532584701cc5fa9c1f236";
   };
 
-  outputs = { nixpkgs, flake-utils, ixx, self, ... }:
+  outputs = { flake-utils, ixx, nix-index-database, nixpkgs, self, ... }:
     flake-utils.lib.eachDefaultSystem
       (system:
         let
@@ -40,8 +44,9 @@
             rec {
               inherit (pkgs.callPackages ./nix/wrapper.nix {
                 inherit self ixxPkgs;
+                inherit (nix-index-database.packages.${pkgs.stdenv.system}) nix-index-database;
                 nuscht-search = nuscht-search-unwrapped;
-              }) mkOptionsJSON mkPackagesJSONs mkSearchJSON mkSearch mkMultiSearch;
+              }) mkOptionsJSON mkPackagesJSONs mkCollectManDerivations mkSearchJSON mkSearch mkMultiSearch;
               nixpkgs-search = mkSearch {
                 optionsJSON = (import "${nixpkgs}/nixos/release.nix" { }).options + /share/doc/nixos/options.json;
                 name = "NixOS";
