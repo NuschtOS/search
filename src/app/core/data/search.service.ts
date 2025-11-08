@@ -23,7 +23,10 @@ export abstract class SearchService<T> {
       wasm: this.http.get(`${this.getBaseHref()}fixx_bg.wasm`, { responseType: 'arraybuffer' }).pipe(switchMap(data => from(__wbg_init(data)))),
       index: this.http.get(`${this.getBaseHref()}${this.kind}/index.ixx`, { responseType: 'arraybuffer' })
     })
-      .subscribe(({ index }) => this.index.next(Index.read(new Uint8Array(index))));
+      .subscribe({
+        next: ({ index }) => this.index.next(Index.read(new Uint8Array(index))),
+        error: error => console.error(`Failed to load ${kind} index:`, error),
+      });
   }
 
   // NOTE: Can not use Angulars LocationStrategy, because its broken on SSR, because for some reason SSR does not respect base href's.
