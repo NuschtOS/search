@@ -120,22 +120,25 @@ rec {
       NIX_INDEX_DATABASE=tmp nix-locate share/man/man | awk '{print $1}' | sort -u > $out
     '';
   in
-    pkgs.runCommand "man-derivations" { }
+    pkgs.runCommand "man-derivations" {
+      passthru = {
+        inherit list;
+      };
+    }
       (lib.concatMapStringsSep "\n" (p: let
         pMan = lib.getMan p;
       in /* bash */ ''
         mkdir -p $out/${p.name}
-        echo ${lib.getMan p}/share/man/man
 
-        shopt -s nullglob
-        dirs=(${pMan}/*/share/man)
+        shopt -s globstar
+        dirs=(${pMan}/**/share/man*)
 
         if [[ -d ${lib.getMan p}/share/man ]]; then
-          cp -rv --no-preserve=all ${pMan}/share/man/man* $out/${p.name}/
+          cp -rv --no-preserve=all --update=none ${pMan}/share/man/man* $out/${p.name}/
         elif (( ''${#dirs[@]} )); then
           for d in "''${dirs[@]}"; do
               if [[ -d "$d" ]]; then
-                  cp -rv --no-preserve=all $d/man* $out/${p.name}/
+                  cp -rv --no-preserve=all --update=none $d/man* $out/${p.name}/
                   break
               fi
           done
