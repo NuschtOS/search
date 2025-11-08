@@ -99,10 +99,11 @@ rec {
             NIX_STATE_DIR=$TMPDIR NIX_PATH= nix \
               --extra-experimental-features nix-command \
               eval \
-              --quiet \
-              --json \
-              --read-only \
               --impure \
+              --json \
+              --offline \
+              --quiet \
+              --read-only \
               --show-trace \
               --expr \
               'import ./build-packages.nix { inherit (import ${self.inputs.nixpkgs} {}) lib; }' \
