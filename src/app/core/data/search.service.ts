@@ -26,7 +26,6 @@ export abstract class SearchService<T> {
       .subscribe(({ index }) => this.index.next(Index.read(new Uint8Array(index))));
   }
 
-
   // NOTE: Can not use Angulars LocationStrategy, because its broken on SSR, because for some reason SSR does not respect base href's.
   private getBaseHref(): string {
     if (typeof document !== "undefined") {
@@ -36,10 +35,10 @@ export abstract class SearchService<T> {
     }
   }
 
-  public search(scope_id: number | undefined, query: string): Observable<SearchedResult[]> {
+  public search(scopeId: number | undefined, query: string): Observable<SearchedResult[]> {
     return this.index.pipe(
       map(index => {
-        return index ? index.search(scope_id, query, MAX_SEARCH_RESULTS).map(entry => {
+        return index ? index.search(scopeId, query, MAX_SEARCH_RESULTS).map(entry => {
           const opt = ({ idx: entry.idx(), scope_id: entry.scope_id(), name: entry.name() });
           //      option.free();
           return opt;
@@ -48,22 +47,22 @@ export abstract class SearchService<T> {
     );
   }
 
-  public getByName(scope_id: number, name: string | undefined): Observable<T | undefined> {
+  public getByName(scopeId: number, name: string | undefined): Observable<T | undefined> {
     if (typeof name === "undefined" || name.length == 0) {
       return of(undefined);
     }
 
     return this.index.pipe(
       switchMap(index => {
-        const idx = index?.get_idx_by_name(scope_id, name);
+        const idx = index?.get_idx_by_name(scopeId, name);
         return typeof idx === "number" ? this.getByIdx(idx, index!.chunk_size()) : of(undefined);
       })
     );
   }
 
-  private getByIdx(idx: number, chunk_size: number): Observable<T | undefined> {
-    const idx_in_chunk = idx % chunk_size;
-    const chunk = (idx - idx_in_chunk) / chunk_size;
+  private getByIdx(idx: number, chunkSize: number): Observable<T | undefined> {
+    const idx_in_chunk = idx % chunkSize;
+    const chunk = (idx - idx_in_chunk) / chunkSize;
 
     return this.data.pipe(
       switchMap(entries => {
