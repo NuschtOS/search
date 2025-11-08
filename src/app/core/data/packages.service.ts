@@ -4,15 +4,18 @@ import { SearchService } from './search.service';
 
 export interface Package {
   attr_name: string,
-  eval_error?: boolean,
-  broken: boolean,
+  broken?: boolean,
+  declaration?: string,
   description?: string,
+  eval_error?: boolean,
   homepages: string[],
-  outputs: string[],
-  insecure?: boolean,
+  known_vulnerabilities: string[],
+  licenses: string[],
+  maintainers: string[],
   name?: string,
+  outputs: string[],
   pname?: string,
-  unfree?: boolean,
+  teams: string[],
   version?: string,
 }
 
