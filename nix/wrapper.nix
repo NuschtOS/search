@@ -147,7 +147,9 @@ rec {
           exit 4
         fi
       '')
-      (lib.filter (p: p != null)
+      # Wrapper often use symlinkJoin which sets allowSubstitutes = false and only contain symlinks to man pages.
+      # We do not want to download them as they are big, do not allow man outputs and download the complete unwrapped variant.
+      (lib.filter (p: p != null && p.allowSubstitutes)
         (map
           (p: lib.attrByPath (lib.splitString "." p) (lib.trace "Could not find package ${p}" null) pkgs)
           (lib.filter (p: p != "") (lib.splitString "\n" (lib.readFile list)))
