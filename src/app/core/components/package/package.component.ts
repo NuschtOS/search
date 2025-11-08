@@ -4,10 +4,11 @@ import { BehaviorSubject, map, merge, of, switchMap, tap } from 'rxjs';
 import { PackagesService } from '../../data/packages.service';
 import { AsyncPipe } from '@angular/common';
 import { LoadingIndicatorComponent } from "../loading-indicator/loading-indicator.component";
+import { NoticeComponent } from "../notice/notice.component";
 
 @Component({
   selector: 'app-package',
-  imports: [AsyncPipe, RouterLink, LoadingIndicatorComponent],
+  imports: [AsyncPipe, RouterLink, LoadingIndicatorComponent, NoticeComponent],
   templateUrl: './package.component.html',
   styleUrl: './package.component.scss'
 })

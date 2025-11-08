@@ -1,0 +1,9 @@
+@import "vars";
+
+:host {
+  display: block;
+  border: calc(0.15 * $s-unit) solid $c-danger;
+  background-color: $c-danger-d;
+  padding: calc(0.5 * $s-padding);
+  border-radius: calc(0.4 * $s-unit);
+}

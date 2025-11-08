@@ -1,5 +1,5 @@
 {
-  description = "Simple and fast static-page NixOS option search";
+  description = "Simple and fast static-page NixOS option and packages search";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/cebe312dcfefde35f93532584701cc5fa9c1f236";

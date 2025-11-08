@@ -1,6 +1,6 @@
 # NüschtOS Search
 
-Simple and fast static-page NixOS option search
+Simple and fast static-page NixOS option and packages search
 
 ## Deployments
 
