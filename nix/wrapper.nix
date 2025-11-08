@@ -138,13 +138,13 @@ rec {
         (scope: {
           inherit (scope) urlPrefix;
 
-          licenseMapping = builtins.toJSON (lib.mapAttrs (_n: v:
+          licenseMapping = lib.mapAttrs (_n: v:
             lib.removeAttrs v [ "deprecated" "shortName" ]
-          ) (scope.licenses or lib.licenses));
+          ) (scope.licenses or lib.licenses);
 
-          maintainerMapping = builtins.toJSON (lib.mapAttrs' (_n: v:
+          maintainerMapping = lib.mapAttrs' (_n: v:
             lib.nameValuePair (toString v.githubId) (lib.removeAttrs v [ "githubId" "keys" ])
-          ) (scope.maintainers or lib.maintainers));
+          ) (scope.maintainers or lib.maintainers);
         } // lib.optionalAttrs (scope?name) { inherit (scope) name; }
         // lib.optionalAttrs (scope?optionsPrefix) { inherit (scope) optionsPrefix; }
         // lib.optionalAttrs (scope?optionsJSON || scope?modules) {
@@ -174,6 +174,7 @@ rec {
           --options-meta-output $out/options/meta \
           --packages-index-output $out/packages/index.ixx \
           --packages-meta-output $out/packages/meta \
+          --meta-output $out/meta.json \
           --chunk-size 300 \
           $configPath
       '');

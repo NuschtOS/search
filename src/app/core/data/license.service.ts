@@ -3,9 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 export interface License {
-  shortName: string;
   free: boolean;
-  deprecated: boolean;
   spdxId: string;
   url: string;
   fullName: string;

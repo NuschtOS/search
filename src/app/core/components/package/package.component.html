@@ -1,6 +1,6 @@
 @if ((package | async); as package) {
 <div class="typography">
-  <h2><code>{{package.attr_name}}</code></h2>
+  <h2><code>{{package.attrName}}</code></h2>
 
   @if (package.eval_error) {
     <app-notice>
@@ -22,12 +22,12 @@
       </app-notice>
     }
 
-    @if (package.known_vulnerabilities.length != 0) {
+    @if (package.knownVulnerabilities.length != 0) {
       <app-notice>
         <h3>Insecure Package</h3>
         <p>This package has been marked as insecure:</p>
         <ul>
-          @for (vulnerability of package.known_vulnerabilities; track vulnerability) {
+          @for (vulnerability of package.knownVulnerabilities; track vulnerability) {
             <li [innerHTML]="vulnerability"></li>
           }
         </ul>
@@ -78,7 +78,7 @@
         }
         </td>
         </tr>
-        @if (package.pname != package.attr_name) {
+        @if (package.pname != package.attrName) {
         <tr>
           <td>Package Name</td>
           <td><code>{{package.pname}}</code></td>

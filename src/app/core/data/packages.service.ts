@@ -3,13 +3,13 @@ import { Injectable } from '@angular/core';
 import { SearchService } from './search.service';
 
 export interface Package {
-  attr_name: string,
+  attrName: string,
   broken?: boolean,
   declaration?: string,
   description?: string,
   eval_error?: boolean,
   homepages: string[],
-  known_vulnerabilities: string[],
+  knownVulnerabilities: string[],
   licenses: string[],
   maintainers: string[],
   name?: string,
