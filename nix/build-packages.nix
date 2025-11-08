@@ -41,7 +41,7 @@ let
         // lib.optionalAttrs (derv.meta ? broken) { inherit (derv.meta) broken; }
         // lib.optionalAttrs (derv.meta ? license) { licenses = extractLicense derv.meta.license; }
         // lib.optionalAttrs (derv.meta ? licenses) { licenses = extractLicense derv.meta.licenses; }
-        // lib.optionalAttrs (derv.meta ? known_vulnerabilities) { inherit (derv.meta) knownVulnerabilities; }
+        // lib.optionalAttrs (derv.meta ? knownVulnerabilities) { known_vulnerabilities = derv.meta.knownVulnerabilities; }
         // lib.optionalAttrs (derv.meta ? maintainers) {
           maintainers = map (m: toString m.githubId) derv.meta.maintainers;
         }
