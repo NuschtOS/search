@@ -15,7 +15,7 @@
       url = "github:Mic92/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixpkgs.url = "github:NixOS/nixpkgs/cebe312dcfefde35f93532584701cc5fa9c1f236";
+    nixpkgs.url = "github:NixOS/nixpkgs";
   };
 
   outputs = { flake-utils, ixx, nix-index-database, nixpkgs, self, ... }:
