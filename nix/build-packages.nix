@@ -43,7 +43,7 @@ let
         // lib.optionalAttrs (derv.meta ? licenses) { licenses = extractLicense derv.meta.licenses; }
         // lib.optionalAttrs (derv.meta ? knownVulnerabilities) { inherit (derv.meta) knownVulnerabilities; }
         // lib.optionalAttrs (derv.meta ? maintainers) {
-          maintainers = map (m: toString m.githubId) derv.meta.maintainers;
+          maintainers = map (m: m.githubId) derv.meta.maintainers;
         }
         // lib.optionalAttrs (derv.meta ? teams) {
           teams = map (m: m.shortName or "Meta for ${derv.name} is wrong!") derv.meta.teams;
