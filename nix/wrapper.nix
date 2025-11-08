@@ -120,11 +120,15 @@ rec {
       NIX_INDEX_DATABASE=tmp nix-locate share/man/man | awk '{print $1}' | grep .man | sort -u > $out
     '';
   in
-    lib.concatMapStringsSep "\n" (p: "cp ${p}/share/man/man* $out/${p.name}/")
-    (map
-      (p: lib.attrByPath (lib.splitString "." p) (throw "How did this happen?") pkgs)
-      (lib.splitString "\n" (lib.readFile list))
-    );
+    pkgs.runCommand "man-derivations" { }
+      (lib.concatMapStringsSep "\n" (p: ''
+        mkdir -p $out/${p.name}
+        cp -rv --no-preserve=all ${p}/share/man/man* $out/${p.name}/
+      '')
+      (map
+        (p: lib.attrByPath (lib.splitString "." p) (throw "How did this happen? \"${p}\"") pkgs)
+        (lib.filter (p: p != "") (lib.splitString "\n" (lib.readFile list)))
+      ));
 
   mkSearchData = pkgs.callPackage ({ scopes, runCommand }:
     let
