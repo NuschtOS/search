@@ -42,10 +42,12 @@
           <td><a [routerLink]="[]" [queryParams]="{scope}" queryParamsHandling="merge">{{scope}}</a></td>
         </tr>
         }
-        @if (data.package.pname != data.package.attrName) {
+        @if (data.package.declaration) {
         <tr>
-          <td>Package Name</td>
-          <td><code>{{data.package.pname}}</code></td>
+          <td>Declaration</td>
+          <td>
+            <a target="_blank" [href]="data.package.declaration">{{data.package.declaration}}</a>
+          </td>
         </tr>
         }
         @if (`${data.package.pname}-${data.package.version}` != data.package.name) {
@@ -54,10 +56,18 @@
           <td><code>{{data.package.name}}</code></td>
         </tr>
         }
+        @if (data.package.pname != data.package.attrName) {
+        <tr>
+          <td>Package Name</td>
+          <td><code>{{data.package.pname}}</code></td>
+        </tr>
+        }
+        @if (`${data.package.pname}-${data.package.version}` != data.package.name) {
         <tr>
           <td>Version</td>
           <td><code>{{data.package.version}}</code></td>
         </tr>
+        }
         <tr>
           <td>Outputs</td>
           <td>
@@ -162,14 +172,6 @@
         </td>
         </tr>
 }
-        @if (data.package.declaration) {
-        <tr>
-          <td>Declaration</td>
-          <td>
-            <a target="_blank" [href]="data.package.declaration">{{data.package.declaration}}</a>
-          </td>
-        </tr>
-        }
       </tbody>
     </table>
   }
