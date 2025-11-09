@@ -206,7 +206,11 @@ rec {
   # also update README examples
   mkMultiSearch = { scopes, baseHref ? "/", title ? "NüschtOS Search" }:
     nuscht-search {
-      config = { inherit baseHref title; };
+      config = {
+        inherit baseHref title;
+        optionsEnabled = builtins.any (scope: scope ? optionsJSON || scope ? modules) scopes;
+        packagesEnabled = builtins.any (scope: scope ? pkgs) scopes;
+       };
       data = mkSearchData { inherit scopes; };
     };
 

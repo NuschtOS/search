@@ -1,4 +1,6 @@
 {
   "title": "NuschtOS Local Development Search",
-  "baseHref": "/"
+  "baseHref": "/",
+  "optionsEnabled": true,
+  "packagesEnabled": true
 }
