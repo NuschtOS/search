@@ -208,6 +208,7 @@ rec {
     nuscht-search {
       config = {
         inherit baseHref title;
+        dataBase = baseHref;
         optionsEnabled = builtins.any (scope: scope ? optionsJSON || scope ? modules) scopes;
         packagesEnabled = builtins.any (scope: scope ? pkgs) scopes;
        };

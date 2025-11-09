@@ -21,8 +21,8 @@ export abstract class SearchService<T> {
     private readonly kind: string,
   ) {
     forkJoin({
-      wasm: this.http.get(`${CONFIG.baseHref}fixx_bg.wasm`, { responseType: 'arraybuffer' }).pipe(switchMap(data => from(__wbg_init(data)))),
-      index: this.http.get(`${CONFIG.baseHref}${this.kind}/index.ixx`, { responseType: 'arraybuffer' })
+      wasm: this.http.get(`${CONFIG.dataBase}fixx_bg.wasm`, { responseType: 'arraybuffer' }).pipe(switchMap(data => from(__wbg_init(data)))),
+      index: this.http.get(`${CONFIG.dataBase}${this.kind}/index.ixx`, { responseType: 'arraybuffer' })
     })
       .subscribe({
         next: ({ index }) => this.index.next(Index.read(new Uint8Array(index))),
@@ -64,7 +64,7 @@ export abstract class SearchService<T> {
         let options = entries[chunk];
 
         if (typeof options === "undefined") {
-          return this.http.get<T[]>(`${CONFIG.baseHref}${this.kind}/meta/${chunk}.json`)
+          return this.http.get<T[]>(`${CONFIG.dataBase}${this.kind}/meta/${chunk}.json`)
             .pipe(tap(options => {
               entries[chunk] = options;
               return this.data.next(entries);

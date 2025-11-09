@@ -1,6 +1,7 @@
 {
   "title": "NuschtOS Local Development Search",
   "baseHref": "/",
+  "dataBase": "https://96b500a2.nuschtos-search.pages.dev/",
   "optionsEnabled": true,
   "packagesEnabled": true
 }

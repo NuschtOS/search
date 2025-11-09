@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { BehaviorSubject, forkJoin, map, merge, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, forkJoin, map, merge, of, switchMap, take, tap } from 'rxjs';
 import { PackagesService } from '../../data/packages.service';
 import { AsyncPipe } from '@angular/common';
 import { LoadingIndicatorComponent } from "../loading-indicator/loading-indicator.component";
 import { NoticeComponent } from "../notice/notice.component";
-import { MetaService } from '../../data/meta.service';
+import { License, Maintainer, MetaService } from '../../data/meta.service';
 
 @Component({
   selector: 'app-package',
@@ -26,27 +26,30 @@ export class PackageComponent {
   ) {
     this.data = this.activatedRoute.queryParams.pipe(
       tap(() => this.loading.next(true)),
-      switchMap(({ scope_id: scopeId, name }) => {
-        const package_ = this.searchService.getByName(Number(scopeId), name);
+      switchMap(({ scope_id: scopeId, name }) => merge(of(null), this.searchService.getByName(Number(scopeId), name))),
+      switchMap(package_ => {
+        if (!package_) {
+          return of(null);
+        }
 
-        return merge(
-          of(null),
-          package_.pipe(switchMap(package_ => {
-            if (!package_) {
-              return of(null);
-            }
+        const licenses = package_.licenses.length > 0
+          ? forkJoin(package_.licenses.map(shortName => this.metaService.getLicense(0, shortName)))
+          : of([]);
+        const maintainers = package_.maintainers.length > 0
+          ? forkJoin(package_.maintainers.map(githubId => this.metaService.getMaintainer(0, githubId)))
+          : of([]);
 
-            const licenses = forkJoin(package_.licenses.map(shortName => this.metaService.getLicense(scopeId, shortName)));
-            const maintainers = forkJoin(package_.maintainers.map(githubId => this.metaService.getMaintainer(scopeId, githubId)));
-
-            return forkJoin({ licenses, maintainers })
-              .pipe(map(({ licenses, maintainers }) => ({
-                package: package_,
-                licenses,
-                maintainers,
-              })));
-          }))
-        );
+        return forkJoin({
+          licenses,
+          maintainers
+        })
+          .pipe(
+            map(({ licenses, maintainers }) => ({
+              package: package_,
+              licenses: licenses as License[],
+              maintainers: maintainers as Maintainer[],
+            }))
+          );
       }),
       tap(() => this.loading.next(false)),
     );
