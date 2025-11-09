@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import __wbg_init, { Index } from '@nuschtos/fixx';
 import { BehaviorSubject, forkJoin, from, map, Observable, of, switchMap, tap } from 'rxjs';
+import { CONFIG } from '../config.domain';
 
 export interface SearchedResult {
   idx: number;
@@ -20,22 +21,13 @@ export abstract class SearchService<T> {
     private readonly kind: string,
   ) {
     forkJoin({
-      wasm: this.http.get(`${this.getBaseHref()}fixx_bg.wasm`, { responseType: 'arraybuffer' }).pipe(switchMap(data => from(__wbg_init(data)))),
-      index: this.http.get(`${this.getBaseHref()}${this.kind}/index.ixx`, { responseType: 'arraybuffer' })
+      wasm: this.http.get(`${CONFIG.baseHref}fixx_bg.wasm`, { responseType: 'arraybuffer' }).pipe(switchMap(data => from(__wbg_init(data)))),
+      index: this.http.get(`${CONFIG.baseHref}${this.kind}/index.ixx`, { responseType: 'arraybuffer' })
     })
       .subscribe({
         next: ({ index }) => this.index.next(Index.read(new Uint8Array(index))),
         error: error => console.error(`Failed to load ${kind} index:`, error),
       });
-  }
-
-  // NOTE: Can not use Angulars LocationStrategy, because its broken on SSR, because for some reason SSR does not respect base href's.
-  private getBaseHref(): string {
-    if (typeof document !== "undefined") {
-      return document.getElementsByTagName('base')[0].href;
-    } else {
-      return "/";
-    }
   }
 
   public search(scopeId: number | undefined, query: string): Observable<SearchedResult[]> {
@@ -72,7 +64,7 @@ export abstract class SearchService<T> {
         let options = entries[chunk];
 
         if (typeof options === "undefined") {
-          return this.http.get<T[]>(`${this.getBaseHref()}${this.kind}/meta/${chunk}.json`)
+          return this.http.get<T[]>(`${CONFIG.baseHref}${this.kind}/meta/${chunk}.json`)
             .pipe(tap(options => {
               entries[chunk] = options;
               return this.data.next(entries);

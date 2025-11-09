@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TITLE } from '../../core/config.domain';
+import { CONFIG } from '../../core/config.domain';
 import { PackagesSearchComponent } from '../../core/components/search/search.component';
 import { PackagesService } from '../../core/data/packages.service';
 import { PackageComponent } from "../../core/components/package/package.component";
@@ -18,7 +18,7 @@ import { RouterLink } from '@angular/router';
 })
 export class PackagesPageComponent {
 
-  protected readonly title = TITLE;
+  protected readonly title = CONFIG.title;
 
   constructor(
     protected readonly searchService: PackagesService

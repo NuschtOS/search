@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { switchMap, map, merge, of, BehaviorSubject, tap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
-import { SearchService } from '../../data/search.service';
 import { LoadingIndicatorComponent } from "../loading-indicator/loading-indicator.component";
 import { OptionsService } from '../../data/options.service';
 

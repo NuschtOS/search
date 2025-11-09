@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
+import { CONFIG } from '../config.domain';
 
 export interface Meta {
   scopes: Record<string, ScopeMeta>;
@@ -36,7 +37,7 @@ export class MetaService {
   constructor(
     private readonly http: HttpClient,
   ) {
-    this.meta = this.http.get<Meta>(`${this.getBaseHref()}meta.json`);
+    this.meta = this.http.get<Meta>(`${CONFIG.baseHref}meta.json`);
   }
 
   public getLicense(scopeId: number, shortName: string): Observable<License> {
@@ -45,14 +46,5 @@ export class MetaService {
 
   public getMaintainer(scopeId: number, githubId: number): Observable<Maintainer> {
     return this.meta.pipe(map(meta => meta.scopes[scopeId].maintainers[githubId]));
-  }
-
-  // NOTE: Can not use Angulars LocationStrategy, because its broken on SSR, because for some reason SSR does not respect base href's.
-  private getBaseHref(): string {
-    if (typeof document !== "undefined") {
-      return document.getElementsByTagName('base')[0].href;
-    } else {
-      return "/";
-    }
   }
 }

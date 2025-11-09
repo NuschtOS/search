@@ -205,8 +205,8 @@ rec {
 
   # also update README examples
   mkMultiSearch = { scopes, baseHref ? "/", title ? "NüschtOS Search" }:
-    nuscht-search.override {
-      inherit baseHref title;
+    nuscht-search {
+      config = { inherit baseHref title; };
       data = mkSearchData { inherit scopes; };
     };
 

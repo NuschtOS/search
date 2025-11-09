@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TITLE } from '../../core/config.domain';
+import { CONFIG } from '../../core/config.domain';
 import { OptionComponent } from '../../core/components/option/option.component';
 import { OptionsService } from '../../core/data/options.service';
 import { OptionsSearchComponent } from '../../core/components/search/search.component';
@@ -18,7 +18,7 @@ import { RouterLink } from '@angular/router';
 })
 export class OptionsPageComponent {
 
-  protected readonly title = TITLE;
+  protected readonly title = CONFIG.title;
 
   constructor(
     protected readonly searchService: OptionsService

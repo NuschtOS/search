@@ -1,4 +1,5 @@
-{ callPackage, callPackages, path, lib, stdenv, nodejs, emptyDirectory, baseHref ? "/", title ? "NuschtOS Search", data ? emptyDirectory }:
+{ callPackage, callPackages, path, lib, stdenv, nodejs }:
+{ config, data }:
 
 let
   manifest = lib.importJSON ../package.json;
@@ -26,9 +27,13 @@ stdenv.mkDerivation (finalAttrs: {
   };
 
   postPatch = ''
-    substituteInPlace src/app/core/config.domain.ts src/index.html \
-      --replace-fail '##TITLE##' ${lib.escapeShellArg title}
+    substituteInPlace src/index.html \
+      --replace-fail '##TITLE##' ${lib.escapeShellArg config.title}
     ln -s ${data}/{packages,options,meta.json} public
+
+    cat << EOF >  src/app/core/config.json
+    ${builtins.toJSON config}
+    EOF
   '';
 
   pnpmDeps = pnpm.fetchDeps {
@@ -42,7 +47,7 @@ stdenv.mkDerivation (finalAttrs: {
   __darwinAllowLocalNetworking = true;
 
   buildPhase = ''
-    pnpm run build:ci --base-href ${baseHref}
+    pnpm run build:ci --base-href ${config.baseHref}
   '';
 
   installPhase = ''
