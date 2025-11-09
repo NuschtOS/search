@@ -104,7 +104,9 @@
 @for (maintainer of data.maintainers; track maintainer.email) {
   <li>
     <a [href]="'https://github.com/' + maintainer.github" target="_blank" title="GitHub">
-      <img [src]="'https://github.com/' + maintainer.github + '.png?size=24'" width="1" height="1" class="maintainer">
+      <img [src]="'https://github.com/' + maintainer.github + '.png?size=24'" width="1" height="1" class="maintainer" crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+>
       {{maintainer.name}}
     </a>
     @if (maintainer.email) {
@@ -120,7 +122,9 @@
 </ul>
 } @else {
 <a [href]="'https://github.com/' + data.maintainers[0].github" target="_blank" title="GitHub">
-      <img [src]="'https://github.com/' + data.maintainers[0].github + '.png?size=24'" width="1" height="1" class="maintainer">
+      <img [src]="'https://github.com/' + data.maintainers[0].github + '.png?size=24'" width="1" height="1" class="maintainer" crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+>
       {{data.maintainers[0].name}}
     </a>
     @if (data.maintainers[0].email) {
