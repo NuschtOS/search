@@ -36,20 +36,42 @@
 
     <table>
       <tbody>
-        @if (data.package.declaration) {
-        <tr>
-          <td>Declaration</td>
-          <td>
-            <a target="_blank" [href]="data.package.declaration">{{data.package.declaration}}</a>
-          </td>
-        </tr>
-        }
         @if ((scope | async); as scope) {
         <tr>
           <td>Scope</td>
           <td><a [routerLink]="[]" [queryParams]="{scope}" queryParamsHandling="merge">{{scope}}</a></td>
         </tr>
         }
+        @if (data.package.pname != data.package.attrName) {
+        <tr>
+          <td>Package Name</td>
+          <td><code>{{data.package.pname}}</code></td>
+        </tr>
+        }
+        @if (`${data.package.pname}-${data.package.version}` != data.package.name) {
+        <tr>
+          <td>Name</td>
+          <td><code>{{data.package.name}}</code></td>
+        </tr>
+        }
+        <tr>
+          <td>Version</td>
+          <td><code>{{data.package.version}}</code></td>
+        </tr>
+        <tr>
+          <td>Outputs</td>
+          <td>
+          @if(data.package.outputs.length > 1) {
+          <ul>
+          @for (output of data.package.outputs; track output) {
+            <li><code>{{output}}</code></li>
+          }
+          </ul>
+          } @else {
+            <code>{{data.package.outputs[0]}}</code>
+          }
+          </td>
+        </tr>
         <tr>
           <td>Description</td>
           <td>{{data.package.description}}</td>
@@ -140,34 +162,12 @@
         </td>
         </tr>
 }
+        @if (data.package.declaration) {
         <tr>
-        <td>Outputs</td>
-        <td>
-        @if(data.package.outputs.length > 1) {
-        <ul>
-        @for (output of data.package.outputs; track output) {
-          <li><code>{{output}}</code></li>
-        }
-        </ul>
-        } @else {
-          <code>{{data.package.outputs[0]}}</code>
-        }
-        </td>
-        </tr>
-        @if (data.package.pname != data.package.attrName) {
-        <tr>
-          <td>Package Name</td>
-          <td><code>{{data.package.pname}}</code></td>
-        </tr>
-        }
-        <tr>
-          <td>Version</td>
-          <td><code>{{data.package.version}}</code></td>
-        </tr>
-        @if (`${data.package.pname}-${data.package.version}` != data.package.name) {
-        <tr>
-          <td>Name</td>
-          <td><code>{{data.package.name}}</code></td>
+          <td>Declaration</td>
+          <td>
+            <a target="_blank" [href]="data.package.declaration">{{data.package.declaration}}</a>
+          </td>
         </tr>
         }
       </tbody>
