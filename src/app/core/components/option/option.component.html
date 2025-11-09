@@ -3,6 +3,12 @@
     <h2><code>{{option.name}}</code></h2>
     <table>
       <tbody>
+        @if ((scope | async); as scope) {
+          <tr>
+            <td>Scope</td>
+            <td><a [routerLink]="[]" [queryParams]="{scope}" queryParamsHandling="merge">{{scope}}</a></td>
+          </tr>
+        }
         <tr>
           <td>Declarations</td>
           <td>
@@ -18,16 +24,6 @@
               <a target="_blank" [href]="option.declarations[0]">{{option.declarations[0]}}</a>
             }
           </td>
-        </tr>
-        @if ((scope | async); as scope) {
-          <tr>
-            <td>Scope</td>
-            <td><a [routerLink]="[]" [queryParams]="{scope}" queryParamsHandling="merge">{{scope}}</a></td>
-          </tr>
-        }
-        <tr>
-          <td>Description</td>
-          <td [innerHTML]="option.description"></td>
         </tr>
         <tr>
           <td>Type</td>
@@ -55,6 +51,10 @@
             </td>
           </tr>
         }
+        <tr>
+          <td>Description</td>
+          <td [innerHTML]="option.description"></td>
+        </tr>
       </tbody>
     </table>
   </div>
