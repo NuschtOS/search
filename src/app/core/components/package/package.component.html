@@ -68,20 +68,18 @@
           <td><code>{{data.package.version}}</code></td>
         </tr>
         }
+        @if (data.package.outputs.length > 1) {
         <tr>
           <td>Outputs</td>
           <td>
-          @if(data.package.outputs.length > 1) {
           <ul>
           @for (output of data.package.outputs; track output) {
             <li><code>{{output}}</code></li>
-          }
           </ul>
-          } @else {
-            <code>{{data.package.outputs[0]}}</code>
           }
           </td>
         </tr>
+        }
         <tr>
           <td>Description</td>
           <td>{{data.package.description}}</td>
