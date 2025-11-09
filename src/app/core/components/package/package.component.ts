@@ -36,7 +36,8 @@ export class PackageComponent {
           ? forkJoin(package_.licenses.map(shortName => this.metaService.getLicense(0, shortName)))
           : of([]);
         const maintainers = package_.maintainers.length > 0
-          ? forkJoin(package_.maintainers.map(githubId => this.metaService.getMaintainer(0, githubId)))
+          ? forkJoin(package_.maintainers.map(githubId => this.metaService.getMaintainer(0, githubId)
+            .pipe(map(maintainer => maintainer ? { ...maintainer, githubId } : null))))
           : of([]);
 
         return forkJoin({
@@ -47,7 +48,7 @@ export class PackageComponent {
             map(({ licenses, maintainers }) => ({
               package: package_,
               licenses: licenses as License[],
-              maintainers: maintainers as Maintainer[],
+              maintainers: maintainers as (Maintainer & { githubId: number })[],
             }))
           );
       }),
