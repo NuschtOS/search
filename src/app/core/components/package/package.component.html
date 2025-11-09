@@ -95,8 +95,9 @@
         </td>
         </tr>
         }
-        <tr>
-        <td>Maintainers</td>
+@if (data.maintainers.length >0) {
+<tr>
+<td>Maintainers</td>
         <td>
 @if (data.maintainers.length > 1) {
 <ul>
@@ -134,6 +135,7 @@
 
         </td>
         </tr>
+}
         <tr>
         <td>Outputs</td>
         <td>
