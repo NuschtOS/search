@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { CONFIG } from '../config.domain';
 
 export interface Meta {
@@ -32,19 +32,20 @@ export interface Maintainer {
 })
 export class MetaService {
 
-  private readonly meta;
+  private readonly meta = new BehaviorSubject<Meta | null>(null);
 
   constructor(
     private readonly http: HttpClient,
   ) {
-    this.meta = this.http.get<Meta>(`${CONFIG.baseHref}meta.json`);
+    this.http.get<Meta>(`${CONFIG.baseHref}meta.json`)
+      .subscribe(meta => this.meta.next(meta));
   }
 
-  public getLicense(scopeId: number, shortName: string): Observable<License> {
-    return this.meta.pipe(map(meta => meta.scopes[scopeId].licenses[shortName]));
+  public getLicense(scopeId: number, shortName: string): Observable<License | null> {
+    return this.meta.pipe(map(meta => meta?.scopes[scopeId]?.licenses[shortName] ?? null));
   }
 
-  public getMaintainer(scopeId: number, githubId: number): Observable<Maintainer> {
-    return this.meta.pipe(map(meta => meta.scopes[scopeId].maintainers[githubId]));
+  public getMaintainer(scopeId: number, githubId: number): Observable<Maintainer | null> {
+    return this.meta.pipe(map(meta => meta?.scopes[scopeId]?.maintainers[githubId] ?? null));
   }
 }
