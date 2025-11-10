@@ -106,28 +106,47 @@
         }
         @if (data.licenses.length > 0) {
         <tr>
-        <td>Licenses</td>
-        <td>
-        @if (data.licenses.length >1) {
-        <ul>
-        @for (license of data.licenses; track license.spdxId)  {
-<li> @if (license.url) {
-          <a [href]="license.url" target="_blank">{{license.fullName}}</a>
+          <td>Licenses</td>
+          <td>
+          @if (data.licenses.length >1) {
+            <ul>
+            @for (license of data.licenses; track license.spdxId)  {
+              <li> @if (license.url) {
+              <a [href]="license.url" target="_blank">{{license.fullName}}</a>
+              } @else {
+                <span>{{license.fullName}}</span>
+              }
+              </li>
+            }
+            </ul>
           } @else {
-            <span>{{license.fullName}}</span>
+            @if (data.licenses[0].url) {
+            <a [href]="data.licenses[0].url" target="_blank">{{data.licenses[0].fullName}}</a>
+            } @else {
+              <span>{{data.licenses[0].fullName}}</span>
+            }
           }
-        </li>
-        }
-        </ul>
-        } @else {
-          @if (data.licenses[0].url) {
-          <a [href]="data.licenses[0].url" target="_blank">{{data.licenses[0].fullName}}</a>
-          } @else {
-            <span>{{data.licenses[0].fullName}}</span>
-          }
-        }
-        </td>
+          </td>
         </tr>
+        }
+        @if (data.package.cpe) {
+        <tr>
+          <td><abbr title="Common Platform Enumeration">CPE</abbr></td>
+          <td>{{data.package.cpe}}</td>
+        </tr>
+        } @else {
+        @if (data.package.possibleCpes) {
+        <tr>
+          <td><abbr title="Possible Common Platform Enumeration">Possible CPE</abbr></td>
+          <td>
+            <ul>
+              @for (possibleCpe of data.package.possibleCpes; track possibleCpe) {
+              <li>{{possibleCpe}}</li>
+              }
+            </ul>
+          </td>
+        </tr>
+        }
         }
 @if (data.maintainers.length >0) {
 <tr>
