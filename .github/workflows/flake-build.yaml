@@ -34,6 +34,8 @@ jobs:
       - name: Install Nix
         uses: cachix/install-nix-action@v31
 
+      - uses: DeterminateSystems/magic-nix-cache-action@v13
+
       - name: build stable
         if: matrix.target != 'unstable'
         run: |

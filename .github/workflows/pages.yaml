@@ -37,6 +37,8 @@ jobs:
       - name: Install Nix
         uses: cachix/install-nix-action@v31
 
+      - uses: DeterminateSystems/magic-nix-cache-action@v13
+
       - name: Build search
         run: nix build -L github:NuschtOS/search.nuschtos.de/packages --override-input search .
 
