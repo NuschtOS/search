@@ -80,4 +80,8 @@ export abstract class SearchService<T> {
   public getScopes(): Observable<string[]> {
     return this.index.pipe(map(index => index ? index.scopes() : []));
   }
+
+  public getIndexSize(): Observable<number | undefined> {
+    return this.index.pipe(map(index => index?.size()))
+  }
 }
