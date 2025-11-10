@@ -40,7 +40,7 @@ jobs:
         if: matrix.target != 'unstable'
         run: |
           nix build -L \
-            --override-input nixpkgs github:NixOS/nixpkgs/nixos-${{ matrix.target }}
+            --override-input nixpkgs github:NuschtOS/nuschtpkgs/backports-${{ matrix.target }}
 
       - name: build unstable
         if: matrix.target == 'unstable'
