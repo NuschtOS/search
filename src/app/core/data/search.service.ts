@@ -21,7 +21,7 @@ export abstract class SearchService<T> {
     private readonly kind: string,
   ) {
     forkJoin({
-      wasm: this.http.get(`${CONFIG.dataBase}fixx_bg.wasm`, { responseType: 'arraybuffer' }).pipe(switchMap(data => from(__wbg_init(data)))),
+      wasm: this.http.get(`${CONFIG.baseHref}fixx_bg.wasm`, { responseType: 'arraybuffer' }).pipe(switchMap(data => from(__wbg_init(data)))),
       index: this.http.get(`${CONFIG.dataBase}${this.kind}/index.ixx`, { responseType: 'arraybuffer' })
     })
       .subscribe({

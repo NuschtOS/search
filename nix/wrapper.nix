@@ -206,7 +206,10 @@ rec {
   # also update README examples
   mkMultiSearch = { scopes, baseHref ? "/", title ? "NüschtOS Search" }:
     nuscht-search {
-      config = {
+      config =
+      assert lib.assertMsg (lib.hasSuffix "/" baseHref) "baseHref needs a trailing slash";
+      assert lib.assertMsg (lib.hasPrefix "/" baseHref) "baseHref needs to start with a slash";
+      {
         inherit baseHref title;
         dataBase = "${baseHref}data/";
         optionsEnabled = builtins.any (scope: scope ? optionsJSON || scope ? modules) scopes;
