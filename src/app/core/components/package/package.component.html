@@ -80,10 +80,13 @@
           </td>
         </tr>
         }
+        @if (data.package.description) {
         <tr>
           <td>Description</td>
           <td>{{data.package.description}}</td>
         </tr>
+        }
+        @if (data.package.homepages.length >0) {
         <tr>
           <td>Homepage</td>
           <td>
@@ -100,6 +103,7 @@
             }
           </td>
         </tr>
+        }
         @if (data.licenses.length > 0) {
         <tr>
         <td>Licenses</td>

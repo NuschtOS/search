@@ -29,7 +29,9 @@ stdenv.mkDerivation (finalAttrs: {
   postPatch = ''
     substituteInPlace src/index.html \
       --replace-fail '##TITLE##' ${lib.escapeShellArg config.title}
-    ln -s ${data}/{packages,options,meta.json} public
+
+    mkdir -p public/data
+    ln -s ${data}/{packages,options,meta.json} public/data
 
     cat << EOF >src/app/core/config.json
     ${builtins.toJSON config}
