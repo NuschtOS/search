@@ -31,7 +31,7 @@ stdenv.mkDerivation (finalAttrs: {
       --replace-fail '##TITLE##' ${lib.escapeShellArg config.title}
     ln -s ${data}/{packages,options,meta.json} public
 
-    cat << EOF >  src/app/core/config.json
+    cat << EOF >src/app/core/config.json
     ${builtins.toJSON config}
     EOF
   '';
@@ -39,7 +39,7 @@ stdenv.mkDerivation (finalAttrs: {
   pnpmDeps = pnpm.fetchDeps {
     inherit (finalAttrs) pname version src;
     fetcherVersion = 2;
-    hash = "sha256-MiGxy4E9tlpUVxUGWwtjwoGeeQw1mmq5NwonkFUZP0Y=";
+    hash = "sha256-mL90tSzRG6Z1zA6DWo7pyyop4b8aS7oTurnOQD+b1L4=";
   };
 
   nativeBuildInputs = [ nodejs pnpm.configHook ];
