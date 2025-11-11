@@ -4,6 +4,7 @@ import { OptionComponent } from '../../core/components/option/option.component';
 import { OptionsService } from '../../core/data/options.service';
 import { OptionsSearchComponent } from '../../core/components/search/search.component';
 import { RouterLink } from '@angular/router';
+import { AsyncPipe, DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-options',
@@ -11,6 +12,8 @@ import { RouterLink } from '@angular/router';
     OptionComponent,
     OptionsSearchComponent,
     RouterLink,
+    AsyncPipe,
+    DecimalPipe,
   ],
   templateUrl: './options-page.component.html',
   styleUrl: './options-page.component.scss',

@@ -4,6 +4,7 @@ import { PackagesSearchComponent } from '../../core/components/search/search.com
 import { PackagesService } from '../../core/data/packages.service';
 import { PackageComponent } from "../../core/components/package/package.component";
 import { RouterLink } from '@angular/router';
+import { AsyncPipe, DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-packages-page.component',
@@ -11,6 +12,8 @@ import { RouterLink } from '@angular/router';
     PackageComponent,
     PackagesSearchComponent,
     RouterLink,
+    AsyncPipe,
+    DecimalPipe,
   ],
   templateUrl: './packages-page.component.html',
   styleUrl: './packages-page.component.scss',
