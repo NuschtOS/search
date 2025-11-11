@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib }:
 
 let
   extractLicense = lic:
@@ -58,19 +58,22 @@ let
 
   pkgs = import ./pkgs.nix;
 in
-map
-  (attrName:
-  let
-    derv = lib.getAttrFromPath attrName pkgs;
-    pkg = mkPackage attrName derv;
-    # tryEval (deepSeq ...) makes sure we catch all potential throws in all attributes early on
-    # NOTE: running deepSeq on any derivation results in an infinite recursion due to stdenv.passthru generating a warning
-    pkgEvalResult = builtins.tryEval (builtins.deepSeq pkg pkg);
-  in
-  if pkgEvalResult.success then
-    pkgEvalResult.value
-  else
-    createEvalError attrName
-  )
-  (builtins.fromJSON (builtins.readFile ./partition.json))
+{
+  inherit extractLicense mkPackage;
 
+  buildPackages = map
+    (attrName:
+    let
+      derv = lib.getAttrFromPath attrName pkgs;
+      pkg = mkPackage attrName derv;
+      # tryEval (deepSeq ...) makes sure we catch all potential throws in all attributes early on
+      # NOTE: running deepSeq on any derivation results in an infinite recursion due to stdenv.passthru generating a warning
+      pkgEvalResult = builtins.tryEval (builtins.deepSeq pkg pkg);
+    in
+    if pkgEvalResult.success then
+      pkgEvalResult.value
+    else
+      createEvalError attrName
+    )
+    (builtins.fromJSON (builtins.readFile ./partition.json));
+}

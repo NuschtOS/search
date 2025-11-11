@@ -103,7 +103,7 @@ rec {
               --read-only \
               --show-trace \
               --expr \
-              'import ./build-packages.nix { inherit (import ${self.inputs.nixpkgs} {}) lib; }' \
+              '(import ./build-packages.nix { inherit (import ${self.inputs.nixpkgs} {}) lib; }).buildPackages' \
               > $out
           '')
       partedList;
