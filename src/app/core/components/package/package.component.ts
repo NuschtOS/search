@@ -28,6 +28,8 @@ export class PackageComponent {
       tap(() => this.loading.next(true)),
       switchMap(({ scope_id: scopeId, name }) => merge(of(null), this.searchService.getByName(Number(scopeId), name))),
       switchMap(package_ => {
+console.log(package_);
+
         if (!package_) {
           return of(null);
         }
