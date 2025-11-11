@@ -45,8 +45,8 @@ importers:
         specifier: ^5.2.8
         version: 5.2.8
       '@nuschtos/fixx':
-        specifier: https://envs.sh/ykv.tgz
-        version: https://envs.sh/ykv.tgz
+        specifier: https://envs.sh/y8t.tgz
+        version: https://envs.sh/y8t.tgz
       express:
         specifier: ^5.1.0
         version: 5.1.0
@@ -979,8 +979,8 @@ packages:
     resolution: {integrity: sha512-aoNSbxtkePXUlbZB+anS1LqsJdctG5n3UVhfU47+CDdwMi6uNTBMF9gPcQRnqghQd2FGzcwwIFBruFMxjhBewg==}
     engines: {node: ^18.17.0 || >=20.5.0}
 
-  '@nuschtos/fixx@https://envs.sh/ykv.tgz':
-    resolution: {tarball: https://envs.sh/ykv.tgz}
+  '@nuschtos/fixx@https://envs.sh/y8t.tgz':
+    resolution: {tarball: https://envs.sh/y8t.tgz}
     version: 0.0.0-git
 
   '@parcel/watcher-android-arm64@2.5.1':
@@ -3804,7 +3804,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@nuschtos/fixx@https://envs.sh/ykv.tgz': {}
+  '@nuschtos/fixx@https://envs.sh/y8t.tgz': {}
 
   '@parcel/watcher-android-arm64@2.5.1':
     optional: true
