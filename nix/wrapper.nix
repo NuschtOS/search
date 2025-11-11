@@ -20,11 +20,6 @@ let
     || name == "override" || name == "__functionArgs" || name == "__functor" || name == "overrideDerivation"
     # cross-compilation infrastructure
     || name == "__splicedPackages" || name == "buildPackages"
-    # alias to pkgs in stable; throw in unusable
-    || name == "gitAndTools"
-    # uses to much ram
-    || name == "haskell"
-    || name == "haskellPackages"
     # don't recurse into pythonPackages a nth time and just assume and attrPrefix ending in Packages (eg. python311Packages or mopidyPackages) is not what we want
     || (attrPrefix != [ ] && lib.hasSuffix "Packages" (lib.head attrPrefix) && name == "pythonPackages")
     || !(builtins.isAttrs value);
