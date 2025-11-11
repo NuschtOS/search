@@ -1,4 +1,5 @@
 { callPackage, callPackages, path, lib, stdenv, nodejs }:
+
 { config, data }:
 
 let
@@ -61,6 +62,6 @@ stdenv.mkDerivation (finalAttrs: {
   '';
 
   passthru = {
-    inherit pnpm;
+    inherit config data pnpm;
   };
 })
