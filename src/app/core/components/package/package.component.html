@@ -135,9 +135,9 @@
           <td>{{data.package.cpe}}</td>
         </tr>
         } @else {
-        @if (data.package.possibleCpes) {
+        @if (data.package.possibleCpes.length > 0) {
         <tr>
-          <td><abbr title="Possible Common Platform Enumeration">Possible CPE</abbr></td>
+          <td>Possible <abbr title="Common Platform Enumeration">CPE</abbr></td>
           <td>
             <ul>
               @for (possibleCpe of data.package.possibleCpes; track possibleCpe) {
