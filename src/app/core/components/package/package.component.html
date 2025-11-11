@@ -83,7 +83,7 @@
         @if (data.package.description) {
         <tr>
           <td>Description</td>
-          <td>{{data.package.description}}</td>
+          <td [innerHTML]="data.package.description"></td>
         </tr>
         }
         @if (data.package.homepages.length >0) {
