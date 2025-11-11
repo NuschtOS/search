@@ -159,9 +159,7 @@
     <a [href]="'https://github.com/' + maintainer.github" target="_blank" title="GitHub">
       <img [src]="'https://avatars.githubusercontent.com/u/' + maintainer.githubId + '?v=4&size=24'" width="1" height="1" class="maintainer" crossorigin="anonymous"
   referrerpolicy="no-referrer"
->
-      {{maintainer.name}}
-    </a>
+>{{maintainer.name}}</a>
     @if (maintainer.email) {
     &nbsp;
       <a [href]="'mailto:' + maintainer.email" title="E-Mail">{{maintainer.email}}</a>
