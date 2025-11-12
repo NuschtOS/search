@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { BehaviorSubject, forkJoin, map, merge, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, catchError, forkJoin, map, merge, of, switchMap, tap } from 'rxjs';
 import { PackagesService } from '../../data/packages.service';
 import { AsyncPipe } from '@angular/common';
 import { LoadingIndicatorComponent } from "../loading-indicator/loading-indicator.component";
@@ -58,7 +58,14 @@ export class PackageComponent {
                   matrixAvatarUrl: profile.avatar_url
                     ? profile.avatar_url.replace('mxc://', 'https://matrix.org/_matrix/media/r0/download/')
                     : ''
-                }))
+                })),
+                catchError(() => {
+                  console.error(`Failed to fetch Matrix profile for ${maintainer.matrix}`);
+                  return of({
+                    ...maintainer,
+                    githubId,
+                  })
+                })
               );
             })
             )))

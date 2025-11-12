@@ -148,7 +148,7 @@
         </tr>
         }
         }
-@if (data.maintainers.length >0) {
+@if (data.maintainers.length > 0) {
 <tr>
 <td>Maintainers</td>
         <td>
@@ -166,7 +166,12 @@
     }
     @if (maintainer.matrix) {
     &nbsp;
-      <a [href]="'https://matrix.to/#/' + maintainer.matrix" target="_blank" title="Matrix">{{maintainer.matrix}}</a>
+      <a [href]="'https://matrix.to/#/' + maintainer.matrix" target="_blank" title="Matrix">
+        @if (maintainer.matrixAvatarUrl) {
+          <img [src]="maintainer.matrixAvatarUrl" width="1" height="1" class="maintainer" crossorigin="anonymous" referrerpolicy="no-referrer">
+        }
+        {{maintainer.matrix}}
+      </a>
     }
   </li>
 }
@@ -185,7 +190,11 @@
     @if (data.maintainers[0].matrix) {
     &nbsp;
       <a [href]="'https://matrix.to/#/' + data.maintainers[0].matrix" target="_blank" title="Matrix">
-        <img [src]="data.maintainers[0].matrixAvatarUrl" width="1" height="1" class="maintainer" crossorigin="anonymous" referrerpolicy="no-referrer">{{data.maintainers[0].matrix}}</a>
+        @if (data.maintainers[0].matrixAvatarUrl) {
+          <img [src]="data.maintainers[0].matrixAvatarUrl" width="1" height="1" class="maintainer" crossorigin="anonymous" referrerpolicy="no-referrer">
+        }
+        {{data.maintainers[0].matrix}}
+      </a>
     }
 }
         </td>
