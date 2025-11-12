@@ -20,6 +20,8 @@ export class PackageComponent {
   protected readonly data;
   protected readonly scope;
 
+  protected matrixAvatarCache = new Map<string, string>();
+
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly http: HttpClient,
@@ -49,16 +51,30 @@ export class PackageComponent {
                 return of({ ...maintainer, githubId });
               }
 
+              if (this.matrixAvatarCache.has(maintainer.matrix)) {
+                return of({
+                  ...maintainer,
+                  githubId,
+                  matrixAvatarUrl: this.matrixAvatarCache.get(maintainer.matrix)!
+                });
+              }
+
               return this.http.get<{ displayname: string; avatar_url: string }>(
                 `https://matrix.org/_matrix/client/r0/profile/${maintainer.matrix}`
               ).pipe(
-                map(profile => ({
-                  ...maintainer,
-                  githubId,
-                  matrixAvatarUrl: profile.avatar_url
+                map(profile => {
+                  const matrixAvatarUrl = profile.avatar_url
                     ? `${profile.avatar_url.replace('mxc://', 'https://matrix.org/_matrix/media/r0/thumbnail/')}?width=24&height=24&method=crop`
-                    : ''
-                })),
+                    : '';
+
+                  this.matrixAvatarCache.set(maintainer.matrix!, matrixAvatarUrl);
+
+                  return {
+                    ...maintainer,
+                    githubId,
+                    matrixAvatarUrl
+                  };
+                }),
                 catchError(() => {
                   console.error(`Failed to fetch Matrix profile for ${maintainer.matrix}`);
                   return of({
