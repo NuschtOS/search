@@ -157,9 +157,9 @@
 @for (maintainer of data.maintainers; track maintainer.email) {
   <li>
     <a [href]="'https://github.com/' + maintainer.github" target="_blank" title="GitHub">
-      <img [src]="'https://avatars.githubusercontent.com/u/' + maintainer.githubId + '?v=4&size=24'" width="1" height="1" class="maintainer" crossorigin="anonymous"
-  referrerpolicy="no-referrer"
->{{maintainer.name}}</a>
+      <img [src]="'https://avatars.githubusercontent.com/u/' + maintainer.githubId + '?v=4&size=24'" width="1" height="1" class="maintainer" crossorigin="anonymous" referrerpolicy="no-referrer">
+      {{maintainer.name}}
+    </a>
     @if (maintainer.email) {
     &nbsp;
       <a [href]="'mailto:' + maintainer.email" title="E-Mail">{{maintainer.email}}</a>
@@ -177,10 +177,8 @@
 }
 </ul>
 } @else {
-<a [href]="'https://github.com/' + data.maintainers[0].github" target="_blank" title="GitHub">
-      <img [src]="'https://avatars.githubusercontent.com/u/' + data.maintainers[0].githubId + '?v=4&size=24'" width="1" height="1" class="maintainer" crossorigin="anonymous"
-  referrerpolicy="no-referrer"
->
+    <a [href]="'https://github.com/' + data.maintainers[0].github" target="_blank" title="GitHub">
+      <img [src]="'https://avatars.githubusercontent.com/u/' + data.maintainers[0].githubId + '?v=4&size=24'" width="1" height="1" class="maintainer" crossorigin="anonymous" referrerpolicy="no-referrer">
       {{data.maintainers[0].name}}
     </a>
     @if (data.maintainers[0].email) {

@@ -56,7 +56,7 @@ export class PackageComponent {
                   ...maintainer,
                   githubId,
                   matrixAvatarUrl: profile.avatar_url
-                    ? profile.avatar_url.replace('mxc://', 'https://matrix.org/_matrix/media/r0/download/')
+                    ? `${profile.avatar_url.replace('mxc://', 'https://matrix.org/_matrix/media/r0/thumbnail/')}?width=24&height=24&method=crop`
                     : ''
                 })),
                 catchError(() => {
