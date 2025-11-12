@@ -40,7 +40,8 @@ jobs:
       - uses: DeterminateSystems/magic-nix-cache-action@v13
 
       - name: Build search
-        run: nix build -L github:NuschtOS/search.nuschtos.de/packages --override-input search .
+        # redurce max jobs to not run out of memory
+        run: nix build -j 2 -L github:NuschtOS/search.nuschtos.de/packages --override-input search .
 
       - uses: nicknovitski/nix-develop@v1
 
