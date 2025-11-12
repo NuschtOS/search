@@ -6,8 +6,8 @@
     <app-notice>
       <h3>Eval Error</h3>
       <p>
-        This package fails to evaluate and can therefore not be used.
-        If you want to use this package anyways, please try to fix it in the source code and open a pull request.
+        This package fails to evaluate and therefore cannot be used.
+        If you want to use this package anyways, you may try to fix it in the source code and open a pull request.
       </p>
     </app-notice>
   } @else {
@@ -17,7 +17,17 @@
         <h3>Broken Package</h3>
         <p>
           This package has been marked as broken.
-          If you want to use this package anyways, please try to fix it in the source code and open a pull request.
+          If you want to use this package anyways, you may try to fix it in the source code and open a pull request.
+        </p>
+      </app-notice>
+    }
+
+    @if (data.package.disabled) {
+      <app-notice>
+        <h3>Disabled Package</h3>
+        <p>
+          This package has been disabled for this toolchain.
+          If you want to use this package anyways, you may try to fix it in the source code and open a pull request.
         </p>
       </app-notice>
     }

@@ -6,6 +6,7 @@ export interface Package {
   attrName: string,
   broken?: boolean,
   cpe?: string,
+  disabled?: boolean,
   possibleCpes: string[],
   declaration?: string,
   description?: string,
