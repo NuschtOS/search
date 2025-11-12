@@ -1,4 +1,4 @@
-import { afterNextRender, AfterViewInit, ChangeDetectionStrategy, Component, Inject, Injectable, Input, OnDestroy, OnInit } from '@angular/core';
+import { afterNextRender, AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable, Subject, combineLatest, debounceTime, filter, map, switchMap, takeUntil } from 'rxjs';
 import { MAX_SEARCH_RESULTS, SearchService, SearchedResult } from '../../data/search.service';
