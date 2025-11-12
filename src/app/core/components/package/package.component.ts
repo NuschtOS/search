@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { BehaviorSubject, forkJoin, map, merge, of, switchMap, take, tap } from 'rxjs';
+import { BehaviorSubject, forkJoin, map, merge, of, switchMap, tap } from 'rxjs';
 import { PackagesService } from '../../data/packages.service';
 import { AsyncPipe } from '@angular/common';
 import { LoadingIndicatorComponent } from "../loading-indicator/loading-indicator.component";
@@ -28,7 +28,8 @@ export class PackageComponent {
       tap(() => this.loading.next(true)),
       switchMap(({ scope_id: scopeId, name }) => merge(of(null), this.searchService.getByName(Number(scopeId), name))),
       switchMap(package_ => {
-console.log(package_);
+        // TODO: drop
+        console.log("package_", package_);
 
         if (!package_) {
           return of(null);
