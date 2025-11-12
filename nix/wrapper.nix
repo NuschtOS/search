@@ -217,7 +217,7 @@ rec {
         dataBase = "${baseHref}data/";
         optionsEnabled = builtins.any (scope: scope ? optionsJSON || scope ? modules) scopes;
         packagesEnabled = builtins.any (scope: scope ? pkgs) scopes;
-       };
+      };
       data = mkSearchData { inherit scopes; };
     };
 
