@@ -19,7 +19,7 @@ function getQuery(route: ActivatedRoute): { query: string | null, scope: string 
  * @see <https://stackoverflow.com/a/68703218>
  */
 function prefix(options: SearchedResult[]): string {
-  // check border cases size 1 array and empty first word)    missing field `homepage` at line 62 column 3
+  // check border cases size 1 array and empty first word
   if (!options[0] || options.length == 1) return options[0].name || "";
   let i = 0;
   // while all words have the same character at position i, increment i
@@ -84,7 +84,7 @@ class SearchComponent<T> {
     );
 
     afterNextRender(() => {
-      // HACK: setTimeout is needes because hydration? somehow updates the view
+      // HACK: setTimeout is needs because hydration? somehow updates the view
       //       after the item was scrolled into view
       setTimeout(() => {
         const element = document.querySelector("a.active");
