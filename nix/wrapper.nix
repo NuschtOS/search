@@ -22,6 +22,12 @@ let
     || name == "__splicedPackages" || name == "buildPackages"
     # haskell adds all packages to buildHaskellPackages again
     || name == "buildHaskellPackages"
+    # another variant of all haskell packages
+    || (attrPrefix == [ "haskell" "packages" ] && name == "native-bignum")
+    # we don't need head...
+    || name == "ghcHEAD"
+    # ... or binary variants
+    || (lib.hasPrefix "ghc" name && lib.hasSuffix "Binary" name)
     # don't recurse into pythonPackages a nth time and just assume and attrPrefix ending in Packages (eg. python311Packages or mopidyPackages) is not what we want
     || (attrPrefix != [ ] && lib.hasSuffix "Packages" (lib.head attrPrefix) && name == "pythonPackages")
     || !(builtins.isAttrs value);
