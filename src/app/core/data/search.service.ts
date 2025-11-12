@@ -43,8 +43,6 @@ export abstract class SearchService<T> {
   }
 
   public getByName(scopeId: number, name: string | undefined): Observable<T | undefined> {
-    // TODO: drop
-    console.log("name", name);
     if (typeof name === "undefined" || name.length == 0) {
       return of(undefined);
     }
@@ -52,8 +50,6 @@ export abstract class SearchService<T> {
     return this.index.pipe(
       switchMap(index => {
         const idx = index?.get_idx_by_name(scopeId, name);
-        // TODO: drop
-        console.log("idx", idx);
         return typeof idx === "number" ? this.getByIdx(idx, index!.chunk_size()) : of(undefined);
       })
     );
