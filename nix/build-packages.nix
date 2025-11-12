@@ -26,6 +26,7 @@ let
     # toString because of fetchpatch and fetchpatch2
     // lib.optionalAttrs (derv ? version) { version = toString derv.version; }
     // lib.optionalAttrs (derv ? outputs) { inherit (derv) outputs; }
+    // lib.optionalAttrs (derv ? disabled) { inherit (derv) disabled; }
     // lib.optionalAttrs (derv ? meta)
       (
         lib.optionalAttrs (derv.meta ? description) { inherit (derv.meta) description; }
