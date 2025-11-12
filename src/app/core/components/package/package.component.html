@@ -184,10 +184,10 @@
     }
     @if (data.maintainers[0].matrix) {
     &nbsp;
-      <a [href]="'https://matrix.to/#/' + data.maintainers[0].matrix" target="_blank" title="Matrix">{{data.maintainers[0].matrix}}</a>
+      <a [href]="'https://matrix.to/#/' + data.maintainers[0].matrix" target="_blank" title="Matrix">
+        <img [src]="data.maintainers[0].matrixAvatarUrl" width="1" height="1" class="maintainer" crossorigin="anonymous" referrerpolicy="no-referrer">{{data.maintainers[0].matrix}}</a>
     }
 }
-
         </td>
         </tr>
 }

@@ -6,6 +6,7 @@ import { AsyncPipe } from '@angular/common';
 import { LoadingIndicatorComponent } from "../loading-indicator/loading-indicator.component";
 import { NoticeComponent } from "../notice/notice.component";
 import { License, Maintainer, MetaService } from '../../data/meta.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-package',
@@ -21,8 +22,9 @@ export class PackageComponent {
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
-    private readonly searchService: PackagesService,
+    private readonly http: HttpClient,
     private readonly metaService: MetaService,
+    private readonly searchService: PackagesService,
   ) {
     this.data = this.activatedRoute.queryParams.pipe(
       tap(() => this.loading.next(true)),
@@ -35,9 +37,31 @@ export class PackageComponent {
         const licenses = package_.licenses.length > 0
           ? forkJoin(package_.licenses.map(shortName => this.metaService.getLicense(0, shortName)))
           : of([]);
+
         const maintainers = package_.maintainers.length > 0
-          ? forkJoin(package_.maintainers.map(githubId => this.metaService.getMaintainer(0, githubId)
-            .pipe(map(maintainer => maintainer ? { ...maintainer, githubId } : null))))
+          ? forkJoin(package_.maintainers.map(githubId => this.metaService.getMaintainer(0, githubId).pipe(
+            switchMap((maintainer: Maintainer | null) => {
+              if (!maintainer) {
+                return of(null);
+              }
+
+              if (!maintainer.matrix) {
+                return of({ ...maintainer, githubId });
+              }
+
+              return this.http.get<{ displayname: string; avatar_url: string }>(
+                `https://matrix.org/_matrix/client/r0/profile/${maintainer.matrix}`
+              ).pipe(
+                map(profile => ({
+                  ...maintainer,
+                  githubId,
+                  matrixAvatarUrl: profile.avatar_url
+                    ? profile.avatar_url.replace('mxc://', 'https://matrix.org/_matrix/media/r0/download/')
+                    : ''
+                }))
+              );
+            })
+            )))
           : of([]);
 
         return forkJoin({

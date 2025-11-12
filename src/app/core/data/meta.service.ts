@@ -25,6 +25,7 @@ export interface Maintainer {
   github: string;
   email?: string;
   matrix?: string;
+  matrixAvatarUrl?: string;
 }
 
 @Injectable({
