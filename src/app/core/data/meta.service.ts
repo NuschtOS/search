@@ -42,10 +42,10 @@ export class MetaService {
   }
 
   public getLicense(scopeId: number, shortName: string): Observable<License | null> {
-    return this.meta.pipe(take(1), map(meta => meta?.scopes[String(scopeId)]?.licenses[shortName] ?? null));
+    return this.meta.pipe(map(meta => meta?.scopes[String(scopeId)]?.licenses[shortName] ?? null));
   }
 
   public getMaintainer(scopeId: number, githubId: number): Observable<Maintainer | null> {
-    return this.meta.pipe(take(1), map(meta => meta?.scopes[String(scopeId)]?.maintainers[String(githubId)] ?? null));
+    return this.meta.pipe(map(meta => meta?.scopes[String(scopeId)]?.maintainers[String(githubId)] ?? null));
   }
 }

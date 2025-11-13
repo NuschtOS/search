@@ -1,8 +1,8 @@
-@if ((data | async); as data) {
+@if ((data | async); as package) {
 <div class="typography">
-  <h2><code>{{data.package.attrName}}</code></h2>
+  <h2><code>{{package.attrName}}</code></h2>
 
-  @if (data.package.evalError) {
+  @if (package.evalError) {
     <app-notice>
       <h3>Eval Error</h3>
       <p>
@@ -12,7 +12,7 @@
     </app-notice>
   } @else {
 
-    @if (data.package.broken) {
+    @if (package.broken) {
       <app-notice>
         <h3>Broken Package</h3>
         <p>
@@ -22,7 +22,7 @@
       </app-notice>
     }
 
-    @if (data.package.disabled) {
+    @if (package.disabled) {
       <app-notice>
         <h3>Disabled Package</h3>
         <p>
@@ -32,12 +32,12 @@
       </app-notice>
     }
 
-    @if (data.package.knownVulnerabilities.length != 0) {
+    @if (package.knownVulnerabilities.length != 0) {
       <app-notice>
         <h3>Insecure Package</h3>
         <p>This package has been marked as insecure:</p>
         <ul>
-          @for (vulnerability of data.package.knownVulnerabilities; track vulnerability) {
+          @for (vulnerability of package.knownVulnerabilities; track vulnerability) {
             <li [innerHTML]="vulnerability"></li>
           }
         </ul>
@@ -52,105 +52,98 @@
           <td><a [routerLink]="[]" [queryParams]="{scope}" queryParamsHandling="merge">{{scope}}</a></td>
         </tr>
         }
-        @if (data.package.declaration) {
+        @if (package.declaration) {
         <tr>
           <td>Declaration</td>
           <td>
-            <a target="_blank" [href]="data.package.declaration">{{data.package.declaration}}</a>
+            <a target="_blank" [href]="package.declaration">{{package.declaration}}</a>
           </td>
         </tr>
         }
-        @if (`${data.package.pname}-${data.package.version}` != data.package.name) {
+        @if (`${package.pname}-${package.version}` != package.name) {
         <tr>
           <td>Name</td>
-          <td><code>{{data.package.name}}</code></td>
+          <td><code>{{package.name}}</code></td>
         </tr>
         }
-        @if (data.package.pname) {
+        @if (package.pname) {
         <tr>
           <td>Package Name</td>
-          <td><code>{{data.package.pname}}</code></td>
+          <td><code>{{package.pname}}</code></td>
         </tr>
         }
-        @if (data.package.version) {
+        @if (package.version) {
         <tr>
           <td>Version</td>
-          <td><code>{{data.package.version}}</code></td>
+          <td><code>{{package.version}}</code></td>
         </tr>
         }
-        @if (data.package.outputs.length > 1) {
+        @if (package.outputs.length > 1) {
         <tr>
           <td>Outputs</td>
           <td>
           <ul>
-          @for (output of data.package.outputs; track output) {
+          @for (output of package.outputs; track output) {
             <li><code>{{output}}</code></li>
           }
           </ul>
           </td>
         </tr>
         }
-        @if (data.package.description) {
+        @if (package.description) {
         <tr>
           <td>Description</td>
-          <td [innerHTML]="data.package.description"></td>
+          <td [innerHTML]="package.description"></td>
         </tr>
         }
-        @if (data.package.homepages.length >0) {
+        @if (package.homepages.length >0) {
         <tr>
           <td>Homepage</td>
           <td>
-            @if (data.package.homepages.length > 1) {
+            @if (package.homepages.length > 1) {
             <ul>
-              @for (homepage of data.package.homepages; track homepage) {
+              @for (homepage of package.homepages; track homepage) {
               <li>
                 <a target="_blank" [href]="homepage">{{homepage}}</a>
               </li>
               }
             </ul>
             } @else {
-            <a target="_blank" [href]="data.package.homepages[0]">{{data.package.homepages[0]}}</a>
+            <a target="_blank" [href]="package.homepages[0]">{{package.homepages[0]}}</a>
             }
           </td>
         </tr>
         }
-        @if (data.licenses.length > 0) {
+        @if (package.licenses.length > 0) {
         <tr>
           <td>Licenses</td>
           <td>
-          @if (data.licenses.length >1) {
+          @if (package.licenses.length >1) {
             <ul>
-            @for (license of data.licenses; track license.spdxId)  {
-              <li> @if (license.url) {
-              <a [href]="license.url" target="_blank">{{license.fullName}}</a>
-              } @else {
-                <span>{{license.fullName}}</span>
-              }
+              @for (license of package.licenses; track license)  {
+              <li>
+                <app-license [shortName]="{scopeId: (scopeId$|async)!, shortName: license}"/>
               </li>
-            }
+              }
             </ul>
           } @else {
-            @if (data.licenses[0].url) {
-            <a [href]="data.licenses[0].url" target="_blank">{{data.licenses[0].fullName}}</a>
-            } @else {
-              <span>{{data.licenses[0].fullName}}</span>
-            }
+            <app-license [shortName]="{scopeId: (scopeId$|async)!, shortName: package.licenses[0]}"/>
           }
           </td>
         </tr>
         }
-        @if (data.package.cpe) {
+        @if (package.cpe) {
         <tr>
           <td><abbr title="Common Platform Enumeration">CPE</abbr></td>
-          <td><code>{{data.package.cpe}}</code></td>
+          <td><code>{{package.cpe}}</code></td>
         </tr>
         } @else {
-        @if (data.package.possibleCpes.length > 0) {
+        @if (package.possibleCpes.length > 0) {
         <tr>
           <td>Possible <abbr title="Common Platform Enumeration">CPE</abbr></td>
           <td>
             <ul>
-              @for (possibleCpe of data.package.possibleCpes; track possibleCpe) {
+              @for (possibleCpe of package.possibleCpes; track possibleCpe) {
               <li><code>{{possibleCpe}}</code></li>
               }
             </ul>
@@ -158,20 +151,20 @@
         </tr>
         }
         }
-@if (data.maintainers.length > 0) {
+@if (package.maintainers.length > 0) {
 <tr>
 <td>Maintainers</td>
         <td>
-@if (data.maintainers.length > 1) {
+@if (package.maintainers.length > 1) {
 <ul>
-@for (maintainer of data.maintainers; track maintainer.email) {
+@for (githubId of package.maintainers; track githubId) {
   <li>
-  <app-maintainer [maintainer]="maintainer" />
+  <app-maintainer [githubId]="{scopeId: (scopeId$ | async)!, githubId}" />
 </li>
 }
 </ul>
 } @else {
-  <app-maintainer [maintainer]="data.maintainers[0]" />
+  <app-maintainer [githubId]="{scopeId: (scopeId$ | async)!, githubId: package.maintainers[0]}" />
 }
         </td>
         </tr>

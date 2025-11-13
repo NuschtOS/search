@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Maintainer } from '../../data/meta.service';
-import { BehaviorSubject, catchError, EMPTY, filter, map, Subject, switchMap, takeUntil } from 'rxjs';
+import { Maintainer, MetaService } from '../../data/meta.service';
+import { BehaviorSubject, filter, map, Subject, switchMap, takeUntil } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { MatrixService } from '../../data/matrix.service';
 
 @Component({
@@ -14,21 +13,38 @@ import { MatrixService } from '../../data/matrix.service';
 })
 export class MaintainerComponent implements OnInit, OnDestroy {
 
+  protected githubId$ = new BehaviorSubject<{ scopeId: number, githubId: number } | null>(null);
   protected maintainer$ = new BehaviorSubject<(Maintainer & { githubId: number }) | null>(null);
   protected matrixAvatar$ = new BehaviorSubject<string | null>(null);
   private destroy$ = new Subject<null>();
 
   constructor(
-    private readonly matrix: MatrixService,
+    private readonly metaService: MetaService,
+    private readonly matrixService: MatrixService,
   ) { }
 
   public ngOnInit(): void {
-    this.maintainer$.pipe(
-      takeUntil(this.destroy$),
-      map(maintainer => maintainer?.matrix),
-      filter(matrix => !!matrix),
-      switchMap(matrix => this.matrix.getAvatar(matrix!, 24, 24)),
-    )
+    this.githubId$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(value => !!value),
+        switchMap(value =>
+          this.metaService.getMaintainer(value.scopeId!, value.githubId!)
+            .pipe(
+              filter(maintainer => !!maintainer),
+              map(maintainer => ({ ...maintainer, githubId: value.githubId! }))
+            )
+        ),
+      )
+      .subscribe(this.maintainer$);
+
+    this.maintainer$
+      .pipe(
+        takeUntil(this.destroy$),
+        map(maintainer => maintainer?.matrix),
+        filter(matrix => !!matrix),
+        switchMap(matrix => this.matrixService.getAvatar(matrix!, 24, 24)),
+      )
       .subscribe(this.matrixAvatar$);
   }
 
@@ -38,7 +54,7 @@ export class MaintainerComponent implements OnInit, OnDestroy {
   }
 
   @Input()
-  set maintainer(value: Maintainer & { githubId: number }) {
-    this.maintainer$.next(value);
+  set githubId(value: { scopeId: number, githubId: number }) {
+    this.githubId$.next(value);
   }
 }

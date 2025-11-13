@@ -1,0 +1,7 @@
+@if ((license$ | async); as license) {
+  @if (license.url) {
+    <a [href]="license.url" target="_blank">{{license.fullName}}</a>
+  } @else {
+    {{license.fullName}}
+  }
+}
