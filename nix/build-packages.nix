@@ -49,7 +49,7 @@ let
               isTeam = elem ? members;
             in lib.recursiveUpdate acc {
               "${if isTeam then "teams" else "maintainers"}" = if isTeam then
-                  elem.shortName
+                  [ elem.shortName ]
                 else
                   if builtins.isList elem then
                     map (m: m.githubId) elem
