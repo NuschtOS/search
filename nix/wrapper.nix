@@ -7,9 +7,9 @@ let
     attrPrefix != [ ]
     && builtins.elemAt attrPrefix (builtins.length attrPrefix - 1) == name
     # TODO: go through this and sort and comment
-    || name == "scope"
-    # TODO: list tests
-    || name == "tests" || name == "nixosTests" || name == "vm-variant"
+    || name == "scope" || name == "nixosTests" || name == "vm-variant"
+    # TODO: re-enable when https://github.com/NixOS/nixpkgs/pull/437723#issuecomment-3493948379 is resolved
+    || name == "tests"
     # we are not noogle, yet
     || name == "lib"
     # formatter types
