@@ -1,0 +1,46 @@
+@if ((maintainer$ | async); as maintainer) {
+  <a
+    [href]="'https://github.com/' + maintainer.github"
+    target="_blank"
+    title="GitHub"
+  >
+    <img
+      [src]="'https://avatars.githubusercontent.com/u/' + maintainer.githubId + '?v=4&size=24'"
+      width="1"
+      height="1"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+      alt=" "
+    >
+    {{maintainer.name}}
+  </a>
+  @if (maintainer.email) {
+    &nbsp;
+    <a
+      [href]="'mailto:' + maintainer.email"
+      title="E-Mail"
+    >
+      {{maintainer.email}}
+    </a>
+  }
+  @if (maintainer.matrix) {
+    &nbsp;
+    <a
+      [href]="'https://matrix.to/#/' + maintainer.matrix"
+      target="_blank"
+      title="Matrix"
+    >
+      @if ((matrixAvatar$ | async); as matrixAvatar) {
+        <img
+          [src]="matrixAvatar"
+          width="1"
+          height="1"
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"
+          alt=" "
+        >
+      }
+      {{maintainer.matrix}}
+    </a>
+  }
+}

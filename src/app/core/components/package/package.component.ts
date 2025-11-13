@@ -6,11 +6,11 @@ import { AsyncPipe } from '@angular/common';
 import { LoadingIndicatorComponent } from "../loading-indicator/loading-indicator.component";
 import { NoticeComponent } from "../notice/notice.component";
 import { License, Maintainer, MetaService } from '../../data/meta.service';
-import { HttpClient } from '@angular/common/http';
+import { MaintainerComponent } from "../maintainer/maintainer.component";
 
 @Component({
   selector: 'app-package',
-  imports: [AsyncPipe, RouterLink, LoadingIndicatorComponent, NoticeComponent],
+  imports: [AsyncPipe, RouterLink, LoadingIndicatorComponent, NoticeComponent, MaintainerComponent],
   templateUrl: './package.component.html',
   styleUrl: './package.component.scss'
 })
@@ -20,11 +20,8 @@ export class PackageComponent {
   protected readonly data;
   protected readonly scope;
 
-  protected matrixAvatarCache = new Map<string, string>();
-
   constructor(
     private readonly activatedRoute: ActivatedRoute,
-    private readonly http: HttpClient,
     private readonly metaService: MetaService,
     private readonly searchService: PackagesService,
   ) {
@@ -47,44 +44,9 @@ export class PackageComponent {
                 return of(null);
               }
 
-              if (!maintainer.matrix) {
-                return of({ ...maintainer, githubId });
-              }
-
-              if (this.matrixAvatarCache.has(maintainer.matrix)) {
-                return of({
-                  ...maintainer,
-                  githubId,
-                  matrixAvatarUrl: this.matrixAvatarCache.get(maintainer.matrix)!
-                });
-              }
-
-              return this.http.get<{ displayname: string; avatar_url: string }>(
-                `https://matrix.org/_matrix/client/r0/profile/${maintainer.matrix}`
-              ).pipe(
-                map(profile => {
-                  const matrixAvatarUrl = profile.avatar_url
-                    ? `${profile.avatar_url.replace('mxc://', 'https://matrix.org/_matrix/media/r0/thumbnail/')}?width=24&height=24&method=crop`
-                    : '';
-
-                  this.matrixAvatarCache.set(maintainer.matrix!, matrixAvatarUrl);
-
-                  return {
-                    ...maintainer,
-                    githubId,
-                    matrixAvatarUrl
-                  };
-                }),
-                catchError(() => {
-                  console.error(`Failed to fetch Matrix profile for ${maintainer.matrix}`);
-                  return of({
-                    ...maintainer,
-                    githubId,
-                  })
-                })
-              );
+              return of({ ...maintainer, githubId });
             })
-            )))
+          )))
           : of([]);
 
         return forkJoin({

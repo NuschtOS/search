@@ -166,76 +166,12 @@
 <ul>
 @for (maintainer of data.maintainers; track maintainer.email) {
   <li>
-    <a [href]="'https://github.com/' + maintainer.github" target="_blank" title="GitHub">
-      <img
-        [src]="'https://avatars.githubusercontent.com/u/' + maintainer.githubId + '?v=4&size=24'"
-        width="1"
-        height="1"
-        class="maintainer"
-        crossorigin="anonymous"
-        referrerpolicy="no-referrer"
-        [alt]="'@'+maintainer.github"
-      >
-      {{maintainer.name}}
-    </a>
-    @if (maintainer.email) {
-    &nbsp;
-      <a [href]="'mailto:' + maintainer.email" title="E-Mail">{{maintainer.email}}</a>
-    }
-    @if (maintainer.matrix) {
-    &nbsp;
-      <a [href]="'https://matrix.to/#/' + maintainer.matrix" target="_blank" title="Matrix">
-        @if (maintainer.matrixAvatarUrl) {
-          <img
-            [src]="maintainer.matrixAvatarUrl"
-            width="1"
-            height="1"
-            class="maintainer"
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"
-            [alt]="maintainer.matrix"
-          >
-        }
-        {{maintainer.matrix}}
-      </a>
-    }
-  </li>
+  <app-maintainer [maintainer]="maintainer" />
+</li>
 }
 </ul>
 } @else {
-    <a [href]="'https://github.com/' + data.maintainers[0].github" target="_blank" title="GitHub">
-      <img
-        [src]="'https://avatars.githubusercontent.com/u/' + data.maintainers[0].githubId + '?v=4&size=24'"
-        width="1"
-        height="1"
-        class="maintainer"
-        crossorigin="anonymous"
-        referrerpolicy="no-referrer"
-        [alt]="'@'+data.maintainers[0].github"
-      >
-      {{data.maintainers[0].name}}
-    </a>
-    @if (data.maintainers[0].email) {
-    &nbsp;
-      <a [href]="'mailto:' + data.maintainers[0].email" title="E-Mail">{{data.maintainers[0].email}}</a>
-    }
-    @if (data.maintainers[0].matrix) {
-    &nbsp;
-      <a [href]="'https://matrix.to/#/' + data.maintainers[0].matrix" target="_blank" title="Matrix">
-        @if (data.maintainers[0].matrixAvatarUrl) {
-          <img
-            [src]="data.maintainers[0].matrixAvatarUrl"
-            width="1"
-            height="1"
-            class="maintainer"
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"
-            [alt]="data.maintainers[0].matrix"
-          >
-        }
-        {{data.maintainers[0].matrix}}
-      </a>
-    }
+  <app-maintainer [maintainer]="data.maintainers[0]" />
 }
         </td>
         </tr>
