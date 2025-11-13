@@ -6,8 +6,6 @@ let
   shouldRemoved = attrPrefix: name: value:
     attrPrefix != [ ]
     && builtins.elemAt attrPrefix (builtins.length attrPrefix - 1) == name
-    # TODO: go through this and sort and comment
-    || name == "scope" || name == "nixosTests"
     # TODO: re-enable when https://github.com/NixOS/nixpkgs/pull/437723#issuecomment-3493948379 is resolved
     || name == "tests"
     # we are not noogle, yet
