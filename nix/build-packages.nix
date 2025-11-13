@@ -39,12 +39,21 @@ let
         // lib.optionalAttrs (derv.meta ? license) { licenses = extractLicense derv.meta.license; }
         // lib.optionalAttrs (derv.meta ? licenses) { licenses = extractLicense derv.meta.licenses; }
         // lib.optionalAttrs (derv.meta ? knownVulnerabilities) { inherit (derv.meta) knownVulnerabilities; }
-        // lib.optionalAttrs (derv.meta ? maintainers) {
-          maintainers = map (m: m.githubId) derv.meta.maintainers;
-        }
-        // lib.optionalAttrs (derv.meta ? teams) {
-          teams = map (m: m.shortName or "Meta for ${derv.name} is wrong!") derv.meta.teams;
-        }
+        // (lib.recursiveUpdate
+          # some packages have lib.teams in meta.maintainers which is technically wrong, but oh well...
+          # Until they are all fixed we need this workaround.
+          (lib.optionalAttrs (derv.meta ? maintainers) (
+            builtins.foldl' (acc: elem: let
+              isTeam = elem ? members;
+            in lib.recursiveUpdate acc {
+              "${if isTeam then "teams" else "maintainers"}" = if isTeam then elem.shortName else elem.githubId;
+            }) { } derv.meta.maintainers
+          ))
+
+          (lib.optionalAttrs (derv.meta ? teams) {
+            teams = map (m: m.shortName or "meta.teams for ${derv.name} is wrong!") derv.meta.teams;
+          })
+        )
         // lib.optionalAttrs (derv.meta ? position) { declaration = derv.meta.position; }
       );
 
