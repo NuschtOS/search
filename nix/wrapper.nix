@@ -7,11 +7,13 @@ let
     attrPrefix != [ ]
     && builtins.elemAt attrPrefix (builtins.length attrPrefix - 1) == name
     # TODO: go through this and sort and comment
-    || name == "scope" || name == "nixosTests" || name == "vm-variant"
+    || name == "scope" || name == "nixosTests"
     # TODO: re-enable when https://github.com/NixOS/nixpkgs/pull/437723#issuecomment-3493948379 is resolved
     || name == "tests"
     # we are not noogle, yet
     || name == "lib"
+    # accesses builtins.currentSystem unconditionally
+    || name == "vm-variant"
     # formatter types
     || name == "functor"
     # avoid infinite recursions when traversing package sets
