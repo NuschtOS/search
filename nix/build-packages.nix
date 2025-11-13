@@ -16,6 +16,8 @@ let
     else
       throw "Don't know how to handle ${toString lic}";
 
+  # test with:
+  # nix-repl> :p (import ./nix/build-packages.nix { inherit lib; }).mkPackage [ "test" ] pkgs.nixosTests.geoserver
   mkPackage = attrName: derv:
   builtins.trace "${builtins.concatStringsSep "." attrName} ${derv.name}"
     {
@@ -46,7 +48,13 @@ let
             builtins.foldl' (acc: elem: let
               isTeam = elem ? members;
             in lib.recursiveUpdate acc {
-              "${if isTeam then "teams" else "maintainers"}" = if isTeam then elem.shortName else elem.githubId;
+              "${if isTeam then "teams" else "maintainers"}" = if isTeam then
+                  elem.shortName
+                else
+                  if builtins.isList elem then
+                    map (m: m.githubId) elem
+                  else
+                    [ elem.githubId ];
             }) { } derv.meta.maintainers
           ))
 
