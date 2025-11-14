@@ -53,7 +53,7 @@
                 urlPrefix = "https://github.com/NixOS/nixpkgs/tree/master/";
                 pkgs = pkgs.writeText "pkgs.nix" /* nix */ ''
                   (import ${nixpkgs}) {
-                    system = "x86_64-linux";
+                    system = "${pkgs.stdenv.system}";
                     config.allowBroken = true;
                   }
                 '';
