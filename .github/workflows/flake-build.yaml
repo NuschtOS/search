@@ -39,10 +39,10 @@ jobs:
       - name: build stable
         if: matrix.target != 'unstable'
         run: |
-          nix build -L \
+          nix build -L --max-jobs 2 \
             --override-input nixpkgs github:NuschtOS/nuschtpkgs/backports-${{ matrix.target }}
 
       - name: build unstable
         if: matrix.target == 'unstable'
         run: |
-          nix build -L
+          nix build -L --max-jobs 2
