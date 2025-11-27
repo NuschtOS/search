@@ -25,6 +25,7 @@
           pkgs = (import nixpkgs) {
             inherit system;
           };
+          inherit (pkgs) lib;
           ixxPkgs = ixx.packages.${system};
         in
         {
@@ -47,17 +48,21 @@
                 inherit (nix-index-database.packages.${pkgs.stdenv.system}) nix-index-database;
                 nuscht-search = nuscht-search-unwrapped;
               }) mkOptionsJSON mkPackagesJSONs mkCollectManDerivations mkSearchJSON mkSearch mkMultiSearch;
-              nixpkgs-search = mkSearch {
-                optionsJSON = (import "${nixpkgs}/nixos/release.nix" { }).options + /share/doc/nixos/options.json;
-                name = "NixOS";
-                urlPrefix = "https://github.com/NixOS/nixpkgs/tree/master/";
-                pkgs = pkgs.writeText "pkgs.nix" /* nix */ ''
-                  (import ${nixpkgs}) {
-                    system = "${pkgs.stdenv.system}";
-                    config.allowBroken = true;
-                  }
-                '';
-              };
+              nixpkgs-search = mkSearch (
+                # nixos/release.nix hardcodes a pkgs import with x86_64-linux system
+                lib.optionalAttrs (system == "x86_64-linux") {
+                  optionsJSON = (import "${nixpkgs}/nixos/release.nix" { }).options + /share/doc/nixos/options.json;
+                } // {
+                  name = "NixOS";
+                  urlPrefix = "https://github.com/NixOS/nixpkgs/tree/master/";
+                  pkgs = pkgs.writeText "pkgs.nix" /* nix */ ''
+                    (import ${nixpkgs}) {
+                      system = "${pkgs.stdenv.system}";
+                      config.allowBroken = true;
+                    }
+                  '';
+                }
+              );
               default = nixpkgs-search;
             };
         }
