@@ -18,52 +18,50 @@ let
 
   # test with:
   # nix-repl> :p (import ./nix/build-packages.nix { inherit lib; }).mkPackage [ "test" ] pkgs.nixosTests.geoserver
-  mkPackage = attrName: derv:
-  builtins.trace "${builtins.concatStringsSep "." attrName} ${derv.name}"
-    {
-      attrName = builtins.concatStringsSep "." attrName;
-      inherit (derv) name;
-    }
-    // lib.optionalAttrs (derv ? pname) { inherit (derv) pname; }
-    # toString because of fetchpatch and fetchpatch2
-    // lib.optionalAttrs (derv ? version) { version = toString derv.version; }
-    // lib.optionalAttrs (derv ? outputs) { inherit (derv) outputs; }
-    // lib.optionalAttrs (derv ? disabled) { inherit (derv) disabled; }
-    // lib.optionalAttrs (derv ? meta)
-      (
-        lib.optionalAttrs (derv.meta ? description) { inherit (derv.meta) description; }
-        // lib.optionalAttrs (derv.meta ? homepage) { inherit (derv.meta) homepage; }
-        // lib.optionalAttrs (derv.meta ? broken) { inherit (derv.meta) broken; }
-        // lib.optionalAttrs (derv.meta ? identifiers) (
-          lib.optionalAttrs (derv.meta.identifiers?cpe) { inherit (derv.meta.identifiers) cpe; }
-          // lib.optionalAttrs (derv.meta.identifiers?possibleCPEs) { possibleCpes = map (c: c.cpe) derv.meta.identifiers.possibleCPEs; }
-        )
-        // lib.optionalAttrs (derv.meta ? license) { licenses = extractLicense derv.meta.license; }
-        // lib.optionalAttrs (derv.meta ? licenses) { licenses = extractLicense derv.meta.licenses; }
-        // lib.optionalAttrs (derv.meta ? knownVulnerabilities) { inherit (derv.meta) knownVulnerabilities; }
-        // (lib.recursiveUpdate
-          # some packages have lib.teams in meta.maintainers which is technically wrong, but oh well...
-          # Until they are all fixed we need this workaround.
-          (lib.optionalAttrs (derv.meta ? maintainers) (
-            builtins.foldl' (acc: elem: let
-              isTeam = elem ? members;
-            in lib.recursiveUpdate acc {
-              "${if isTeam then "teams" else "maintainers"}" = if isTeam then
-                  [ elem.shortName ]
+  mkPackage = attrName: derv: {
+    attrName = builtins.concatStringsSep "." attrName;
+    inherit (derv) name;
+  }
+  // lib.optionalAttrs (derv ? pname) { inherit (derv) pname; }
+  # toString because of fetchpatch and fetchpatch2
+  // lib.optionalAttrs (derv ? version) { version = toString derv.version; }
+  // lib.optionalAttrs (derv ? outputs) { inherit (derv) outputs; }
+  // lib.optionalAttrs (derv ? disabled) { inherit (derv) disabled; }
+  // lib.optionalAttrs (derv ? meta)
+    (
+      lib.optionalAttrs (derv.meta ? description) { inherit (derv.meta) description; }
+      // lib.optionalAttrs (derv.meta ? homepage) { inherit (derv.meta) homepage; }
+      // lib.optionalAttrs (derv.meta ? broken) { inherit (derv.meta) broken; }
+      // lib.optionalAttrs (derv.meta ? identifiers) (
+        lib.optionalAttrs (derv.meta.identifiers?cpe) { inherit (derv.meta.identifiers) cpe; }
+        // lib.optionalAttrs (derv.meta.identifiers?possibleCPEs) { possibleCpes = map (c: c.cpe) derv.meta.identifiers.possibleCPEs; }
+      )
+      // lib.optionalAttrs (derv.meta ? license) { licenses = extractLicense derv.meta.license; }
+      // lib.optionalAttrs (derv.meta ? licenses) { licenses = extractLicense derv.meta.licenses; }
+      // lib.optionalAttrs (derv.meta ? knownVulnerabilities) { inherit (derv.meta) knownVulnerabilities; }
+      // (lib.recursiveUpdate
+        # some packages have lib.teams in meta.maintainers which is technically wrong, but oh well...
+        # Until they are all fixed we need this workaround.
+        (lib.optionalAttrs (derv.meta ? maintainers) (
+          builtins.foldl' (acc: elem: let
+            isTeam = elem ? members;
+          in lib.recursiveUpdate acc {
+            "${if isTeam then "teams" else "maintainers"}" = if isTeam then
+                [ elem.shortName ]
+              else
+                if builtins.isList elem then
+                  map (m: m.githubId) elem
                 else
-                  if builtins.isList elem then
-                    map (m: m.githubId) elem
-                  else
-                    [ elem.githubId ];
-            }) { } derv.meta.maintainers
-          ))
+                  [ elem.githubId ];
+          }) { } derv.meta.maintainers
+        ))
 
-          (lib.optionalAttrs (derv.meta ? teams) {
-            teams = map (m: m.shortName or "meta.teams for ${derv.name} is wrong!") derv.meta.teams;
-          })
-        )
-        // lib.optionalAttrs (derv.meta ? position) { declaration = derv.meta.position; }
-      );
+        (lib.optionalAttrs (derv.meta ? teams) {
+          teams = map (m: m.shortName or "meta.teams for ${derv.name} is wrong!") derv.meta.teams;
+        })
+      )
+      // lib.optionalAttrs (derv.meta ? position) { declaration = derv.meta.position; }
+    );
 
   createEvalError = newName: {
     attrName = builtins.concatStringsSep "." newName;
