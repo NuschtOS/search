@@ -35,6 +35,7 @@ let
       // lib.optionalAttrs (derv.meta ? identifiers) (
         lib.optionalAttrs (derv.meta.identifiers?cpe) { inherit (derv.meta.identifiers) cpe; }
         // lib.optionalAttrs (derv.meta.identifiers?possibleCPEs) { possibleCpes = map (c: c.cpe) derv.meta.identifiers.possibleCPEs; }
+        // lib.optionalAttrs (derv.meta.identifiers?purl) { inherit (derv.meta.identifiers) purl; }
       )
       // lib.optionalAttrs (derv.meta ? license) { licenses = extractLicense derv.meta.license; }
       // lib.optionalAttrs (derv.meta ? licenses) { licenses = extractLicense derv.meta.licenses; }

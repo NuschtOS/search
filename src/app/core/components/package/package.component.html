@@ -151,6 +151,11 @@
         </tr>
         }
         }
+        @if (package.purl) {
+        <tr>
+          <td><abbr title="Package URL">purl</abbr></td>
+          <td><code>{{package.purl}}</code></td>
+        </tr>
 @if (package.maintainers.length > 0) {
 <tr>
 <td>Maintainers</td>

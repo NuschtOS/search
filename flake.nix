@@ -58,7 +58,10 @@
                   pkgs = pkgs.writeText "pkgs.nix" /* nix */ ''
                     (import ${nixpkgs}) {
                       system = "${pkgs.stdenv.system}";
-                      config.allowBroken = true;
+                      config = {
+                        allowBroken = true;
+                        derivationPURLInheritance = true;
+                      };
                     }
                   '';
                 }

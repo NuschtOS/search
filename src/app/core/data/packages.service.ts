@@ -8,6 +8,7 @@ export interface Package {
   cpe?: string,
   disabled?: boolean,
   possibleCpes: string[],
+  purl: string,
   declaration?: string,
   description?: string,
   evalError?: boolean,
