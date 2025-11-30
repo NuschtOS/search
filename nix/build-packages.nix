@@ -30,6 +30,7 @@ let
   // lib.optionalAttrs (derv ? meta)
     (
       lib.optionalAttrs (derv.meta ? description) { inherit (derv.meta) description; }
+      lib.optionalAttrs (derv.meta ? longDescription) { inherit (derv.meta) longDescription; }
       // lib.optionalAttrs (derv.meta ? homepage) { inherit (derv.meta) homepage; }
       // lib.optionalAttrs (derv.meta ? broken) { inherit (derv.meta) broken; }
       // lib.optionalAttrs (derv.meta ? identifiers) (

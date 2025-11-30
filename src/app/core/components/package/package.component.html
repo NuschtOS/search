@@ -96,6 +96,12 @@
           <td [innerHTML]="package.description"></td>
         </tr>
         }
+        @if (package.long_description) {
+        <tr>
+          <td>Long Description</td>
+          <td [innerHTML]="package.long_description"></td>
+        </tr>
+        }
         @if (package.homepages.length >0) {
         <tr>
           <td>Homepage</td>
