@@ -8,7 +8,7 @@ let
   # on nixos stable and unstable
   pnpm' = callPackage (path + "/pkgs/development/tools/pnpm/generic.nix") {
     version = "10.18.0";
-    hash = "sha256-OWej7+KQnfMF/sS4M6ME38oXw4C2u3dnL02sTyzdN4g=";
+    hash = "sha256-NtmIuj9KQthBeOUBh8Y+xYK4YfE1BAKty7WL0UaNL+M=";
   };
   pnpm = pnpm' // {
     passthru = pnpm'.passthru // {
