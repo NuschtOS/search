@@ -60,7 +60,7 @@
                       system = "${pkgs.stdenv.system}";
                       config = {
                         allowBroken = true;
-                        derivationPURLInheritance = true;
+                        allowSrcEvalForDrvMeta = true;
                       };
                     }
                   '';
