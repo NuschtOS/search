@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, take } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { CONFIG } from '../config.domain';
 
 export interface Meta {

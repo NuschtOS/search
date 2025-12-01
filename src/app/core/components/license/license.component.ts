@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, filter, mergeMap, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, filter, mergeMap, Subject, takeUntil } from 'rxjs';
 import { License, MetaService } from '../../data/meta.service';
 import { AsyncPipe } from '@angular/common';
 
