@@ -151,7 +151,7 @@ rec {
           exit 4
         fi
       '')
-      # Wrapper often use symlinkJoin which sets allowSubstitutes = false and only contain symlinks to man pages.
+      # Wrappers often use symlinkJoin which sets allowSubstitutes = false and only contain symlinks to man pages.
       # We do not want to download them as they are big, do not allow man outputs and download the complete unwrapped variant.
       (lib.filter (p: p != null && p.allowSubstitutes)
         (map
