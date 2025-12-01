@@ -82,6 +82,6 @@ export abstract class SearchService<T> {
   }
 
   public getIndexSize(): Observable<number | undefined> {
-    return this.index.pipe(map(index => index?.size()))
+    return this.index.pipe(map(index => index?.size()));
   }
 }

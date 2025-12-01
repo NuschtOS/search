@@ -163,24 +163,24 @@
           <td><code>{{package.purl}}</code></td>
         </tr>
         }
-@if (package.maintainers.length > 0) {
-<tr>
-<td>Maintainers</td>
-        <td>
-@if (package.maintainers.length > 1) {
-<ul>
-@for (githubId of package.maintainers; track githubId) {
-  <li>
-  <app-maintainer [githubId]="{scopeId: (scopeId$ | async)!, githubId}" />
-</li>
-}
-</ul>
-} @else {
-  <app-maintainer [githubId]="{scopeId: (scopeId$ | async)!, githubId: package.maintainers[0]}" />
-}
-        </td>
+        @if (package.maintainers.length > 0) {
+        <tr>
+          <td>Maintainers</td>
+          <td>
+          @if (package.maintainers.length > 1) {
+            <ul>
+            @for (githubId of package.maintainers; track githubId) {
+              <li>
+                <app-maintainer [githubId]="{scopeId: (scopeId$ | async)!, githubId}" />
+              </li>
+              }
+            </ul>
+          } @else {
+            <app-maintainer [githubId]="{scopeId: (scopeId$ | async)!, githubId: package.maintainers[0]}" />
+          }
+          </td>
         </tr>
-}
+        }
       </tbody>
     </table>
   }
