@@ -6,7 +6,14 @@ export const routes: Routes = [
   {
     path: "", pathMatch: 'full', redirectTo: (snapshot) => {
       const router = inject(Router);
-      return router.createUrlTree(["options"], { queryParams: snapshot.queryParams })
+      if (CONFIG.optionsEnabled) {
+        return router.createUrlTree(["options"], { queryParams: snapshot.queryParams });
+      } else if (CONFIG.packagesEnabled) {
+        return router.createUrlTree(["packages"], { queryParams: snapshot.queryParams });
+      } else {
+        // No enabled routes; redirect to a not-found or fallback route if desired
+        return router.createUrlTree([], { queryParams: snapshot.queryParams });
+      }
     }
   },
   ...(CONFIG.optionsEnabled
