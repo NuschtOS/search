@@ -42,7 +42,7 @@ jobs:
       - name: Build search
         # reduce max jobs to not run out of memory
         run: |
-          nix build -j 1 -L \
+          nix build -j 2 -L \
             github:NuschtOS/search.nuschtos.de/packages \
             --override-input search . \
             --override-input nixpkgs github:NuschtOS/nuschtpkgs/nixos-unstable
