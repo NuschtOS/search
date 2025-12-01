@@ -11,7 +11,7 @@ export interface Package {
   purl: string,
   declaration?: string,
   description?: string,
-  long_description?: string,
+  longDescription?: string,
   evalError?: boolean,
   homepages: string[],
   knownVulnerabilities: string[],
