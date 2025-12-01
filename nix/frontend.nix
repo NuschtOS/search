@@ -50,7 +50,7 @@ stdenv.mkDerivation (finalAttrs: {
   __darwinAllowLocalNetworking = true;
 
   buildPhase = ''
-    pnpm run build:ci --base-href ${config.baseHref}
+    pnpm run build:ci --base-href ${config.baseHref} | cat
   '';
 
   installPhase = ''
