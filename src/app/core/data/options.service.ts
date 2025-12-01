@@ -3,7 +3,7 @@ import { SearchService } from './search.service';
 import { HttpClient } from '@angular/common/http';
 
 export interface Option {
-  declarations: string[]
+  declarations?: string[]
   default?: string
   description: string
   example?: string

@@ -32,7 +32,7 @@
       </app-notice>
     }
 
-    @if (package.knownVulnerabilities.length != 0) {
+    @if ((package.knownVulnerabilities ?? []).length != 0) {
       <app-notice>
         <h3>Insecure Package</h3>
         <p>This package has been marked as insecure:</p>
@@ -102,11 +102,11 @@
           <td [innerHTML]="package.longDescription"></td>
         </tr>
         }
-        @if (package.homepages.length >0) {
+        @if ((package.homepages ?? []).length > 0) {
         <tr>
           <td>Homepage</td>
           <td>
-            @if (package.homepages.length > 1) {
+            @if ((package.homepages ?? []).length > 1) {
             <ul>
               @for (homepage of package.homepages; track homepage) {
               <li>
@@ -115,16 +115,16 @@
               }
             </ul>
             } @else {
-            <a target="_blank" [href]="package.homepages[0]">{{package.homepages[0]}}</a>
+            <a target="_blank" [href]="package.homepages?.[0]">{{package.homepages?.[0]}}</a>
             }
           </td>
         </tr>
         }
-        @if (package.licenses.length > 0) {
+        @if ((package.licenses ?? []).length > 0) {
         <tr>
           <td>Licenses</td>
           <td>
-          @if (package.licenses.length >1) {
+          @if ((package.licenses ?? []).length > 1) {
             <ul>
               @for (license of package.licenses; track license)  {
               <li>
@@ -133,7 +133,7 @@
               }
             </ul>
           } @else {
-            <app-license [shortName]="{scopeId: (scopeId$|async)!, shortName: package.licenses[0]}"/>
+            <app-license [shortName]="{scopeId: (scopeId$|async)!, shortName: (package.licenses ?? [])[0]}"/>
           }
           </td>
         </tr>
@@ -144,7 +144,7 @@
           <td><code>{{package.cpe}}</code></td>
         </tr>
         } @else {
-        @if (package.possibleCpes.length > 0) {
+        @if ((package.possibleCpes ?? []).length > 0) {
         <tr>
           <td>Possible <abbr title="Common Platform Enumeration">CPE</abbr></td>
           <td>
@@ -163,11 +163,11 @@
           <td><code>{{package.purl}}</code></td>
         </tr>
         }
-        @if (package.maintainers.length > 0) {
+        @if ((package.maintainers ?? []).length > 0) {
         <tr>
           <td>Maintainers</td>
           <td>
-          @if (package.maintainers.length > 1) {
+          @if ((package.maintainers ?? []).length > 1) {
             <ul>
             @for (githubId of package.maintainers; track githubId) {
               <li>
@@ -176,7 +176,7 @@
               }
             </ul>
           } @else {
-            <app-maintainer [githubId]="{scopeId: (scopeId$ | async)!, githubId: package.maintainers[0]}" />
+            <app-maintainer [githubId]="{scopeId: (scopeId$ | async)!, githubId: (package.maintainers ?? [])[0]}" />
           }
           </td>
         </tr>
