@@ -60,7 +60,7 @@ let
           last = builtins.head (lib.sublist (builtins.length name - 1) 1 name);
         in
         # this also works if `last` has only one character
-        lib.toLower (builtins.substring 0 1 last)
+        lib.toLower (builtins.substring 0 2 last)
       )
       pkgNames;
 in
