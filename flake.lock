@@ -28,11 +28,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1764709705,
-        "narHash": "sha256-6J5OQrOiWqQdgAv/H5s+Lx4exVNjhCH9/1PWWs3f1n0=",
+        "lastModified": 1764711639,
+        "narHash": "sha256-JxwUp1E41karGHgYoYa4yhamjiZAUX+eSE69dDZVWrQ=",
         "owner": "NuschtOS",
         "repo": "ixx",
-        "rev": "d2fb751c99983a004a829859c320491e53441c1f",
+        "rev": "e9273d0296e81326650a68699ffac1e999daf5d6",
         "type": "github"
       },
       "original": {
