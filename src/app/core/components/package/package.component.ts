@@ -7,10 +7,11 @@ import { LoadingIndicatorComponent } from "../loading-indicator/loading-indicato
 import { NoticeComponent } from "../notice/notice.component";
 import { MaintainerComponent } from "../maintainer/maintainer.component";
 import { LicenseComponent } from "../license/license.component";
+import { TeamComponent } from "../team/team.component";
 
 @Component({
   selector: 'app-package',
-  imports: [AsyncPipe, RouterLink, LoadingIndicatorComponent, NoticeComponent, MaintainerComponent, LicenseComponent],
+  imports: [AsyncPipe, RouterLink, LoadingIndicatorComponent, NoticeComponent, MaintainerComponent, LicenseComponent, TeamComponent],
   templateUrl: './package.component.html',
   styleUrl: './package.component.scss'
 })

@@ -10,6 +10,7 @@ export interface Meta {
 export interface ScopeMeta {
   licenses: Record<string, License>,
   maintainers: Record<string, Maintainer>,
+  teams: Record<string, number[]>,
 }
 
 export interface License {
@@ -47,5 +48,9 @@ export class MetaService {
 
   public getMaintainer(scopeId: number, githubId: number): Observable<Maintainer | null> {
     return this.meta.pipe(map(meta => meta?.scopes[String(scopeId)]?.maintainers[String(githubId)] ?? null));
+  }
+
+  public getTeamMemberIds(scopeId: number, teamName: string): Observable<number[] | null> {
+    return this.meta.pipe(map(meta => meta?.scopes[String(scopeId)]?.teams[String(teamName)] ?? null));
   }
 }

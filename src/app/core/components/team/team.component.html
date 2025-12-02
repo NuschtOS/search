@@ -1,0 +1,9 @@
+@if ((maintainerIds$ | async); as maintainerIds) {
+<ul>
+  @for (maintainerId of maintainerIds; track maintainerId)  {
+  <li>
+    <app-maintainer [githubId]="{scopeId: (scopeId$ | async) ?? 0, githubId: maintainerId}" />
+  </li>
+  }
+</ul>
+}

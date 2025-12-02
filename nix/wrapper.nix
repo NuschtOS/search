@@ -173,6 +173,10 @@ rec {
           maintainerMapping = lib.mapAttrs' (_n: v:
             lib.nameValuePair (toString v.githubId) (lib.removeAttrs v [ "githubId" "keys" ])
           ) (scope.maintainers or lib.maintainers);
+
+          teamMappings = lib.mapAttrs (_n: v: {
+            inherit (v) scope; members = map (m: m.githubId) v.members;
+          }) (scope.teams or lib.teams);
         } // lib.optionalAttrs (scope?name) { inherit (scope) name; }
         // lib.optionalAttrs (scope?optionsPrefix) { inherit (scope) optionsPrefix; }
         // lib.optionalAttrs (scope?optionsJSON || scope?modules) {

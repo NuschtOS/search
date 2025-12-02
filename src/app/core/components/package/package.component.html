@@ -181,6 +181,24 @@
           </td>
         </tr>
         }
+        @if ((package.teams ?? []).length > 0) {
+        <tr>
+          <td>Maintainer Teams</td>
+          <td>
+          @if ((package.teams ?? []).length > 1) {
+            <ul>
+            @for (shortName of package.teams; track shortName) {
+              <li>
+                <app-team [teamName]="{scopeId: (scopeId$ | async)!, teamName: shortName}" />
+              </li>
+              }
+            </ul>
+          } @else {
+            <app-team [teamName]="{scopeId: (scopeId$ | async)!, teamName: package.teams?.[0] ?? ''}" />
+          }
+          </td>
+        </tr>
+        }
       </tbody>
     </table>
   }
