@@ -167,7 +167,11 @@ rec {
           inherit (scope) urlPrefix;
 
           licenseMapping = lib.mapAttrs (_n: v: {
-            inherit (v) free spdxId url fullName redistributable;
+            inherit (v) free fullName redistributable;
+          } // lib.optionalAttrs (v?spdxId) {
+            inherit (v) spdxId;
+          } // lib.optionalAttrs (v?url) {
+            inherit (v) url;
           }) (scope.licenses or lib.licenses);
 
           maintainerMapping = lib.mapAttrs' (_n: v:
