@@ -166,12 +166,12 @@ rec {
         (scope: {
           inherit (scope) urlPrefix;
 
-          licenseMapping = lib.mapAttrs (_n: v:
-            lib.removeAttrs v [ "deprecated" "shortName" ]
-          ) (scope.licenses or lib.licenses);
+          licenseMapping = lib.mapAttrs (_n: v: {
+            inherit (v) free spdxId url fullName redistributable;
+          }) (scope.licenses or lib.licenses);
 
           maintainerMapping = lib.mapAttrs' (_n: v:
-            lib.nameValuePair (toString v.githubId) (lib.removeAttrs v [ "githubId" "keys" ])
+            lib.nameValuePair (toString v.githubId) { inherit (v) email github matrix name; }
           ) (scope.maintainers or lib.maintainers);
 
           teamMappings = lib.mapAttrs (_n: v: {
