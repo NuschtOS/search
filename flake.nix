@@ -47,7 +47,7 @@
 
               inherit (pkgs.callPackages ./nix/wrapper.nix {
                 inherit self ixxPkgs;
-                inherit (nix-index-database.packages.${pkgs.stdenv.system}) nix-index-database;
+                inherit (nix-index-database.packages.${pkgs.stdenv.hostPlatform.system}) nix-index-database;
                 nuscht-search = nuscht-search-unwrapped;
               }) mkOptionsJSON mkPackagesJSONs mkCollectManDerivations mkSearchJSON mkSearch mkMultiSearch;
 
@@ -60,7 +60,7 @@
                   urlPrefix = "https://github.com/NixOS/nixpkgs/tree/master/";
                   pkgs = pkgs.writeText "pkgs.nix" /* nix */ ''
                     (import ${nixpkgs}) {
-                      system = "${pkgs.stdenv.system}";
+                      system = "${pkgs.stdenv.hostPlatform.system}";
                       config = {
                         allowBroken = true;
                         allowSrcEvalForDrvMeta = true;
