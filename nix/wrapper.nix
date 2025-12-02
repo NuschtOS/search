@@ -175,7 +175,13 @@ rec {
           }) (scope.licenses or lib.licenses);
 
           maintainerMapping = lib.mapAttrs' (_n: v:
-            lib.nameValuePair (toString v.githubId) { inherit (v) email github matrix name; }
+            lib.nameValuePair (toString v.githubId) ({
+              inherit (v) github name;
+            } // lib.optionalAttrs (v?email) {
+              inherit (v) email;
+            } // lib.optionalAttrs (v?matrix) {
+              inherit (v) matrix;
+            })
           ) (scope.maintainers or lib.maintainers);
 
           teamMappings = lib.mapAttrs (_n: v: {
