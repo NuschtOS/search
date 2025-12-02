@@ -44,7 +44,7 @@ let
       let
         finalPkgs =
           let
-            pkgSets = lib.filterAttrs (name: value: !(builtins.elem name rawPkgNames) && !true) pkgsAndPkgSets;
+            pkgSets = lib.filterAttrs (name: value: !(builtins.elem name rawPkgNames) && !(builtins.tryEval (builtins.hasAttr "AAAAAASomeThingsFailToEvaluate" value)).value) pkgsAndPkgSets;
           in
           lib.mapAttrs (name: value: listPackages (attrPrefix ++ [ name ]) value) pkgSets;
       in
