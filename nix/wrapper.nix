@@ -121,7 +121,7 @@ rec {
     } ''
       mkdir tmp
       ln -s ${nix-index-database} tmp/files
-      NIX_INDEX_DATABASE=tmp nix-locate share/man/man | awk '{print $1}' | sort -u > $out
+      NIX_INDEX_DATABASE=tmp nix-locate share/man/man | awk '{print $1}' | grep -v -e PLACEHOLDER | sort -u > $out
     '';
   in
     pkgs.runCommand "man-derivations" {
