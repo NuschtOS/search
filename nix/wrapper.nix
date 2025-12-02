@@ -184,7 +184,7 @@ rec {
             })
           ) (scope.maintainers or lib.maintainers);
 
-          teamMappings = lib.mapAttrs (_n: v: {
+          teamMapping = lib.mapAttrs (_n: v: {
             inherit (v) scope; members = map (m: m.githubId) v.members;
           }) (scope.teams or lib.teams);
         } // lib.optionalAttrs (scope?name) { inherit (scope) name; }
