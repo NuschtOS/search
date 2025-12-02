@@ -49,6 +49,13 @@ jobs:
 
       - uses: nicknovitski/nix-develop@v1
 
+      - name: Copy fixx
+        run: |
+          nix build .#fixx-dist
+          cp --no-preserve=all ./result-dist/nuschtos-fixx-*-git.tgz .
+          pnpm i ./nuschtos-fixx-*-git.tgz
+          ./nix/update-pnpm-hash.sh
+
       - name: Publish to Cloudflare Pages
         if: "github.repository_owner == 'NuschtOS'"
         uses: cloudflare/wrangler-action@v3
