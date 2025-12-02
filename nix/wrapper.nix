@@ -100,6 +100,7 @@ rec {
             cp ${./build-packages.nix} build-packages.nix
             cp $partitionPath partition.json
             cp ${pkgs} pkgs.nix
+            echo "Building $name"
             NIX_STATE_DIR=$TMPDIR NIX_PATH= nix \
               --extra-experimental-features nix-command \
               eval \
@@ -112,6 +113,7 @@ rec {
               --expr \
               '(import ./build-packages.nix { inherit (import ${self.inputs.nixpkgs} {}) lib; }).buildPackages' \
               > $out
+            echo "Done $name"
           '')
       partedList;
 
