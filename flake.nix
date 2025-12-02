@@ -40,14 +40,17 @@
 
           packages =
             let
-              nuscht-search-unwrapped = pkgs.callPackage ./nix/frontend.nix { };
+              nuscht-search-unwrapped = pkgs.callPackage ./nix/frontend.nix { inherit ixxPkgs; };
             in
             rec {
+              fixx-dist = ixxPkgs.fixx.dist;
+
               inherit (pkgs.callPackages ./nix/wrapper.nix {
                 inherit self ixxPkgs;
                 inherit (nix-index-database.packages.${pkgs.stdenv.system}) nix-index-database;
                 nuscht-search = nuscht-search-unwrapped;
               }) mkOptionsJSON mkPackagesJSONs mkCollectManDerivations mkSearchJSON mkSearch mkMultiSearch;
+
               nixpkgs-search = mkSearch (
                 # nixos/release.nix hardcodes a pkgs import with x86_64-linux system
                 lib.optionalAttrs (system == "x86_64-linux") {
@@ -66,6 +69,7 @@
                   '';
                 }
               );
+
               default = nixpkgs-search;
             };
         }

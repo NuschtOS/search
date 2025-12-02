@@ -1,4 +1,4 @@
-{ callPackage, callPackages, path, lib, stdenv, nodejs }:
+{ callPackage, callPackages, ixxPkgs, path, lib, stdenv, nodejs }:
 
 { config, data }:
 
@@ -17,6 +17,10 @@ let
       }) fetchDeps configHook;
     };
   };
+
+  cpFixx = ''
+    cp ${ixxPkgs.fixx.dist}/*.tgz .
+  '';
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = manifest.name;
@@ -37,12 +41,13 @@ stdenv.mkDerivation (finalAttrs: {
     cat << EOF >src/app/core/config.json
     ${builtins.toJSON config}
     EOF
-  '';
+  '' + cpFixx;
 
   pnpmDeps = pnpm.fetchDeps {
     inherit (finalAttrs) pname version src;
     fetcherVersion = 2;
-    hash = "sha256-NtmIuj9KQthBeOUBh8Y+xYK4YfE1BAKty7WL0UaNL+M=";
+    postPatch = cpFixx;
+    hash = "sha256-FzOF9y58z/id/Fz+2JX7YtPWlAv8oC9su24idlPFCCM=";
   };
 
   nativeBuildInputs = [ nodejs pnpm.configHook ];
