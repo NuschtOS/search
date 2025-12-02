@@ -136,9 +136,11 @@ rec {
             })
           ) (scope.maintainers or lib.maintainers);
 
-          teamMapping = lib.mapAttrs (_n: v: {
-            inherit (v) scope; members = map (m: m.githubId) v.members;
-          }) (scope.teams or lib.teams);
+          teamMapping = lib.mapAttrs' (_n: v:
+            (name: value: lib.nameValuePair v.shortName {
+              inherit (v) scope; members = map (m: m.githubId) v.members;
+            })
+          ) (scope.teams or lib.teams);
         } // lib.optionalAttrs (scope?name) { inherit (scope) name; }
         // lib.optionalAttrs (scope?optionsPrefix) { inherit (scope) optionsPrefix; }
         // lib.optionalAttrs (scope?optionsJSON || scope?modules) {
@@ -160,6 +162,7 @@ rec {
         config = builtins.toJSON config;
         passAsFile = [ "config" ];
         nativeBuildInputs = [ ixxPkgs.ixx ];
+        passthru = { inherit config; };
       }
       ''
         mkdir -p $out/{options,packages}
