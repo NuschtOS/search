@@ -43,7 +43,10 @@ let
       // lib.optionalAttrs (derv.meta ? knownVulnerabilities) { inherit (derv.meta) knownVulnerabilities; }
       // lib.optionalAttrs (derv.meta ? maintainers) {
         maintainers = let
-          allTeamMaintainerIds = lib.foldl' (acc: elem: acc ++ map (m: m.githubId) elem.members) [ ] derv.meta.teams;
+          allTeamMaintainerIds = if derv.meta ? teams then
+            lib.foldl' (acc: elem: acc ++ map (m: m.githubId) elem.members) [ ] derv.meta.teams
+          else
+            [ ];
         in lib.filter (m: lib.all (x: x != m.githubId) allTeamMaintainerIds) derv.meta.maintainers;
       }
       // lib.optionalAttrs (derv.meta ? teams) {
