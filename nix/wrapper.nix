@@ -136,11 +136,11 @@ rec {
             })
           ) (scope.maintainers or lib.maintainers);
 
-          teamMapping = lib.mapAttrs' (_n: v:
-            (name: value: lib.nameValuePair v.shortName {
-              inherit (v) scope; members = map (m: m.githubId) v.members;
-            })
-          ) (scope.teams or lib.teams);
+          # ideally we would use the access name like lib.teams.c3d2 but we cannot get that back from meta.teams
+          # and searching for it is expensive
+          teamMapping = lib.mapAttrs' (_n: v: lib.nameValuePair v.shortName {
+            inherit (v) scope; members = map (m: m.githubId) v.members;
+          }) (scope.teams or lib.teams);
         } // lib.optionalAttrs (scope?name) { inherit (scope) name; }
         // lib.optionalAttrs (scope?optionsPrefix) { inherit (scope) optionsPrefix; }
         // lib.optionalAttrs (scope?optionsJSON || scope?modules) {
