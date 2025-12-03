@@ -42,12 +42,15 @@ let
       // lib.optionalAttrs (derv.meta ? licenses) { licenses = extractLicense derv.meta.licenses; }
       // lib.optionalAttrs (derv.meta ? knownVulnerabilities) { inherit (derv.meta) knownVulnerabilities; }
       // lib.optionalAttrs (derv.meta ? maintainers) {
-        maintainers = let
-          allTeamMaintainerIds = if derv.meta ? teams then
-            lib.foldl' (acc: elem: acc ++ map (m: m.githubId) elem.members) [ ] derv.meta.teams
+        maintainers = map (m: m.githubId)
+          (if derv.meta ? teams then
+            let
+              allTeamMaintainerIds = lib.foldl' (acc: elem: acc ++ map (m: m.githubId) elem.members) [ ] derv.meta.teams;
+            in
+            lib.filter (m: lib.all (x: x != m.githubId) allTeamMaintainerIds) derv.meta.maintainers
           else
-            [ ];
-        in lib.filter (m: lib.all (x: x != m.githubId) allTeamMaintainerIds) derv.meta.maintainers;
+            derv.meta.maintainers
+          );
       }
       // lib.optionalAttrs (derv.meta ? teams) {
         teams = map (m: m.shortName or "meta.teams for ${derv.name} is wrong!") derv.meta.teams;
