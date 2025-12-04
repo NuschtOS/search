@@ -64,7 +64,7 @@ export abstract class SearchService<T> {
         let options = entries[chunk];
 
         if (typeof options === "undefined") {
-          return this.http.get<T[]>(`${CONFIG.dataBase}${this.kind}/meta/${chunk}.json`)
+          return this.http.get<T[]>(`${CONFIG.dataBase}${this.kind}/chunks/${chunk}.json`)
             .pipe(tap(options => {
               entries[chunk] = options;
               return this.data.next(entries);

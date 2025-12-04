@@ -168,9 +168,9 @@ rec {
         mkdir -p $out/{options,packages}
         ixx index \
           --options-index-output $out/options/index.ixx \
-          --options-meta-output $out/options/meta \
+          --options-chunks-output $out/options/chunks \
           --packages-index-output $out/packages/index.ixx \
-          --packages-meta-output $out/packages/meta \
+          --packages-chunks-output $out/packages/chunks \
           --meta-output $out/meta.json \
           --chunk-size 300 \
           $configPath
