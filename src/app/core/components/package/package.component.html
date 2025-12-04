@@ -106,7 +106,7 @@
         <tr>
           <td>Homepage</td>
           <td>
-            @if ((package.homepages ?? []).length > 1) {
+            @if ((package.homepages!).length > 1) {
             <ul>
               @for (homepage of package.homepages; track homepage) {
               <li>
@@ -124,7 +124,7 @@
         <tr>
           <td>Licenses</td>
           <td>
-          @if ((package.licenses ?? []).length > 1) {
+          @if ((package.licenses!).length > 1) {
             <ul>
               @for (license of package.licenses; track license)  {
               <li>
@@ -167,7 +167,7 @@
         <tr>
           <td>Maintainers</td>
           <td>
-          @if ((package.maintainers ?? []).length > 1) {
+          @if ((package.maintainers!).length > 1) {
             <ul>
             @for (githubId of package.maintainers; track githubId) {
               <li>
@@ -176,7 +176,7 @@
               }
             </ul>
           } @else {
-            <app-maintainer [githubId]="{scopeId: (scopeId$ | async)!, githubId: (package.maintainers ?? [])[0]}" />
+            <app-maintainer [githubId]="{scopeId: (scopeId$ | async)!, githubId: (package.maintainers!)[0]}" />
           }
           </td>
         </tr>
@@ -185,16 +185,16 @@
         <tr>
           <td>Maintainer Teams</td>
           <td>
-          @if ((package.teams ?? []).length > 1) {
+          @if ((package.teams!).length > 1) {
             <ul>
             @for (shortName of package.teams; track shortName) {
               <li>
                 <app-team [teamName]="{scopeId: (scopeId$ | async)!, teamName: shortName}" />
               </li>
-              }
+            }
             </ul>
           } @else {
-            <app-team [teamName]="{scopeId: (scopeId$ | async)!, teamName: package.teams?.[0] ?? ''}" />
+            <app-team [teamName]="{scopeId: (scopeId$ | async)!, teamName: package.teams?.[0]!}" />
           }
           </td>
         </tr>

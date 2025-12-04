@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, filter, map, Observable } from 'rxjs';
 import { CONFIG } from '../config.domain';
 
 export interface Meta {
@@ -10,7 +10,7 @@ export interface Meta {
 export interface ScopeMeta {
   licenses: Record<string, License>,
   maintainers: Record<string, Maintainer>,
-  teams: Record<string, number[]>,
+  teams: Record<string, { members: number[], scope: string }>,
 }
 
 export interface License {
@@ -43,14 +43,23 @@ export class MetaService {
   }
 
   public getLicense(scopeId: number, shortName: string): Observable<License | null> {
-    return this.meta.pipe(map(meta => meta?.scopes[String(scopeId)]?.licenses[shortName] ?? null));
+    return this.meta.pipe(
+      filter(meta => !!meta),
+      map(meta => meta?.scopes[String(scopeId)]?.licenses[shortName] ?? null)
+    );
   }
 
   public getMaintainer(scopeId: number, githubId: number): Observable<Maintainer | null> {
-    return this.meta.pipe(map(meta => meta?.scopes[String(scopeId)]?.maintainers[String(githubId)] ?? null));
+    return this.meta.pipe(
+      filter(meta => !!meta),
+      map(meta => meta?.scopes[String(scopeId)]?.maintainers[String(githubId)] ?? null)
+    );
   }
 
-  public getTeamMemberIds(scopeId: number, teamName: string): Observable<number[] | null> {
-    return this.meta.pipe(map(meta => meta?.scopes[String(scopeId)]?.teams[String(teamName)] ?? null));
+  public getTeamMemberIds(scopeId: number, teamName: string): Observable<{ members: number[], scope: string } | null> {
+    return this.meta.pipe(
+      filter(meta => !!meta),
+      map(meta => meta!.scopes[String(scopeId)]?.teams[String(teamName)])
+    );
   }
 }

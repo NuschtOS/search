@@ -19,43 +19,30 @@ export class MatrixService {
     private readonly http: HttpClient,
   ) { }
 
-  public getAvatar(handle: string, width: number, height: number): Observable<string> {
-    let profile;
-
-    if (this.cache.has(handle)) {
-      profile = of(this.cache.get(handle)!);
-    } else {
-      profile = this.http.get<MatrixProfile>(
-        `https://matrix.org/_matrix/client/r0/profile/${handle}`
-      )
-        .pipe(
-          catchError((error) => {
-            console.error(`Failed to fetch Matrix profile for handle: ${handle}`, error);
-            return EMPTY;
-          }),
-          map(({ avatar_url }) => avatar_url),
-          tap(avatarUrl => {
-            if (avatarUrl === null) {
-              console.warn(`No avatar URL found for Matrix handle: ${handle}`);
-            }
-            this.cache.set(handle, avatarUrl);
-        }),
-        );
+  public getAvatar(handle: string, width: number, height: number): Observable<string | null> {
+    const cached = this.cache.get(handle);
+    if (cached) {
+      return of(`https://matrix.org/_matrix/media/r0/thumbnail/${cached.replace('mxc://', '')}?width=${width}&height=${height}&method=crop`);
     }
 
-    return profile.pipe(
-      switchMap(avatarUrl => {
-        if (!avatarUrl) {
-          return EMPTY;
-        }
-
-        if (typeof avatarUrl !== 'string' || !avatarUrl.startsWith('mxc://')) {
-          console.warn(`Invalid avatar URL for Matrix handle: ${handle}`);
-          return EMPTY;
-        }
-
-        return of(`https://matrix.org/_matrix/media/r0/thumbnail/${avatarUrl.replace('mxc://', '')}?width=${width}&height=${height}&method=crop`);
+    return this.http.get<MatrixProfile>(
+      `https://matrix.org/_matrix/client/r0/profile/${handle}`
+    ).pipe(
+      catchError(error => {
+        console.error(`Failed to fetch Matrix profile for handle: ${handle}`, error);
+        return of(null);
       }),
+      map(result => result ? result.avatar_url : null),
+      tap(avatarUrl => {
+        this.cache.set(handle, avatarUrl);
+      }),
+      switchMap(avatarUrl => {
+        if (!avatarUrl || typeof avatarUrl !== 'string' || !avatarUrl.startsWith('mxc://')) {
+          console.warn(`No or invalid avatar URL for Matrix handle: ${handle}`);
+          return of(null);
+        }
+        return of(`https://matrix.org/_matrix/media/r0/thumbnail/${avatarUrl.replace('mxc://', '')}?width=${width}&height=${height}&method=crop`);
+      })
     );
   }
 }

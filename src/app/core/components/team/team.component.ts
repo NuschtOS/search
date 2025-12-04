@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Maintainer, MetaService } from '../../data/meta.service';
+import { MetaService } from '../../data/meta.service';
 import { BehaviorSubject, filter, map, Subject, switchMap, takeUntil } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { MaintainerComponent } from '../maintainer/maintainer.component';
@@ -12,7 +12,7 @@ import { MaintainerComponent } from '../maintainer/maintainer.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamComponent implements OnInit, OnDestroy {
-  protected maintainerIds$ = new BehaviorSubject<number[]>([]);
+  protected teamData$ = new BehaviorSubject<{ members: number[], scope: string} | null>(null);
   protected readonly scopeId$ = new BehaviorSubject<number | null>(null);
   protected teamName$ = new BehaviorSubject<{ scopeId: number, teamName: string} | null>(null);
   private destroy$ = new Subject<null>();
@@ -26,23 +26,23 @@ export class TeamComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         filter(value => !!value),
-        switchMap(value =>
-          this.metaService.getTeamMemberIds(value.scopeId!, value.teamName!)
-            .pipe(
-              filter(maintainerIds => !!maintainerIds),
-              map(maintainerIds => maintainerIds)
-            )
-        ),
       )
-      .subscribe(this.maintainerIds$);
+      .subscribe(value => {
+        this.scopeId$.next(value!.scopeId);
+      });
 
-    this.scopeId$
+    this.teamName$
       .pipe(
         takeUntil(this.destroy$),
         filter(value => !!value),
-        map(scopeId => scopeId!)
+        switchMap(value =>
+          this.metaService.getTeamMemberIds(value.scopeId!, value.teamName!)
+            .pipe(
+              filter(teamData => !!teamData),
+            )
+        ),
       )
-      .subscribe(this.scopeId$);
+      .subscribe(teamData => this.teamData$.next(teamData));
   }
 
   public ngOnDestroy(): void {
