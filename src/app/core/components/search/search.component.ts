@@ -107,7 +107,7 @@ class SearchComponent<T> {
       });
 
     combineLatest({ form: this.formValue, scopes: this.scopes })
-      .pipe(takeUntil(this.destroy), debounceTime(500))
+      .pipe(takeUntil(this.destroy), debounceTime(300))
       .subscribe(({ form, scopes }) => {
         const formValue = {
           query: form.query,
