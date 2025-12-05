@@ -44,6 +44,7 @@
             in
             rec {
               fixx-dist = ixxPkgs.fixx.dist;
+              fixx-dist-debug = (ixxPkgs.fixx.override { release = false; }).dist;
 
               inherit (pkgs.callPackages ./nix/wrapper.nix {
                 inherit self ixxPkgs;
