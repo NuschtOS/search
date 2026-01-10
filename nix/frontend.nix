@@ -1,19 +1,25 @@
-{ callPackage, callPackages, path, lib, stdenv, nodejs, emptyDirectory, baseHref ? "/", title ? "NuschtOS Search", data ? emptyDirectory }:
+{
+ callPackage,
+ emptyDirectory,
+ fetchPnpmDeps,
+ lib,
+ nodejs,
+ path,
+ pnpmConfigHook,
+ stdenv,
+
+ baseHref ? "/",
+ title ? "NuschtOS Search",
+ data ? emptyDirectory,
+}:
 
 let
   manifest = lib.importJSON ../package.json;
   # pin pnpm version to avoid hash mismatches with differing pnpm versions
   # on nixos stable and unstable
-  pnpm' = callPackage (path + "/pkgs/development/tools/pnpm/generic.nix") {
-    version = "10.18.0";
-    hash = "sha256-OWej7+KQnfMF/sS4M6ME38oXw4C2u3dnL02sTyzdN4g=";
-  };
-  pnpm = pnpm' // {
-    passthru = pnpm'.passthru // {
-      inherit (callPackages (path + "/pkgs/development/tools/pnpm/fetch-deps") {
-        pnpm = pnpm';
-      }) fetchDeps configHook;
-    };
+  pnpm = callPackage (path + "/pkgs/development/tools/pnpm/generic.nix") {
+    version = "10.26.1";
+    hash = "sha256-6ObkmRKPaAT1ySIjzR8uP2JVcQLAxuJUzJm7KqIpu/k=";
   };
 in
 stdenv.mkDerivation (finalAttrs: {
@@ -31,13 +37,18 @@ stdenv.mkDerivation (finalAttrs: {
     ln -s ${data}/{meta,index.ixx} public
   '';
 
-  pnpmDeps = pnpm.fetchDeps {
+  pnpmDeps = fetchPnpmDeps {
     inherit (finalAttrs) pname version src;
-    fetcherVersion = 2;
-    hash = "sha256-pvP+66sH6L4tIjPnoSzQwR3ptNwmBDZcs9mff0fK5eo=";
+    inherit pnpm;
+    fetcherVersion = 3;
+    hash = "sha256-823VpinlQKP5FjPstj6FkvP2DDTowZ4M0MCiLNPSRIU=";
   };
 
-  nativeBuildInputs = [ nodejs pnpm.configHook ];
+  nativeBuildInputs = [
+    nodejs
+    pnpm
+    (pnpmConfigHook.override { inherit pnpm; })
+  ];
 
   __darwinAllowLocalNetworking = true;
 
