@@ -980,7 +980,7 @@ packages:
     engines: {node: ^18.17.0 || >=20.5.0}
 
   '@nuschtos/fixx@file:nuschtos-fixx-0.0.0-git.tgz':
-    resolution: {integrity: sha512-OfmG7z7E1pucfV1Dye6omQjQ8JYweIOWLHAYOXUa8Q+SorChFpMt+1B3o7wevWtStuGB8JO3xCbxk2bsUtLBRg==, tarball: file:nuschtos-fixx-0.0.0-git.tgz}
+    resolution: {integrity: sha512-PXPPCz13xcdVCRJBteRyAyCq4qewdW1bTGnqx1sReuwWCNaZMHB8VF0Gn8cipvJjpA6uLAmQW3oBZASa4UycHA==, tarball: file:nuschtos-fixx-0.0.0-git.tgz}
     version: 0.0.0-git
 
   '@parcel/watcher-android-arm64@2.5.1':
