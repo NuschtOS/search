@@ -1,4 +1,4 @@
-{ callPackage, callPackages, ixxPkgs, path, lib, stdenv, nodejs }:
+{ callPackage, ixxPkgs, path, lib, stdenv, nodejs, fetchPnpmDeps, pnpmConfigHook}:
 
 { config, data }:
 
@@ -6,16 +6,9 @@ let
   manifest = lib.importJSON ../package.json;
   # pin pnpm version to avoid hash mismatches with differing pnpm versions
   # on nixos stable and unstable
-  pnpm' = callPackage (path + "/pkgs/development/tools/pnpm/generic.nix") {
-    version = "10.24.0";
-    hash = "sha256-GW9L0XTry9mXhrM0UvFEyy3DLvTnE47URJHp1D1wLXU=";
-  };
-  pnpm = pnpm' // {
-    passthru = pnpm'.passthru // {
-      inherit (callPackages (path + "/pkgs/development/tools/pnpm/fetch-deps") {
-        pnpm = pnpm';
-      }) fetchDeps configHook;
-    };
+  pnpm = callPackage (path + "/pkgs/development/tools/pnpm/generic.nix") {
+    version = "10.26.1";
+    hash = "sha256-6ObkmRKPaAT1ySIjzR8uP2JVcQLAxuJUzJm7KqIpu/k=";
   };
 
   cpFixx = ''
@@ -43,14 +36,19 @@ stdenv.mkDerivation (finalAttrs: {
     EOF
   '' + cpFixx;
 
-  pnpmDeps = pnpm.fetchDeps {
+  pnpmDeps = fetchPnpmDeps {
     inherit (finalAttrs) pname version src;
-    fetcherVersion = 2;
+    inherit pnpm;
+    fetcherVersion = 3;
     postPatch = cpFixx;
-    hash = "sha256-oTzJJgLyHye04YW7Yupv8hHJN8bBhVOFS9xQv9l8OpA=";
+    hash = "sha256-vMF38mrb90/ChFEMWUPjKWPVW4OM7JahZMKgqvd5vXg=";
   };
 
-  nativeBuildInputs = [ nodejs pnpm.configHook ];
+  nativeBuildInputs = [
+    nodejs
+    pnpm
+    (pnpmConfigHook.override { inherit pnpm; })
+  ];
 
   __darwinAllowLocalNetworking = true;
 
