@@ -26,18 +26,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
-      # NOTE: not using the nix-daemon causes different hashes in FOD
-      # - name: Install Nix
-      #   uses: nixbuild/nix-quick-install-action@v30
-      #
-      # - uses: nix-community/cache-nix-action@v6
-      #   with:
-      #     primary-key: nix-${{ runner.os }}-${{ matrix.target }}-${{ hashFiles('**/*.nix', '**/flake.lock') }}
-      #     restore-prefixes-first-match: nix-${{ runner.os }}-${{ matrix.target }}-
+      - name: Make some space
+        # TODO: switch back to a release, when https://github.com/wimpysworld/nothing-but-nix/pull/25 is in one
+        uses: wimpysworld/nothing-but-nix@main
+
       - name: Install Nix
         uses: cachix/install-nix-action@v31
 
       - uses: DeterminateSystems/magic-nix-cache-action@v13
+
+      - name: Build search data
+        # reduce max jobs to not run out of memory
+        run: |
+          nix build -j 1 -L \
+            github:NuschtOS/search.nuschtos.de/packages#default.passthru.data \
+            --override-input search . \
+            --override-input nixpkgs $(jq -r '"github:" + .nodes.nixpkgs.locked.owner + "/" + .nodes.nixpkgs.locked.repo + "/" + .nodes.nixpkgs.locked.rev' flake.lock)
 
       - name: Build search
         # reduce max jobs to not run out of memory
