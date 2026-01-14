@@ -26,9 +26,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
-      - name: Make some space
-        # TODO: switch back to a release, when https://github.com/wimpysworld/nothing-but-nix/pull/25 is in one
-        uses: wimpysworld/nothing-but-nix@main
+      #- name: Make some space
+      #  # TODO: switch back to a release, when https://github.com/wimpysworld/nothing-but-nix/pull/25 is in one
+      #  uses: wimpysworld/nothing-but-nix@main
+
+      - name: Set Swap Space
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 20
 
       - name: Install Nix
         uses: cachix/install-nix-action@v31
