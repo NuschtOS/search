@@ -15,6 +15,10 @@ export abstract class SearchService<T> {
 
   private readonly index = new BehaviorSubject<Index | null>(null);
   private readonly data = new BehaviorSubject<Record<number, T[]>>({});
+  private readonly ready$ = this.index.pipe(
+    map(index => index),
+    switchMap(index => index ? of(index) : of()),
+  );
 
   constructor(
     private readonly http: HttpClient,
@@ -31,13 +35,13 @@ export abstract class SearchService<T> {
   }
 
   public search(scopeId: number | undefined, query: string): Observable<SearchedResult[]> {
-    return this.index.pipe(
+    return this.ready$.pipe(
       map(index => {
-        return index ? index.search(scopeId, query, MAX_SEARCH_RESULTS).map(entry => {
+        return index.search(scopeId, query, MAX_SEARCH_RESULTS).map(entry => {
           const opt = ({ idx: entry.idx(), scope_id: entry.scope_id(), name: entry.name() });
           //      option.free();
           return opt;
-        }) : [];
+        });
       })
     );
   }
@@ -47,10 +51,10 @@ export abstract class SearchService<T> {
       return of(undefined);
     }
 
-    return this.index.pipe(
+    return this.ready$.pipe(
       switchMap(index => {
-        const idx = index?.get_idx_by_name(scopeId, name);
-        return typeof idx === "number" ? this.getByIdx(idx, index!.chunk_size()) : of(undefined);
+        const idx = index.get_idx_by_name(scopeId, name);
+        return typeof idx === "number" ? this.getByIdx(idx, index.chunk_size()) : of(undefined);
       })
     );
   }
@@ -78,10 +82,10 @@ export abstract class SearchService<T> {
   }
 
   public getScopes(): Observable<string[]> {
-    return this.index.pipe(map(index => index ? index.scopes() : []));
+    return this.ready$.pipe(map(index => index.scopes()));
   }
 
   public getIndexSize(): Observable<number | undefined> {
-    return this.index.pipe(map(index => index?.size()));
+    return this.ready$.pipe(map(index => index.size()));
   }
 }
