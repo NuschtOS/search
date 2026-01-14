@@ -45,7 +45,7 @@ export abstract class SearchService<T> {
     );
   }
 
-  public getByName(scopeId: number, name: string | undefined): Observable<T | undefined> {
+  public getByName(scopeId: number, name: string | undefined): Observable<(T & { scopeId: number }) | undefined> {
     if (typeof name === "undefined" || name.length == 0) {
       return of(undefined);
     }
@@ -54,7 +54,8 @@ export abstract class SearchService<T> {
       switchMap(index => {
         const idx = index.get_idx_by_name(scopeId, name);
         return typeof idx === "number" ? this.getByIdx(idx, index.chunk_size()) : of(undefined);
-      })
+      }),
+      map(entry => Object.assign({}, entry, { scopeId }))
     );
   }
 

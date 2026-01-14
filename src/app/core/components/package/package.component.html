@@ -1,4 +1,4 @@
-@if ((data | async); as package) {
+@if ((package$ | async); as package) {
 <div class="typography">
   <h2><code>{{package.attrName}}</code></h2>
 
@@ -46,11 +46,13 @@
 
     <table>
       <tbody>
-        @if ((scope | async); as scope) {
-        <tr>
-          <td>Scope</td>
-          <td><a [routerLink]="[]" [queryParams]="{scope}" queryParamsHandling="merge">{{scope}}</a></td>
-        </tr>
+        @if ((scopes$ | async); as scopes) {
+          @if (scopes.length > 1) {
+            <tr>
+              <td>Scope</td>
+              <td><a [routerLink]="[]" [queryParams]="{scopeId: package.scopeId}" queryParamsHandling="merge">{{scopes[package.scopeId]}}</a></td>
+            </tr>
+          }
         }
         @if (package.declaration) {
         <tr>
@@ -128,12 +130,12 @@
             <ul>
               @for (license of package.licenses; track license)  {
               <li>
-                <app-license [shortName]="{scopeId: (scopeId$|async)!, shortName: license}"/>
+                <app-license [shortName]="{scopeId: package.scopeId, shortName: license}"/>
               </li>
               }
             </ul>
           } @else {
-            <app-license [shortName]="{scopeId: (scopeId$|async)!, shortName: (package.licenses ?? [])[0]}"/>
+            <app-license [shortName]="{scopeId: package.scopeId, shortName: (package.licenses ?? [])[0]}"/>
           }
           </td>
         </tr>
@@ -159,7 +161,7 @@
         }
         @if (package.purl) {
         <tr>
-          <td><abbr title="Package URL">purl</abbr></td>
+          <td><abbr title="Package URL">PURL</abbr></td>
           <td><code>{{package.purl}}</code></td>
         </tr>
         }
@@ -171,12 +173,12 @@
             <ul>
             @for (githubId of package.maintainers; track githubId) {
               <li>
-                <app-maintainer [githubId]="{scopeId: (scopeId$ | async)!, githubId}" />
+                <app-maintainer [githubId]="{scopeId: package.scopeId, githubId}" />
               </li>
               }
             </ul>
           } @else {
-            <app-maintainer [githubId]="{scopeId: (scopeId$ | async)!, githubId: (package.maintainers!)[0]}" />
+            <app-maintainer [githubId]="{scopeId: package.scopeId, githubId: (package.maintainers!)[0]}" />
           }
           </td>
         </tr>
@@ -189,12 +191,12 @@
             <ul>
             @for (shortName of package.teams; track shortName) {
               <li>
-                <app-team [teamName]="{scopeId: (scopeId$ | async)!, teamName: shortName}" />
+                <app-team [teamName]="{scopeId: package.scopeId, teamName: shortName}" />
               </li>
             }
             </ul>
           } @else {
-            <app-team [teamName]="{scopeId: (scopeId$ | async)!, teamName: package.teams?.[0]!}" />
+            <app-team [teamName]="{scopeId: package.scopeId, teamName: package.teams?.[0]!}" />
           }
           </td>
         </tr>
