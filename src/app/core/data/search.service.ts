@@ -39,7 +39,6 @@ export abstract class SearchService<T> {
       map(index => {
         return index.search(scopeId, query, MAX_SEARCH_RESULTS).map(entry => {
           const opt = ({ idx: entry.idx(), scope_id: entry.scope_id(), name: entry.name() });
-          //      option.free();
           return opt;
         });
       })
