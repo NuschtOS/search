@@ -128,10 +128,22 @@
           <td><a target="_blank" [href]="package.downloadPage">{{package.downloadPage}}</a></td>
         </tr>
         }
-        @if (package.changelog) {
+        @if ((package.changelogs ?? []).length > 0) {
         <tr>
           <td>Changelog</td>
-          <td><a target="_blank" [href]="package.changelog">{{package.changelog}}</a></td>
+          <td>
+            @if ((package.changelogs!).length > 1) {
+            <ul>
+              @for (changelog of package.changelogs; track changelog) {
+              <li>
+                <a target="_blank" [href]="changelog">{{changelog}}</a>
+              </li>
+              }
+            </ul>
+            } @else {
+            <a target="_blank" [href]="package.changelogs?.[0]">{{package.changelogs?.[0]}}</a>
+            }
+          </td>
         </tr>
         }
         @if ((package.licenses ?? []).length > 0) {

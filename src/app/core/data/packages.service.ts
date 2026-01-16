@@ -5,7 +5,7 @@ import { SearchService } from './search.service';
 export interface Package {
   attrName: string,
   broken?: boolean,
-  changelog?: string,
+  changelogs?: string[],
   cpe?: string,
   declaration?: string,
   description?: string,
