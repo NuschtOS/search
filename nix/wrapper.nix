@@ -44,11 +44,11 @@ rec {
           {
             partition = builtins.toJSON attrNames;
             passAsFile = [ "partition" ];
-            nativeBuildInputs = [ nixpkgsPkgs.nixVersions.nix_2_32 ];
+            nativeBuildInputs = with nixpkgsPkgs; [ jq nixVersions.nix_2_32 ];
           }
           ''
             cp ${./build-packages.nix} build-packages.nix
-            cp $partitionPath partition.json
+            jq . $partitionPath > partition.json
             cp ${pkgs} pkgs.nix
             echo "Building $name"
             NIX_STATE_DIR=$TMPDIR NIX_PATH= nix \
@@ -62,7 +62,7 @@ rec {
               --show-trace \
               --expr \
               '(import ./build-packages.nix { inherit (import ${self.inputs.nixpkgs} {}) lib; }).buildPackages' \
-              > $out
+              | jq . > $out
             echo "Done $name"
           '')
       partedList;
