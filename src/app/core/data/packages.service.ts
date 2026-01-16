@@ -22,6 +22,7 @@ export interface Package {
   pname?: string,
   possibleCpes?: string[],
   purl: string,
+  sourceProvenance?: string[],
   teams?: string[],
   version?: string,
 }

@@ -39,9 +39,9 @@ let
         // lib.optionalAttrs (derv.meta.identifiers?possibleCPEs) { possibleCpes = map (c: c.cpe) derv.meta.identifiers.possibleCPEs; }
         // lib.optionalAttrs (derv.meta.identifiers?purl) { inherit (derv.meta.identifiers) purl; }
       )
-      // lib.optionalAttrs (derv.meta ? longDescription) { inherit (derv.meta) longDescription; }
       // lib.optionalAttrs (derv.meta ? license) { licenses = extractLicense derv.meta.license; }
       // lib.optionalAttrs (derv.meta ? licenses) { licenses = extractLicense derv.meta.licenses; }
+      // lib.optionalAttrs (derv.meta ? longDescription) { inherit (derv.meta) longDescription; }
       // lib.optionalAttrs (derv.meta ? knownVulnerabilities) { inherit (derv.meta) knownVulnerabilities; }
       // lib.optionalAttrs (derv.meta ? maintainers) {
         maintainers = map (m: m.githubId)
@@ -54,10 +54,11 @@ let
             derv.meta.maintainers
           );
       }
+      // lib.optionalAttrs (derv.meta ? position) { declaration = derv.meta.position; }
+      // lib.optionalAttrs (derv.meta ? sourceProvenance) { sourceProvenance = map (sp: sp.shortName) derv.meta.sourceProvenance; }
       // lib.optionalAttrs (derv.meta ? teams) {
         teams = map (m: m.shortName or "meta.teams for ${derv.name} is wrong!") derv.meta.teams;
       }
-      // lib.optionalAttrs (derv.meta ? position) { declaration = derv.meta.position; }
     );
 
   createEvalError = newName: {

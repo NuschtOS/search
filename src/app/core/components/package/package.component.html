@@ -164,6 +164,22 @@
           </td>
         </tr>
         }
+        @if ((package.sourceProvenance ?? []).length > 0) {
+        <tr>
+          <td>Source Provenance</td>
+          <td>
+            @if ((package.sourceProvenance!).length > 1) {
+            <ul>
+              @for (source of package.sourceProvenance; track source) {
+              <li>{{source}}</li>
+              }
+            </ul>
+            } @else {
+            {{package.sourceProvenance?.[0]}}
+            }
+          </td>
+        </tr>
+        }
         @if (package.cpe) {
         <tr>
           <td><abbr title="Common Platform Enumeration">CPE</abbr></td>
