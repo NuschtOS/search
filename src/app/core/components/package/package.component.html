@@ -122,6 +122,18 @@
           </td>
         </tr>
         }
+        @if (package.downloadPage) {
+        <tr>
+          <td>Download Page</td>
+          <td><a target="_blank" [href]="package.downloadPage">{{package.downloadPage}}</a></td>
+        </tr>
+        }
+        @if (package.changelog) {
+        <tr>
+          <td>Changelog</td>
+          <td><a target="_blank" [href]="package.changelog">{{package.changelog}}</a></td>
+        </tr>
+        }
         @if ((package.licenses ?? []).length > 0) {
         <tr>
           <td>Licenses</td>

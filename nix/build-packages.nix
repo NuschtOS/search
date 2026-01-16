@@ -30,14 +30,16 @@ let
   // lib.optionalAttrs (derv ? meta)
     (
       lib.optionalAttrs (derv.meta ? description) { inherit (derv.meta) description; }
-      // lib.optionalAttrs (derv.meta ? longDescription) { inherit (derv.meta) longDescription; }
-      // lib.optionalAttrs (derv.meta ? homepage) { inherit (derv.meta) homepage; }
       // lib.optionalAttrs (derv.meta ? broken) { inherit (derv.meta) broken; }
+      // lib.optionalAttrs (derv.meta ? changelog) { inherit (derv.meta) changelog; }
+      // lib.optionalAttrs (derv.meta ? downloadPage) { inherit (derv.meta) downloadPage; }
+      // lib.optionalAttrs (derv.meta ? homepage) { inherit (derv.meta) homepage; }
       // lib.optionalAttrs (derv.meta ? identifiers) (
         lib.optionalAttrs (derv.meta.identifiers?cpe) { inherit (derv.meta.identifiers) cpe; }
         // lib.optionalAttrs (derv.meta.identifiers?possibleCPEs) { possibleCpes = map (c: c.cpe) derv.meta.identifiers.possibleCPEs; }
         // lib.optionalAttrs (derv.meta.identifiers?purl) { inherit (derv.meta.identifiers) purl; }
       )
+      // lib.optionalAttrs (derv.meta ? longDescription) { inherit (derv.meta) longDescription; }
       // lib.optionalAttrs (derv.meta ? license) { licenses = extractLicense derv.meta.license; }
       // lib.optionalAttrs (derv.meta ? licenses) { licenses = extractLicense derv.meta.licenses; }
       // lib.optionalAttrs (derv.meta ? knownVulnerabilities) { inherit (derv.meta) knownVulnerabilities; }
