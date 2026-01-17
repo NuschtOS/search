@@ -14,11 +14,11 @@ export interface ScopeMeta {
 }
 
 export interface License {
-  free: boolean;
-  spdxId?: string;
+  free?: boolean;
+  fullName?: string;
+  redistributable?: boolean;
+  shortName?: string;
   url?: string;
-  fullName: string;
-  redistributable: boolean;
 }
 
 export interface Maintainer {

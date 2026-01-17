@@ -1,18 +1,26 @@
 { lib }:
 
 let
-  extractLicense = lic:
+  extractLicense = attrName: lic:
     if lib.isList lic then
       builtins.foldl'
-        (acc: curr: acc ++ (extractLicense curr))
+        (acc: curr: acc ++ (extractLicense attrName curr))
         [ ]
         lic
     else if lib.isAttrs lic then
-      [
-        (lic.shortName or lic.fullName or lic.url)
-      ]
+      [ ({
+        shortName = lic.shortName or lic.fullName or "License for ${lib.concatStringsSep "." attrName}";
+      } // lib.optionalAttrs (lic ? free) {
+        free = lic.free;
+      } // lib.optionalAttrs (lic ? fullName) {
+        fullName = lic.fullName;
+      } // lib.optionalAttrs (lic ? redistributable) {
+        redistributable = lic.redistributable;
+      } // lib.optionalAttrs (lic ? url) {
+        url = lic.url;
+      }) ]
     else if lib.isString lic then
-      [ lic ]
+      [ { fullName = lic; } ]
     else
       throw "Don't know how to handle ${toString lic}";
 
@@ -39,8 +47,8 @@ let
         // lib.optionalAttrs (derv.meta.identifiers?possibleCPEs) { possibleCpes = map (c: c.cpe) derv.meta.identifiers.possibleCPEs; }
         // lib.optionalAttrs (derv.meta.identifiers?purl) { inherit (derv.meta.identifiers) purl; }
       )
-      // lib.optionalAttrs (derv.meta ? license) { licenses = extractLicense derv.meta.license; }
-      // lib.optionalAttrs (derv.meta ? licenses) { licenses = extractLicense derv.meta.licenses; }
+      // lib.optionalAttrs (derv.meta ? license) { licenses = extractLicense attrName derv.meta.license; }
+      // lib.optionalAttrs (derv.meta ? licenses) { licenses = extractLicense attrName derv.meta.licenses; }
       // lib.optionalAttrs (derv.meta ? longDescription) { inherit (derv.meta) longDescription; }
       // lib.optionalAttrs (derv.meta ? knownVulnerabilities) { inherit (derv.meta) knownVulnerabilities; }
       // lib.optionalAttrs (derv.meta ? maintainers) {

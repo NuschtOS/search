@@ -39,4 +39,8 @@ export class LicenseComponent implements OnInit, OnDestroy {
   set shortName(value: { scopeId: number, shortName: string }) {
     this.shortName$.next(value);
   }
+
+  getLicenseTitle(license: License): string {
+    return `This license is ${license.free ? 'free' : 'unfree'} and ${license.redistributable ? 'redistributable' : 'not redistributable'}.`;
+  }
 }
