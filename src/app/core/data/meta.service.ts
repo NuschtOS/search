@@ -42,10 +42,10 @@ export class MetaService {
       .subscribe({next: meta => this.meta.next(meta)});
   }
 
-  public getLicense(scopeId: number, shortName: string): Observable<License | null> {
+  public getLicense(scopeId: number, maybeShortName: string): Observable<License | null> {
     return this.meta.pipe(
       filter(meta => !!meta),
-      map(meta => meta?.scopes[String(scopeId)]?.licenses[shortName] ?? null)
+      map(meta => meta?.scopes[String(scopeId)]?.licenses[maybeShortName] ?? maybeShortName)
     );
   }
 
