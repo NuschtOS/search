@@ -1,6 +1,6 @@
-import { afterNextRender, AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { afterNextRender, AfterViewInit, ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Observable, Subject, combineLatest, debounceTime, filter, map, switchMap, takeUntil } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, combineLatest, debounceTime, filter, map, switchMap, takeUntil } from 'rxjs';
 import { MAX_SEARCH_RESULTS, SearchService, SearchedResult } from '../../data/search.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DropdownComponent, TextFieldComponent } from "@feel/form";
@@ -16,7 +16,7 @@ function getQuery(route: ActivatedRoute): { query: string | null, scope: string 
 }
 
 /**
- * @see <https://stackoverflow.com/a/68703218>
+ * @see https://stackoverflow.com/a/68703218
  */
 function prefix(options: SearchedResult[]): string {
   // check border cases size 1 array and empty first word
@@ -66,6 +66,7 @@ class SearchComponent<T> {
 
   protected readonly selectedEntry;
   protected readonly maxSearchResults = MAX_SEARCH_RESULTS;
+  protected readonly searchLabel$ = new BehaviorSubject<string>("Search");
 
   private readonly destroy = new Subject<void>();
 
@@ -141,6 +142,10 @@ class SearchComponent<T> {
   protected isActive(opt: SearchedResult): Observable<boolean> {
     return this.selectedEntry.pipe(map(option => option.scope_id === opt.scope_id && option.name === opt.name));
   }
+
+  set searchString(value: string) {
+    this.searchLabel$.next(value);
+  }
 }
 
 @Component({
@@ -167,6 +172,11 @@ export class OptionsSearchComponent extends SearchComponent<Option> implements O
   public ngOnDestroy(): void {
     this.ngOnDestroy0();
   }
+
+  @Input()
+  override set searchString(value: string) {
+    super.searchString = value;
+  }
 }
 
 @Component({
@@ -192,5 +202,10 @@ export class PackagesSearchComponent extends SearchComponent<Package> implements
 
   public ngOnDestroy(): void {
     this.ngOnDestroy0();
+  }
+
+  @Input()
+  override set searchString(value: string) {
+    super.searchString = value;
   }
 }

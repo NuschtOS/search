@@ -1,6 +1,5 @@
 <header>
   <h1>{{title}}</h1>
-  <p>Searching {{searchService.getIndexSize() | async | number}} options.</p>
   <a routerLink="/packages" queryParamsHandling="merge">
     Packages Search
   </a>
@@ -8,7 +7,7 @@
 
 <aside>
   <div class="card">
-    <app-options-search />
+    <app-options-search [searchString]="(searchLabel$ | async)!" />
   </div>
 </aside>
 
