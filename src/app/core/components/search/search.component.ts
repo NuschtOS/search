@@ -30,7 +30,7 @@ function prefix(options: SearchedResult[]): string {
   return options[0].name.slice(0, i);
 }
 
-class SearchComponent<T> {
+export class SearchComponent<T> {
 
   protected readonly search = new FormGroup({
     query: new FormControl<string>(""),
