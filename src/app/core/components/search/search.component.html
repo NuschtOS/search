@@ -5,7 +5,7 @@
     <option value="-1">All</option>
     @for (scope of scopes; track scope; let idx = $index) {
       <option [value]="idx.toString()">
-        {{scope}}
+        {{scope.name}}
       </option>
     }
   </feel-dropdown>

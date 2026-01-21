@@ -40,10 +40,9 @@ export class SearchComponent<T> {
 
   private readonly formValue = new Subject<{ query: string | null, scope: number | null }>();
 
-  protected readonly scopes = CONFIG.scopes;
   protected readonly results = this.formValue.pipe(
     switchMap(formValue => this.searchService.search(
-      formValue.scope === null ? undefined : formValue.scope,
+      formValue.scope === null ? undefined : this.scopes[formValue.scope].idx,
       formValue.query ?? ''
     )),
     map(entries => {
@@ -76,6 +75,7 @@ export class SearchComponent<T> {
     private readonly activatedRoute: ActivatedRoute,
     private readonly searchService: SearchService<T>,
     private readonly collapse: boolean,
+    protected readonly scopes: ((typeof CONFIG.scopes)[number] & { idx: number })[],
   ) {
     this.selectedEntry = this.activatedRoute.queryParams.pipe(
       map(({ scope_id, name }) => ({
@@ -112,7 +112,7 @@ export class SearchComponent<T> {
       .subscribe((form) => {
         const formValue = {
           query: form.query,
-          scope: form.scope === null ? null : form.scope
+          scope: form.scope === null ? null : CONFIG.scopes[form.scope].name
         };
 
         const urlValue = getQuery(this.activatedRoute);
@@ -127,7 +127,7 @@ export class SearchComponent<T> {
 
   protected ngAfterViewInit0(): void {
     const { query, scope } = getQuery(this.activatedRoute);
-    const idx = this.scopes.findIndex(s => s === scope);
+    const idx = this.scopes.findIndex(s => s.name === scope);
     this.search.setValue({ query, scope: idx.toString() })
   }
 
@@ -155,7 +155,8 @@ export class SearchComponent<T> {
 export class OptionsSearchComponent extends SearchComponent<Option> implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(router: Router, activatedRoute: ActivatedRoute, searchService: OptionsService) {
-    super(router, activatedRoute, searchService, true);
+    super(router, activatedRoute, searchService, true,
+      CONFIG.scopes.filter(scope => scope.optionsEnabled).map((scope, idx) => Object.assign({ idx }, scope)));
   }
 
   public ngOnInit(): void {
@@ -186,7 +187,8 @@ export class OptionsSearchComponent extends SearchComponent<Option> implements O
 export class PackagesSearchComponent extends SearchComponent<Package> implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(router: Router, activatedRoute: ActivatedRoute, searchService: PackagesService) {
-    super(router, activatedRoute, searchService, false);
+    super(router, activatedRoute, searchService, false,
+      CONFIG.scopes.filter(scope => scope.packagesEnabled).map((scope, idx) => Object.assign({ idx }, scope)));
   }
 
   public ngOnInit(): void {

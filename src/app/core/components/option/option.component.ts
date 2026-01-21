@@ -17,7 +17,7 @@ export class OptionComponent {
 
   protected readonly loading = new BehaviorSubject(false);
   protected readonly option;
-  protected readonly scope;
+  protected readonly scopes = CONFIG.scopes;
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -27,10 +27,6 @@ export class OptionComponent {
       tap(() => this.loading.next(true)),
       switchMap(({ scope_id, name }) => merge(of(null), this.searchService.getByName(Number(scope_id), name))),
       tap(() => this.loading.next(false)),
-    );
-
-    this.scope = this.activatedRoute.queryParams.pipe(
-      map(({scope_id}) => CONFIG.scopes[scope_id]),
     );
   }
 

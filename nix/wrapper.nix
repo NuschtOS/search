@@ -190,9 +190,11 @@ rec {
         {
           inherit baseHref title chunkSize;
           dataBase = "${baseHref}data/";
-          optionsEnabled = builtins.any (scope: scope ? optionsJSON || scope ? modules) scopes;
-          packagesEnabled = builtins.any (scope: scope ? pkgs) scopes;
-          scopes = map (scope: scope.name) scopes;
+          scopes = map (scope: {
+            inherit (scope) name;
+            optionsEnabled = scope ? optionsJSON || scope ? modules;
+            packagesEnabled = scope ? pkgs;
+          }) scopes;
         };
         data = mkSearchData { inherit scopes chunkSize; };
       };
