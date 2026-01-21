@@ -55,7 +55,7 @@ export abstract class SearchService<T> {
         const idx = index.get_idx_by_name(scopeId, name);
         return typeof idx === "number" ? this.getByIdx(idx, index.chunk_size()) : of(undefined);
       }),
-      map(entry => Object.assign({}, entry, { scopeId }))
+      map(entry => typeof entry === "undefined" ? undefined : Object.assign({}, entry, { scopeId }))
     );
   }
 
