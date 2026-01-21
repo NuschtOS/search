@@ -7,6 +7,7 @@ import { DropdownComponent, TextFieldComponent } from "@feel/form";
 import { AsyncPipe } from '@angular/common';
 import { OptionsService, Option } from '../../data/options.service';
 import { Package, PackagesService } from '../../data/packages.service';
+import { CONFIG } from '../../config.domain';
 
 function getQuery(route: ActivatedRoute): { query: string | null, scope: string | null } {
   const params = route.snapshot.queryParamMap;
@@ -39,7 +40,7 @@ export class SearchComponent<T> {
 
   private readonly formValue = new Subject<{ query: string | null, scope: number | null }>();
 
-  protected readonly scopes;
+  protected readonly scopes = CONFIG.scopes;
   protected readonly results = this.formValue.pipe(
     switchMap(formValue => this.searchService.search(
       formValue.scope === null ? undefined : formValue.scope,
@@ -76,7 +77,6 @@ export class SearchComponent<T> {
     private readonly searchService: SearchService<T>,
     private readonly collapse: boolean,
   ) {
-    this.scopes = this.searchService.getScopes();
     this.selectedEntry = this.activatedRoute.queryParams.pipe(
       map(({ scope_id, name }) => ({
         scope_id: Number(scope_id),
@@ -107,12 +107,12 @@ export class SearchComponent<T> {
         });
       });
 
-    combineLatest({ form: this.formValue, scopes: this.scopes })
+    this.formValue
       .pipe(takeUntil(this.destroy), debounceTime(300))
-      .subscribe(({ form, scopes }) => {
+      .subscribe((form) => {
         const formValue = {
           query: form.query,
-          scope: form.scope === null ? null : scopes[form.scope]
+          scope: form.scope === null ? null : form.scope
         };
 
         const urlValue = getQuery(this.activatedRoute);
@@ -127,11 +127,8 @@ export class SearchComponent<T> {
 
   protected ngAfterViewInit0(): void {
     const { query, scope } = getQuery(this.activatedRoute);
-    this.scopes.pipe(takeUntil(this.destroy), filter(scopes => scopes.length > 0))
-      .subscribe(scopes => {
-        const idx = scopes.findIndex(s => s === scope);
-        this.search.setValue({ query, scope: idx.toString() })
-      });
+    const idx = this.scopes.findIndex(s => s === scope);
+    this.search.setValue({ query, scope: idx.toString() })
   }
 
   protected ngOnDestroy0(): void {

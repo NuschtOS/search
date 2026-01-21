@@ -1,18 +1,14 @@
 <form [formGroup]="search">
   <p>{{searchLabel$ | async}}</p>
   <feel-text-field formControlName="query" [autofocus]="true" />
-  @if ((scopes | async); as scopes) {
-    @if (scopes.length > 1) {
-      <feel-dropdown formControlName="scope" label="Scope">
-        <option value="-1">All</option>
-        @for (scope of scopes; track scope; let idx = $index) {
-          <option [value]="idx.toString()">
-            {{scope}}
-          </option>
-        }
-      </feel-dropdown>
+  <feel-dropdown formControlName="scope" label="Scope">
+    <option value="-1">All</option>
+    @for (scope of scopes; track scope; let idx = $index) {
+      <option [value]="idx.toString()">
+        {{scope}}
+      </option>
     }
-  }
+  </feel-dropdown>
 </form>
 
 @if ((results | async); as results) {

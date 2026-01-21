@@ -1160,7 +1160,7 @@ packages:
     engines: {node: ^20.17.0 || >=22.9.0}
 
   '@nuschtos/fixx@file:nuschtos-fixx-0.0.0-git.tgz':
-    resolution: {integrity: sha512-yjp3hoL5G4l92mxHyZpVzZroQkMuyZ60VbRAPFao7h1laH553FSxGFg+FrA1QEgTM5Evmwdql+tsZdqT0hMoEw==, tarball: file:nuschtos-fixx-0.0.0-git.tgz}
+    resolution: {integrity: sha512-h/5BlZ4kJ6PjRnD9aFUyc4SXt/KN8pmCRR+BbZzFfUTkE6bX4AlXQcaeDrvtAf5A0w1j+QDSL72xzMD2lqx+Hg==, tarball: file:nuschtos-fixx-0.0.0-git.tgz}
     version: 0.0.0-git
 
   '@oxc-project/types@0.96.0':

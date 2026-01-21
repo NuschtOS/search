@@ -112,7 +112,7 @@ rec {
         ))
       );
 
-  mkSearchData = pkgs.callPackage ({ scopes, runCommand }:
+  mkSearchData = pkgs.callPackage ({ scopes, chunkSize, runCommand }:
     let
       config.scopes = map
         (scope: {
@@ -174,24 +174,28 @@ rec {
           --packages-index-output $out/packages/index.ixx \
           --packages-chunks-output $out/packages/chunks \
           --meta-output $out/meta.json \
-          --chunk-size 300 \
+          --chunk-size ${builtins.toString chunkSize} \
           $configPath
       '');
 
   # also update README examples
   mkMultiSearch = { scopes, baseHref ? "/", title ? "NüschtOS Search" }:
-    nuscht-search {
-      config =
-      assert lib.assertMsg (lib.hasSuffix "/" baseHref) "baseHref needs a trailing slash";
-      assert lib.assertMsg (lib.hasPrefix "/" baseHref) "baseHref needs to start with a slash";
-      {
-        inherit baseHref title;
-        dataBase = "${baseHref}data/";
-        optionsEnabled = builtins.any (scope: scope ? optionsJSON || scope ? modules) scopes;
-        packagesEnabled = builtins.any (scope: scope ? pkgs) scopes;
+    let
+      chunkSize = 300;
+    in
+      nuscht-search {
+        config =
+        assert lib.assertMsg (lib.hasSuffix "/" baseHref) "baseHref needs a trailing slash";
+        assert lib.assertMsg (lib.hasPrefix "/" baseHref) "baseHref needs to start with a slash";
+        {
+          inherit baseHref title chunkSize;
+          dataBase = "${baseHref}data/";
+          optionsEnabled = builtins.any (scope: scope ? optionsJSON || scope ? modules) scopes;
+          packagesEnabled = builtins.any (scope: scope ? pkgs) scopes;
+          scopes = map (scope: scope.name) scopes;
+        };
+        data = mkSearchData { inherit scopes chunkSize; };
       };
-      data = mkSearchData { inherit scopes; };
-    };
 
   # also update README examples
   mkSearch = { baseHref ? "/", title ? "NüschtOS Search", ... }@args:

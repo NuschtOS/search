@@ -8,6 +8,7 @@ import { NoticeComponent } from "../notice/notice.component";
 import { MaintainerComponent } from "../maintainer/maintainer.component";
 import { LicenseComponent } from "../license/license.component";
 import { TeamComponent } from "../team/team.component";
+import { CONFIG } from '../../config.domain';
 
 @Component({
   selector: 'app-package',
@@ -19,7 +20,7 @@ export class PackageComponent implements OnDestroy {
 
   protected readonly loading = new BehaviorSubject(false);
   protected readonly destroy$ = new Subject<null>();
-  protected readonly scopes$;
+  protected readonly scopes = CONFIG.scopes;
   protected readonly package$;
 
   constructor(
@@ -32,9 +33,6 @@ export class PackageComponent implements OnDestroy {
       switchMap(({ scope_id: scopeId, name }) => merge(of(null), this.searchService.getByName(Number(scopeId), name))),
       tap(() => this.loading.next(false)),
     );
-
-    this.scopes$ = this.searchService.getScopes()
-      .pipe(takeUntil(this.destroy$));
   }
 
   public ngOnDestroy(): void {

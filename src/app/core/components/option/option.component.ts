@@ -4,6 +4,7 @@ import { switchMap, map, merge, of, BehaviorSubject, tap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { LoadingIndicatorComponent } from "../loading-indicator/loading-indicator.component";
 import { OptionsService } from '../../data/options.service';
+import { CONFIG } from '../../config.domain';
 
 @Component({
   selector: 'app-option',
@@ -29,7 +30,7 @@ export class OptionComponent {
     );
 
     this.scope = this.activatedRoute.queryParams.pipe(
-      switchMap(({ scope_id }) => merge(of(null), this.searchService.getScopes().pipe(map(scopes => scopes[Number(scope_id)])))),
+      map(({scope_id}) => CONFIG.scopes[scope_id]),
     );
   }
 

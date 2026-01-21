@@ -46,13 +46,11 @@
 
     <table>
       <tbody>
-        @if ((scopes$ | async); as scopes) {
-          @if (scopes.length > 1) {
-            <tr>
-              <td>Scope</td>
-              <td><a [routerLink]="[]" [queryParams]="{scopeId: package.scopeId}" queryParamsHandling="merge">{{scopes[package.scopeId]}}</a></td>
-            </tr>
-          }
+        @if (scopes.length > 1) {
+          <tr>
+            <td>Scope</td>
+            <td><a [routerLink]="[]" [queryParams]="{scopeId: package.scopeId}" queryParamsHandling="merge">{{scopes[package.scopeId]}}</a></td>
+          </tr>
         }
         @if (package.declaration) {
         <tr>

@@ -53,7 +53,7 @@ export abstract class SearchService<T> {
     return this.ready$.pipe(
       switchMap(index => {
         const idx = index.get_idx_by_name(scopeId, name);
-        return typeof idx === "number" ? this.getByIdx(idx, index.chunk_size()) : of(undefined);
+        return typeof idx === "number" ? this.getByIdx(idx, CONFIG.chunkSize) : of(undefined);
       }),
       map(entry => typeof entry === "undefined" ? undefined : Object.assign({}, entry, { scopeId }))
     );
@@ -79,10 +79,6 @@ export abstract class SearchService<T> {
       }),
       map(options => options[idx_in_chunk]),
     );
-  }
-
-  public getScopes(): Observable<string[]> {
-    return this.ready$.pipe(map(index => index.scopes()));
   }
 
   public getIndexSize(): Observable<number | undefined> {

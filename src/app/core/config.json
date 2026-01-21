@@ -3,5 +3,9 @@
   "baseHref": "/",
   "dataBase": "/data/",
   "optionsEnabled": true,
-  "packagesEnabled": true
+  "packagesEnabled": true,
+  "chunkSize": 200,
+  "scopes": [
+    "NixOS unstable"
+  ]
 }
