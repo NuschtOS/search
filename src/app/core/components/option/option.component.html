@@ -39,7 +39,19 @@
           <tr>
             <td>Default</td>
             <td>
-              <pre><code [innerHTML]="option.default"></code></pre>
+              @if (option.type == "package") {
+                @defer {
+                  <a
+                    routerLink="/packages"
+                    [queryParams]="{name: getPackageName(option.default)}"
+                    queryParamsHandling="merge"
+                  >
+                    <pre><code [innerHTML]="option.default"></code></pre>
+                  </a>
+                }
+              } @else {
+                <pre><code [innerHTML]="option.default"></code></pre>
+              }
             </td>
           </tr>
         }

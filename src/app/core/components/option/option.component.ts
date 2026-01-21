@@ -32,4 +32,10 @@ export class OptionComponent {
       switchMap(({ scope_id }) => merge(of(null), this.searchService.getScopes().pipe(map(scopes => scopes[Number(scope_id)])))),
     );
   }
+
+  protected getPackageName(html: string): string {
+    const tmp = document.createElement("div");
+    tmp.innerHTML = html;
+    return tmp.innerText.trim().replace(/^pkgs\./, '');
+  }
 }
