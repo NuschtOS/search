@@ -20,8 +20,10 @@ export class PackageComponent implements OnDestroy {
 
   protected readonly loading = new BehaviorSubject(false);
   protected readonly destroy$ = new Subject<null>();
-  protected readonly scopes = CONFIG.scopes;
   protected readonly package$;
+  protected readonly scopes = CONFIG.scopes
+    .filter(scope => scope.packagesEnabled)
+    .map((scope, idx) => Object.assign({ idx }, scope));
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,

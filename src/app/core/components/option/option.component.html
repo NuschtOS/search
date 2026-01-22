@@ -3,10 +3,12 @@
     <h2><code>{{option.name}}</code></h2>
     <table>
       <tbody>
-        <tr>
-          <td>Scope</td>
-          <td><a [routerLink]="[]" [queryParams]="{scope: scopes[option.scopeId].name}" queryParamsHandling="merge">{{scopes[option.scopeId].name}}</a></td>
-        </tr>
+        @if (scopes.length > 1) {
+          <tr>
+            <td>Scope</td>
+            <td><a [routerLink]="[]" [queryParams]="{scope: scopes[option.scopeId].name}" queryParamsHandling="merge">{{scopes[option.scopeId].name}}</a></td>
+          </tr>
+        }
         <tr>
           <td>Declarations</td>
           <td>

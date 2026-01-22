@@ -17,7 +17,9 @@ export class OptionComponent {
 
   protected readonly loading = new BehaviorSubject(false);
   protected readonly option;
-  protected readonly scopes = CONFIG.scopes;
+  protected readonly scopes = CONFIG.scopes
+    .filter(scope => scope.optionsEnabled)
+    .map((scope, idx) => Object.assign({ idx }, scope));
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,

@@ -53,7 +53,7 @@ export class SearchComponent<T> {
     private readonly activatedRoute: ActivatedRoute,
     private readonly searchService: SearchService<T>,
     private readonly collapse: boolean,
-    protected readonly scopes: ((typeof CONFIG.scopes)[number] & { idx: number })[],
+    protected readonly scopes: ((typeof CONFIG.scopes)[number] & { id: number })[],
   ) {
     this.selectedEntry = this.activatedRoute.queryParams.pipe(
       takeUntil(this.destroy),
@@ -113,15 +113,15 @@ export class SearchComponent<T> {
         distinct(),
       )
       .subscribe(({ scope, query }) => {
-        const idx = this.scopes.findIndex(s => s.name === scope);
-        this.search.setValue({ query, scope: idx.toString() })
+        const id = this.scopes.find(s => s.name === scope)?.id ?? -1;
+        this.search.setValue({ query, scope: id.toString() })
       });
   }
 
   protected ngAfterViewInit0(): void {
     const { query, scope } = getQuery(this.activatedRoute);
-    const idx = this.scopes.findIndex(s => s.name === scope);
-    this.search.setValue({ query, scope: idx.toString() })
+    const id = this.scopes.find(s => s.name === scope)?.id ?? -1;
+    this.search.setValue({ query, scope: id.toString() })
 
     this.doSearch(scope === null ? null : Number(scope), query)
       .subscribe(value => this.results.next(value));
@@ -140,9 +140,9 @@ export class SearchComponent<T> {
     this.searchLabel$.next(value);
   }
 
-  private doSearch(scope: number | null, query: string | null): Observable<({ displayName: string | null; scope_id: number; } & SearchedResult)[]> {
+  private doSearch(scope_id: number | null, query: string | null): Observable<({ displayName: string | null; scope_id: number; } & SearchedResult)[]> {
     return this.searchService.search(
-      scope === null ? undefined : this.scopes[scope].idx,
+      scope_id ?? undefined,
       query ?? ''
     ).pipe(
       map(entries => {
@@ -177,7 +177,7 @@ export class OptionsSearchComponent extends SearchComponent<Option> implements O
 
   constructor(router: Router, activatedRoute: ActivatedRoute, searchService: OptionsService) {
     super(router, activatedRoute, searchService, true,
-      CONFIG.scopes.filter(scope => scope.optionsEnabled).map((scope, idx) => Object.assign({ idx }, scope)));
+      CONFIG.scopes.filter(scope => scope.optionsEnabled).map((scope, id) => Object.assign({ id }, scope)));
   }
 
   public ngOnInit(): void {
@@ -209,7 +209,7 @@ export class PackagesSearchComponent extends SearchComponent<Package> implements
 
   constructor(router: Router, activatedRoute: ActivatedRoute, searchService: PackagesService) {
     super(router, activatedRoute, searchService, false,
-      CONFIG.scopes.filter(scope => scope.packagesEnabled).map((scope, idx) => Object.assign({ idx }, scope)));
+      CONFIG.scopes.filter(scope => scope.packagesEnabled).map((scope, id) => Object.assign({ id }, scope)));
   }
 
   public ngOnInit(): void {
