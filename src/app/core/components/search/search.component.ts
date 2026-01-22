@@ -1,6 +1,6 @@
 import { afterNextRender, AfterViewInit, ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { BehaviorSubject, Observable, Subject, combineLatest, debounceTime, filter, map, switchMap, takeUntil } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, combineLatest, debounceTime, distinct, filter, map, switchMap, takeUntil } from 'rxjs';
 import { MAX_SEARCH_RESULTS, SearchService, SearchedResult } from '../../data/search.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DropdownComponent, TextFieldComponent } from "@feel/form";
@@ -40,29 +40,7 @@ export class SearchComponent<T> {
 
   private readonly formValue = new Subject<{ query: string | null, scope: number | null }>();
 
-  protected readonly results = this.formValue.pipe(
-    switchMap(formValue => this.searchService.search(
-      formValue.scope === null ? undefined : this.scopes[formValue.scope].idx,
-      formValue.query ?? ''
-    )),
-    map(entries => {
-      if (!(entries?.length > 0)) {
-        return [];
-      }
-
-      if (this.collapse) {
-        const commonPrefix0 = prefix(entries);
-        const idx = commonPrefix0.lastIndexOf('.');
-        const commonPrefix = commonPrefix0.substring(0, idx).split(".");
-
-        const prr = commonPrefix.map(d => d.substring(0, 1)).join(".");
-
-        return entries.map(entry => ({ ...entry, displayName: prr + entry.name.substring(idx) }));
-      } else {
-        return entries.map(entry => ({ ...entry, displayName: null }));
-      }
-    })
-  );
+  protected readonly results = new BehaviorSubject<({ displayName: string | null; scope_id: number; } & SearchedResult)[]>([]);
 
   protected readonly selectedEntry;
   protected readonly maxSearchResults = MAX_SEARCH_RESULTS;
@@ -78,6 +56,7 @@ export class SearchComponent<T> {
     protected readonly scopes: ((typeof CONFIG.scopes)[number] & { idx: number })[],
   ) {
     this.selectedEntry = this.activatedRoute.queryParams.pipe(
+      takeUntil(this.destroy),
       map(({ scope_id, name }) => ({
         scope_id: Number(scope_id),
         name
@@ -123,12 +102,29 @@ export class SearchComponent<T> {
           });
         }
       });
+
+    this.formValue
+      .pipe(switchMap(formValue => this.doSearch(formValue.scope, formValue.query)))
+      .subscribe(value => this.results.next(value));
+
+    this.activatedRoute.queryParams
+      .pipe(
+        takeUntil(this.destroy),
+        distinct(),
+      )
+      .subscribe(({ scope, query }) => {
+        const idx = this.scopes.findIndex(s => s.name === scope);
+        this.search.setValue({ query, scope: idx.toString() })
+      });
   }
 
   protected ngAfterViewInit0(): void {
     const { query, scope } = getQuery(this.activatedRoute);
     const idx = this.scopes.findIndex(s => s.name === scope);
     this.search.setValue({ query, scope: idx.toString() })
+
+    this.doSearch(scope === null ? null : Number(scope), query)
+      .subscribe(value => this.results.next(value));
   }
 
   protected ngOnDestroy0(): void {
@@ -142,6 +138,31 @@ export class SearchComponent<T> {
 
   set searchString(value: string) {
     this.searchLabel$.next(value);
+  }
+
+  private doSearch(scope: number | null, query: string | null): Observable<({ displayName: string | null; scope_id: number; } & SearchedResult)[]> {
+    return this.searchService.search(
+      scope === null ? undefined : this.scopes[scope].idx,
+      query ?? ''
+    ).pipe(
+      map(entries => {
+        if (!(entries?.length > 0)) {
+          return [];
+        }
+
+        if (this.collapse) {
+          const commonPrefix0 = prefix(entries);
+          const idx = commonPrefix0.lastIndexOf('.');
+          const commonPrefix = commonPrefix0.substring(0, idx).split(".");
+
+          const prr = commonPrefix.map(d => d.substring(0, 1)).join(".");
+
+          return entries.map(entry => ({ ...entry, displayName: prr + entry.name.substring(idx) }));
+        } else {
+          return entries.map(entry => ({ ...entry, displayName: null }));
+        }
+      })
+    );
   }
 }
 
