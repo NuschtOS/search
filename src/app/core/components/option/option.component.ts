@@ -35,7 +35,7 @@ export class OptionComponent {
   protected getPackageName(html: string): string {
     const tmp = document.createElement("div");
     tmp.innerHTML = html;
-    const match = tmp.innerText.trim().match(/pkgs\.(\w+)(\.override.*)?/);
+    const match = tmp.innerText.trim().match(/pkgs\.(.+?)(\.override.*)?$/);
     return match ? match[1] : '';
   }
 }
