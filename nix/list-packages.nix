@@ -28,6 +28,8 @@ let
     || (lib.hasPrefix "ghc" name && lib.hasSuffix "Binary" name)
     # has broken meta stuff
     || (lib.hasPrefix "coqPackages" name)
+    # qt exposes sources under srcs
+    || name == "srcs"
     # broken since buildPython* supports "finalAttrs"-pattern
     || attrPrefix == [ "pypy27Packages" ] || attrPrefix == [ "pypy27Packages" ] || attrPrefix == ["pypy2Packages"] || attrPrefix == ["pypyPackages"] || attrPrefix == ["python27Packages"] || attrPrefix == ["python2Packages"]
     # don't recurse into pythonPackages a nth time and just assume and attrPrefix ending in Packages (eg. python311Packages or mopidyPackages) is not what we want
