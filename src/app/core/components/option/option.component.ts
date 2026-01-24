@@ -21,8 +21,6 @@ export class OptionComponent {
     .filter(scope => scope.optionsEnabled)
     .map((scope, idx) => Object.assign({ idx }, scope));
 
-  protected readonly packagesEnabled = CONFIG.scopes.findIndex(scope => scope.packagesEnabled) != -1;
-
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly searchService: OptionsService,

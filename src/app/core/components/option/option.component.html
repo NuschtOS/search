@@ -39,7 +39,7 @@
           <tr>
             <td>Default</td>
             <td>
-              @if (packagesEnabled && (option.type == "package" || option.type == "null or package")) {
+              @if (scopes[option.scopeId].packagesEnabled && (option.type == "package" || option.type == "null or package")) {
                 @defer {
                   <a
                     routerLink="/packages"
