@@ -1,10 +1,5 @@
 { self, ixxPkgs, lib, nix-index-database, nuscht-search, pkgs }:
 
-let
-  nixpkgsPkgs = pkgs;
-
-  inherit (import ./list-packages.nix { inherit lib; }) listPackages;
-in
 rec {
   mkOptionsJSON = pkgs.callPackage ({ modules, specialArgs, nixosOptionsDoc, overrideEvalModulesArgs ? { } }: (nixosOptionsDoc {
     inherit ((lib.evalModules ({
@@ -21,51 +16,11 @@ rec {
     warningsAreErrors = false;
   }).optionsJSON + /share/doc/nixos/options.json);
 
-  mkPackagesJSONs = { name, pkgs }:
-    let
-      partitionPackageNames = pkgNames:
-        builtins.groupBy
-          (name:
-            let
-              last = builtins.head (lib.sublist (builtins.length name - 1) 1 name);
-            in
-            # this also works if `last` has only one character
-            lib.toLower (builtins.substring 0 2 last)
-          )
-          pkgNames;
+  inherit (import ./build-packages.nix { inherit lib; }) buildPackages;
 
-      list = listPackages [ ] (import pkgs);
+  inherit (import ./list-packages.nix { inherit lib; }) listPackages;
 
-      partedList = partitionPackageNames list;
-    in
-    lib.mapAttrsToList
-      (part: attrNames:
-        nixpkgsPkgs.runCommand "${name}-${part}.json"
-          {
-            partition = builtins.toJSON attrNames;
-            passAsFile = [ "partition" ];
-            nativeBuildInputs = with nixpkgsPkgs; [ jq nixVersions.nix_2_33 ];
-          }
-          ''
-            cp ${./build-packages.nix} build-packages.nix
-            jq . $partitionPath > partition.json
-            cp ${pkgs} pkgs.nix
-            echo "Building $name"
-            NIX_STATE_DIR=$TMPDIR NIX_PATH= nix \
-              --extra-experimental-features nix-command \
-              eval \
-              --impure \
-              --json \
-              --offline \
-              --quiet \
-              --read-only \
-              --show-trace \
-              --expr \
-              '(import ./build-packages.nix { inherit (import ${self.inputs.nixpkgs} {}) lib; }).buildPackages' \
-              | jq . > $out
-            echo "Done $name"
-          '')
-      partedList;
+  inherit (import ./packages-jsons.nix { inherit lib listPackages pkgs self; }) mkPackagesJSONs;
 
   mkCollectManDerivations = let
     list = pkgs.runCommand "list-man-derivations" {
@@ -151,12 +106,13 @@ rec {
             specialArgs = scope.specialArgs or { };
             overrideEvalModulesArgs = scope.overrideEvalModulesArgs or { };
           });
-        } // lib.optionalAttrs (scope?pkgs) {
-          packagesJsons = mkPackagesJSONs {
-            name = "${scope.name}-packages.json";
+        } // (if scope?packagesJsons then {
+          inherit (scope) packagesJsons;
+        } else lib.optionalAttrs (scope?pkgs) {
+          packagesJsons = [ (pkgs.writers.writeJSON "${scope.name}-packages.json" (let
             inherit (scope) pkgs;
-          };
-        })
+          in buildPackages pkgs (listPackages [ ] pkgs))) ];
+        }))
         scopes;
     in
     runCommand "search-meta"

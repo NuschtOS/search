@@ -73,13 +73,11 @@ let
     attrName = builtins.concatStringsSep "." newName;
     evalError = true;
   };
-
-  pkgs = import ./pkgs.nix;
 in
 {
   inherit extractLicense mkPackage;
 
-  buildPackages = map
+  buildPackages = pkgs: pkgList: map
     (attrName:
     let
       derv = lib.getAttrFromPath attrName pkgs;
@@ -93,5 +91,5 @@ in
     else
       createEvalError attrName
     )
-    (builtins.fromJSON (builtins.readFile ./partition.json));
+    pkgList;
 }
