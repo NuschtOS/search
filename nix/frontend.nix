@@ -20,8 +20,8 @@ stdenv.mkDerivation (finalAttrs: {
   inherit (manifest) version;
 
   src = lib.cleanSourceWith {
-    filter = name: _: ((!lib.hasSuffix ".nix" name) && (builtins.dirOf name) != "node_modules");
-    src = lib.cleanSource ./..;
+    filter = name: _: ((!lib.hasSuffix ".nix" name) && (baseNameOf name) != "node_modules");
+    src = ./..;
   };
 
   postPatch = ''
