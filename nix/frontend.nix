@@ -28,7 +28,9 @@ stdenv.mkDerivation (finalAttrs: {
     substituteInPlace src/index.html \
       --replace-fail '##TITLE##' ${lib.escapeShellArg config.title}
 
-    mkdir public/data
+    # remove development files
+    rm -rf public/data
+    mkdir -p public/data
     ln -s ${data}/* public/data
 
     cat << EOF >src/app/core/config.json
