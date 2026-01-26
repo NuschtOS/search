@@ -35,7 +35,7 @@ in
             cp ${pkgs} pkgs.nix
             echo "Building $name"
             NIX_STATE_DIR=$TMPDIR NIX_PATH= nix \
-              --extra-experimental-features flakes,nix-command \
+              --extra-experimental-features "flakes nix-command" \
               eval \
               --impure \
               --json \
