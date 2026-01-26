@@ -149,7 +149,7 @@ rec {
           scopes = map (scope: {
             inherit (scope) name;
             optionsEnabled = scope ? optionsJSON || scope ? modules;
-            packagesEnabled = scope ? pkgs;
+            packagesEnabled = scope ? packagesJsons || scope ? pkgs;
           }) scopes;
         };
         data = mkSearchData { inherit scopes chunkSize; };
