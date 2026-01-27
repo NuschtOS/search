@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { switchMap, map, merge, of, BehaviorSubject, tap } from 'rxjs';
+import { switchMap, merge, of, BehaviorSubject, tap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { LoadingIndicatorComponent } from "../loading-indicator/loading-indicator.component";
 import { OptionsService } from '../../data/options.service';
@@ -19,7 +19,7 @@ export class OptionComponent {
   protected readonly option;
   protected readonly scopes = CONFIG.scopes
     .filter(scope => scope.optionsEnabled)
-    .map((scope, idx) => Object.assign({ idx }, scope));
+    .map((scope, idx) => Object.assign({ id: idx }, scope));
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -37,5 +37,9 @@ export class OptionComponent {
     tmp.innerHTML = html;
     const match = tmp.innerText.trim().match(/pkgs\.(.+?)(\.override.*)?$/);
     return match ? match[1] : '';
+  }
+
+  protected getScope(id: number): (typeof CONFIG.scopes)[number] | undefined {
+    return this.scopes.find(scope => scope.id === id);
   }
 }

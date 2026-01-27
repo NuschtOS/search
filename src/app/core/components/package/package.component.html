@@ -49,7 +49,7 @@
         @if (scopes.length > 1) {
           <tr>
             <td>Scope</td>
-            <td><a [routerLink]="[]" [queryParams]="{scope: scopes[package.scopeId].name}" queryParamsHandling="merge">{{scopes[package.scopeId].name}}</a></td>
+            <td><a [routerLink]="[]" [queryParams]="{scope: getScope(package.scopeId)!.name}" queryParamsHandling="merge">{{getScope(package.scopeId)!.name}}</a></td>
           </tr>
         }
         @if (package.declaration) {

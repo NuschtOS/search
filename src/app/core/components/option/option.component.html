@@ -6,7 +6,7 @@
         @if (scopes.length > 1) {
           <tr>
             <td>Scope</td>
-            <td><a [routerLink]="[]" [queryParams]="{scope: scopes[option.scopeId].name}" queryParamsHandling="merge">{{scopes[option.scopeId].name}}</a></td>
+            <td><a [routerLink]="[]" [queryParams]="{scope: getScope(option.scopeId)!.name}" queryParamsHandling="merge">{{getScope(option.scopeId)!.name}}</a></td>
           </tr>
         }
         <tr>

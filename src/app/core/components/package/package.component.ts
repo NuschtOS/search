@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { BehaviorSubject, merge, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, map, merge, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { PackagesService } from '../../data/packages.service';
 import { AsyncPipe } from '@angular/common';
 import { LoadingIndicatorComponent } from "../loading-indicator/loading-indicator.component";
@@ -23,7 +23,7 @@ export class PackageComponent implements OnDestroy {
   protected readonly package$;
   protected readonly scopes = CONFIG.scopes
     .filter(scope => scope.packagesEnabled)
-    .map((scope, idx) => Object.assign({ idx }, scope));
+    .map((scope, idx) => Object.assign({ id: idx }, scope));
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -40,5 +40,9 @@ export class PackageComponent implements OnDestroy {
   public ngOnDestroy(): void {
     this.destroy$.next(null);
     this.destroy$.complete();
+  }
+
+  protected getScope(id: number): (typeof CONFIG.scopes)[number] | undefined {
+    return this.scopes.find(scope => scope.id === id);
   }
 }
