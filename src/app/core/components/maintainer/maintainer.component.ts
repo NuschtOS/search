@@ -16,7 +16,7 @@ export class MaintainerComponent implements OnInit, OnDestroy {
   protected githubId$ = new BehaviorSubject<{ scopeId: number, githubId: number } | null>(null);
   protected maintainer$ = new BehaviorSubject<(Maintainer & { githubId: number }) | null>(null);
   protected matrixAvatar$ = new BehaviorSubject<string | null>(null);
-  private destroy$ = new Subject<null>();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private readonly metaService: MetaService,
@@ -49,7 +49,7 @@ export class MaintainerComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.destroy$.next(null);
+    this.destroy$.next();
     this.destroy$.complete();
   }
 

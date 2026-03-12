@@ -128,7 +128,7 @@ export class SearchComponent<T> {
   }
 
   protected ngOnDestroy0(): void {
-    this.destroy.next(void 0);
+    this.destroy.next();
     this.destroy.complete();
   }
 

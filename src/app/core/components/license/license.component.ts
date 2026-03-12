@@ -14,7 +14,7 @@ export class LicenseComponent implements OnInit, OnDestroy {
 
   protected shortName$ = new BehaviorSubject<{ scopeId: number, shortName: string } | null>(null);
   protected license$ = new BehaviorSubject<License | null>(null);
-  private destroy$ = new Subject<null>();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private readonly metaService: MetaService,
@@ -31,7 +31,7 @@ export class LicenseComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.destroy$.next(null);
+    this.destroy$.next();
     this.destroy$.complete();
   }
 

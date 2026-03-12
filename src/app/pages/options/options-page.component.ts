@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject, LOCALE_ID } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, LOCALE_ID, OnDestroy } from '@angular/core';
 import { CONFIG } from '../../core/config.domain';
 import { OptionComponent } from '../../core/components/option/option.component';
 import { OptionsService } from '../../core/data/options.service';
@@ -21,7 +21,7 @@ import { takeUntil } from 'rxjs/internal/operators/takeUntil';
   styleUrl: './options-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OptionsPageComponent {
+export class OptionsPageComponent implements OnDestroy {
 
   protected readonly title = CONFIG.title;
   protected readonly searchLabel$ = new BehaviorSubject<string>("Search .... options");

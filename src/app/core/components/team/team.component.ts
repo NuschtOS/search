@@ -15,7 +15,7 @@ export class TeamComponent implements OnInit, OnDestroy {
   protected teamData$ = new BehaviorSubject<{ members: number[], scope: string} | null>(null);
   protected readonly scopeId$ = new BehaviorSubject<number | null>(null);
   protected teamName$ = new BehaviorSubject<{ scopeId: number, teamName: string} | null>(null);
-  private destroy$ = new Subject<null>();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private readonly metaService: MetaService,
@@ -46,7 +46,7 @@ export class TeamComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.destroy$.next(null);
+    this.destroy$.next();
     this.destroy$.complete();
   }
 

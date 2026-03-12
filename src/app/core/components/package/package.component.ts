@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { BehaviorSubject, map, merge, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { PackagesService } from '../../data/packages.service';
@@ -14,12 +14,13 @@ import { CONFIG } from '../../config.domain';
   selector: 'app-package',
   imports: [AsyncPipe, RouterLink, LoadingIndicatorComponent, NoticeComponent, MaintainerComponent, LicenseComponent, TeamComponent],
   templateUrl: './package.component.html',
-  styleUrl: './package.component.scss'
+  styleUrl: './package.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PackageComponent implements OnDestroy {
 
   protected readonly loading = new BehaviorSubject(false);
-  protected readonly destroy$ = new Subject<null>();
+  protected readonly destroy$ = new Subject<void>();
   protected readonly package$;
   protected readonly scopes = CONFIG.scopes
     .filter(scope => scope.packagesEnabled)
@@ -38,7 +39,7 @@ export class PackageComponent implements OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.destroy$.next(null);
+    this.destroy$.next();
     this.destroy$.complete();
   }
 
