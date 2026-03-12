@@ -98,8 +98,7 @@ rec {
           teamMapping = lib.mapAttrs' (_n: v: lib.nameValuePair v.shortName {
             inherit (v) scope; members = map (m: m.githubId) v.members;
           }) (scope.teams or lib.teams);
-        } // lib.optionalAttrs (scope?name) { inherit (scope) name; }
-        // lib.optionalAttrs (scope?optionsPrefix) { inherit (scope) optionsPrefix; }
+        } // lib.optionalAttrs (scope?optionsPrefix) { inherit (scope) optionsPrefix; }
         // lib.optionalAttrs (scope?optionsJSON || scope?modules) {
           optionsJson = scope.optionsJSON or (mkOptionsJSON {
             modules = scope.modules or (throw "A scope requires either optionsJSON or module!");
