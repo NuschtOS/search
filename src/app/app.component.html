@@ -1,1 +1,22 @@
-<router-outlet />
+<header>
+  <h1>{{title}}</h1>
+
+  <nav>
+    <a routerLink="/options" queryParamsHandling="merge" routerLinkActive="active">
+      Options Search
+    </a>
+    <a routerLink="/packages" queryParamsHandling="merge" routerLinkActive="active">
+      Packages Search
+    </a>
+  </nav>
+</header>
+
+<div id="main">
+  <router-outlet />
+</div>
+
+<footer class="typography">
+  <p>NüschtOS Search</p>
+  <p>Licensed under MIT</p>
+  <a href="https://github.com/NuschtOS/search" target="_blank">Source</a>
+</footer>

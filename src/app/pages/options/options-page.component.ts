@@ -23,7 +23,6 @@ import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 })
 export class OptionsPageComponent implements OnDestroy {
 
-  protected readonly title = CONFIG.title;
   protected readonly searchLabel$ = new BehaviorSubject<string>("Search .... options");
   private readonly destroy$ = new Subject<void>();
 

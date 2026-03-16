@@ -21,7 +21,6 @@ import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 })
 export class PackagesPageComponent implements OnDestroy {
 
-  protected readonly title = CONFIG.title;
   protected readonly searchLabel$ = new BehaviorSubject<string>("Search .... packages");
   private readonly destroy$ = new Subject<void>();
 
