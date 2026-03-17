@@ -39,8 +39,8 @@ importers:
         specifier: ^5.2.8
         version: 5.2.8
       '@nuschtos/fixx':
-        specifier: file:nuschtos-fixx-0.0.0-git.tgz
-        version: file:nuschtos-fixx-0.0.0-git.tgz
+        specifier: ^0.2.0
+        version: 0.2.0
       rxjs:
         specifier: ~7.8.0
         version: 7.8.2
@@ -925,9 +925,8 @@ packages:
     resolution: {integrity: sha512-mGUWr1uMnf0le2TwfOZY4SFxZGXGfm4Jtay/nwAa2FLNAKXUoUwaGwBMNH36UHPtinWfTSJ3nqFQr0091CxVGg==}
     engines: {node: ^20.17.0 || >=22.9.0}
 
-  '@nuschtos/fixx@file:nuschtos-fixx-0.0.0-git.tgz':
-    resolution: {integrity: sha512-EGqSqTle7qPF7zmbvIjhyM/qYPI4WsmbNBweFJjKImS90KkNAMZ2WbEXV4SuYTFLEtVJncTtZt14pUgG90x62w==, tarball: file:nuschtos-fixx-0.0.0-git.tgz}
-    version: 0.0.0-git
+  '@nuschtos/fixx@0.2.0':
+    resolution: {integrity: sha512-0AF2ovR2NOZqlQdGGake/TqE89cG904XGzwTaBq+6ke97AXtYQ4RO27EQ14cVtl0z8/Q4kl6/NMRoUE5JsaRyg==}
 
   '@oxc-project/types@0.113.0':
     resolution: {integrity: sha512-Tp3XmgxwNQ9pEN9vxgJBAqdRamHibi76iowQ38O2I4PMpcvNRQNVsU2n1x1nv9yh0XoTrGFzf7cZSGxmixxrhA==}
@@ -3246,7 +3245,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@nuschtos/fixx@file:nuschtos-fixx-0.0.0-git.tgz': {}
+  '@nuschtos/fixx@0.2.0': {}
 
   '@oxc-project/types@0.113.0': {}
 

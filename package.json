@@ -21,7 +21,7 @@
     "@feel/style": "^0.2.4",
     "@fontsource/dm-mono": "^5.2.7",
     "@fontsource/dm-sans": "^5.2.8",
-    "@nuschtos/fixx": "file:nuschtos-fixx-0.0.0-git.tgz",
+    "@nuschtos/fixx": "^0.2.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },
