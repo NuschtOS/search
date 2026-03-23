@@ -5,7 +5,7 @@
     flake-utils.url = "github:numtide/flake-utils";
     ixx = {
       # match version with npm package
-      url = "github:NuschtOS/ixx/packages";
+      url = "github:NuschtOS/ixx/v0.2.0";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "flake-utils";
