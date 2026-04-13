@@ -41,7 +41,7 @@ stdenv.mkDerivation (finalAttrs: {
     inherit (finalAttrs) pname version src;
     inherit pnpm;
     fetcherVersion = 3;
-    hash = "sha256-7WxnBCsFiatBey2emxepuZWf0sbM74UJiDkoOPM/EiQ=";
+    hash = "sha256-l70auRO2nbBj3ZLn3aEa6uG/dYyosRbomnV0YBkH3Gg=";
   };
 
   nativeBuildInputs = [
