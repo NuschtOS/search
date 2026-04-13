@@ -46,6 +46,7 @@
                 optionsJSON = (import "${nixpkgs}/nixos/release.nix" { }).options + /share/doc/nixos/options.json;
                 name = "NixOS";
                 urlPrefix = "https://github.com/NixOS/nixpkgs/tree/master/";
+                baseHref = "/result/";
               };
               default = nixpkgs-search;
             };
