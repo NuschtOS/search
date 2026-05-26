@@ -1,4 +1,4 @@
-{ callPackage, ixxPkgs, path, lib, stdenv, nodejs, fetchPnpmDeps, pnpmConfigHook}:
+{ callPackage, ixxPkgs, path, lib, stdenv, nodejs, fetchPnpmDeps, pnpmConfigHook }:
 
 { config, data }:
 
@@ -7,8 +7,8 @@ let
   # pin pnpm version to avoid hash mismatches with differing pnpm versions
   # on nixos stable and unstable
   pnpm = callPackage (path + "/pkgs/development/tools/pnpm/generic.nix") {
-    version = "10.28.0";
-    hash = "sha256-mwsE5ueZRVZpF/hBG7b2X9Lz4VkEJpBOhQDhrMSzNWE=";
+    version = "11.1.2";
+    hash = "sha256-v+TSssejIQVlu6YpKfnv5JPrXyRicgGhAupFFOroz4A=";
   };
 
   cpFixx = ''
@@ -43,7 +43,7 @@ stdenv.mkDerivation (finalAttrs: {
     inherit pnpm;
     fetcherVersion = 3;
     #postPatch = cpFixx;
-    hash = "sha256-0qJK4ZvqJLMkaxGGuoV9H9eg5AFtJIy+OHJMDisx2g4=";
+    hash = "sha256-zfpU/h0m8Z9n4tK2Ji6SUJBT12hhvnic0L9RZGx+21c=";
   };
 
   nativeBuildInputs = [
