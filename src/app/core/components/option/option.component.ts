@@ -18,8 +18,8 @@ export class OptionComponent implements OnDestroy {
   protected readonly loading = new BehaviorSubject(false);
   protected readonly option;
   protected readonly scopes = CONFIG.scopes
-    .filter(scope => scope.optionsEnabled)
-    .map((scope, idx) => Object.assign({ id: idx }, scope));
+    .map((scope, idx) => Object.assign({ id: idx }, scope))
+    .filter(scope => scope.optionsEnabled);
   private readonly destroy$ = new Subject<void>();
 
   constructor(

@@ -105,10 +105,10 @@ rec {
             specialArgs = scope.specialArgs or { };
             overrideEvalModulesArgs = scope.overrideEvalModulesArgs or { };
           });
-        } // (if scope?packagesJsons then {
-          inherit (scope) packagesJsons;
+        } // (if scope?packagesJSONs then {
+          inherit (scope) packagesJSONs;
         } else lib.optionalAttrs (scope?pkgs) {
-          packagesJsons = [ (pkgs.writers.writeJSON "${scope.name}-packages.json" (let
+          packagesJSONs = [ (pkgs.writers.writeJSON "${scope.name}-packages.json" (let
             inherit (scope) pkgs;
           in buildPackages pkgs (listPackages [ ] pkgs))) ];
         }))
@@ -148,7 +148,7 @@ rec {
           scopes = map (scope: {
             inherit (scope) name;
             optionsEnabled = scope ? optionsJSON || scope ? modules;
-            packagesEnabled = scope ? packagesJsons || scope ? pkgs;
+            packagesEnabled = scope ? packagesJSONs || scope ? pkgs;
           }) scopes;
         };
         data = mkSearchData { inherit scopes chunkSize; };

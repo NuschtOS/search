@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { BehaviorSubject, map, merge, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, merge, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { PackagesService } from '../../data/packages.service';
 import { AsyncPipe } from '@angular/common';
 import { LoadingIndicatorComponent } from "../loading-indicator/loading-indicator.component";
@@ -23,8 +23,8 @@ export class PackageComponent implements OnDestroy {
   protected readonly destroy$ = new Subject<void>();
   protected readonly package$;
   protected readonly scopes = CONFIG.scopes
-    .filter(scope => scope.packagesEnabled)
-    .map((scope, idx) => Object.assign({ id: idx }, scope));
+    .map((scope, idx) => Object.assign({ id: idx }, scope))
+    .filter(scope => scope.packagesEnabled);
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,

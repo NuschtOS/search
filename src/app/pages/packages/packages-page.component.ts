@@ -1,9 +1,7 @@
 import { ChangeDetectionStrategy, Component, Inject, LOCALE_ID, OnDestroy } from '@angular/core';
-import { CONFIG } from '../../core/config.domain';
 import { PackagesSearchComponent } from '../../core/components/search/search.component';
 import { PackagesService } from '../../core/data/packages.service';
 import { PackageComponent } from "../../core/components/package/package.component";
-import { RouterLink } from '@angular/router';
 import { AsyncPipe, formatNumber } from '@angular/common';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 
@@ -12,7 +10,6 @@ import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
   imports: [
     PackageComponent,
     PackagesSearchComponent,
-    RouterLink,
     AsyncPipe,
   ],
   templateUrl: './packages-page.component.html',

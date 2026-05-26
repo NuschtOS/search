@@ -54,20 +54,24 @@
 
               nixpkgs-search = mkSearch (
                 # nixos/release.nix hardcodes a pkgs import with x86_64-linux system
-                lib.optionalAttrs (system == "x86_64-linux") {
-                  optionsJSON = (import "${nixpkgs}/nixos/release.nix" { }).options + /share/doc/nixos/options.json;
-                } // {
+                lib.optionalAttrs (system == "x86_64-linux")
+                  {
+                    optionsJSON = (import "${nixpkgs}/nixos/release.nix" { }).options + /share/doc/nixos/options.json;
+                  } // {
                   name = "NixOS";
                   urlPrefix = "https://github.com/NixOS/nixpkgs/tree/master/";
-                  pkgs = pkgs.writeText "pkgs.nix" /* nix */ ''
-                    (import ${nixpkgs}) {
-                      system = "${pkgs.stdenv.hostPlatform.system}";
-                      config = {
-                        allowBroken = true;
-                        allowSrcEvalForDrvMeta = true;
-                      };
-                    }
-                  '';
+                  packagesJSONs = mkPackagesJSONs {
+                    name = "nixpkgs";
+                    pkgs = pkgs.writeText "pkgs.nix" /* nix */ ''
+                      (import ${nixpkgs}) {
+                        system = "${pkgs.stdenv.hostPlatform.system}";
+                        config = {
+                          allowBroken = true;
+                          allowSrcEvalForDrvMeta = true;
+                        };
+                      }
+                    '';
+                  };
                 }
               );
               default = nixpkgs-search;

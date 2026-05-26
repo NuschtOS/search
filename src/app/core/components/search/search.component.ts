@@ -177,7 +177,7 @@ export class OptionsSearchComponent extends SearchComponent<Option> implements O
 
   constructor(router: Router, activatedRoute: ActivatedRoute, searchService: OptionsService) {
     super(router, activatedRoute, searchService, true,
-      CONFIG.scopes.filter(scope => scope.optionsEnabled).map((scope, id) => Object.assign({ id }, scope)));
+      CONFIG.scopes.map((scope, id) => Object.assign({ id }, scope)).filter(scope => scope.optionsEnabled));
   }
 
   public ngOnInit(): void {
@@ -209,7 +209,7 @@ export class PackagesSearchComponent extends SearchComponent<Package> implements
 
   constructor(router: Router, activatedRoute: ActivatedRoute, searchService: PackagesService) {
     super(router, activatedRoute, searchService, false,
-      CONFIG.scopes.filter(scope => scope.packagesEnabled).map((scope, id) => Object.assign({ id }, scope)));
+      CONFIG.scopes.map((scope, id) => Object.assign({ id }, scope)).filter(scope => scope.packagesEnabled));
   }
 
   public ngOnInit(): void {
