@@ -1,0 +1,13 @@
+{
+  "title": "NuschtOS Local Development Search",
+  "baseHref": "/",
+  "dataBase": "/data/",
+  "chunkSize": 200,
+  "scopes": [
+    {
+      "name": "NixOS unstable",
+      "packagesEnabled": true,
+      "optionsEnabled": true
+    }
+  ]
+}

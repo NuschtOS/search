@@ -28,33 +28,53 @@
         ]
       },
       "locked": {
-        "lastModified": 1754860581,
-        "narHash": "sha256-EM0IE63OHxXCOpDHXaTyHIOk2cNvMCGPqLt/IdtVxgk=",
+        "lastModified": 1773708634,
+        "narHash": "sha256-ol+qY5b6AE2TKsFsLheowFAhv94H8234MGZToNc2XOQ=",
         "owner": "NuschtOS",
         "repo": "ixx",
-        "rev": "babfe85a876162c4acc9ab6fb4483df88fa1f281",
+        "rev": "7aeebd04a4886755e2b24b2510280628b7a0ddb4",
         "type": "github"
       },
       "original": {
         "owner": "NuschtOS",
-        "ref": "v0.1.1",
+        "ref": "v0.2.0",
         "repo": "ixx",
+        "type": "github"
+      }
+    },
+    "nix-index-database": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1779604987,
+        "narHash": "sha256-ZQ5z+fVhxYKtIFwtqGp5O0PD84BM1riASvqDaN5Xs+s=",
+        "owner": "Mic92",
+        "repo": "nix-index-database",
+        "rev": "8fba98c80b48fa013820e0163c5096922fea4ddd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Mic92",
+        "repo": "nix-index-database",
         "type": "github"
       }
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1775710090,
-        "narHash": "sha256-ar3rofg+awPB8QXDaFJhJ2jJhu+KqN/PRCXeyuXR76E=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "4c1018dae018162ec878d42fec712642d214fdfa",
+        "lastModified": 1779727040,
+        "narHash": "sha256-2aNlBiC63HeCxGzCaYU0UQ1CcKeNNwll9CoRAvw7Apk=",
+        "owner": "NuschtOS",
+        "repo": "nuschtpkgs",
+        "rev": "cc8d3defe8697c5325733952fdac1740d5d420a4",
         "type": "github"
       },
       "original": {
-        "owner": "NixOS",
+        "owner": "NuschtOS",
         "ref": "nixos-unstable",
-        "repo": "nixpkgs",
+        "repo": "nuschtpkgs",
         "type": "github"
       }
     },
@@ -62,6 +82,7 @@
       "inputs": {
         "flake-utils": "flake-utils",
         "ixx": "ixx",
+        "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs"
       }
     },

@@ -34,13 +34,15 @@ jobs:
       - name: Install Nix
         uses: cachix/install-nix-action@v31
 
+      - uses: DeterminateSystems/magic-nix-cache-action@v13
+
       - name: build stable
         if: matrix.target != 'unstable'
         run: |
-          nix build -L \
-            --override-input nixpkgs github:NixOS/nixpkgs/nixos-${{ matrix.target }}
+          nix build -L --max-jobs 1 \
+            --override-input nixpkgs github:NuschtOS/nuschtpkgs/backports-${{ matrix.target }}
 
       - name: build unstable
         if: matrix.target == 'unstable'
         run: |
-          nix build -L
+          nix build -L --max-jobs 1

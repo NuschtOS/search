@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { SearchService } from './search.service';
 
 describe('SearchService', () => {
-  let service: SearchService;
+  let service: SearchService<any>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});

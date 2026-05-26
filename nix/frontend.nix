@@ -1,47 +1,49 @@
-{
- callPackage,
- emptyDirectory,
- fetchPnpmDeps,
- lib,
- nodejs,
- path,
- pnpmConfigHook,
- stdenv,
+{ callPackage, ixxPkgs, path, lib, stdenv, nodejs, fetchPnpmDeps, pnpmConfigHook }:
 
- baseHref ? "/",
- title ? "NuschtOS Search",
- data ? emptyDirectory,
-}:
+{ config, data }:
 
 let
   manifest = lib.importJSON ../package.json;
   # pin pnpm version to avoid hash mismatches with differing pnpm versions
   # on nixos stable and unstable
   pnpm = callPackage (path + "/pkgs/development/tools/pnpm/generic.nix") {
-    version = "10.28.0";
-    hash = "sha256-mwsE5ueZRVZpF/hBG7b2X9Lz4VkEJpBOhQDhrMSzNWE=";
+    version = "11.1.2";
+    hash = "sha256-v+TSssejIQVlu6YpKfnv5JPrXyRicgGhAupFFOroz4A=";
   };
+
+  cpFixx = ''
+    cp ${ixxPkgs.fixx.dist}/*.tgz .
+  '';
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = manifest.name;
   inherit (manifest) version;
 
   src = lib.cleanSourceWith {
-    filter = name: _: ((!lib.hasSuffix ".nix" name) && (builtins.dirOf name) != "node_modules");
-    src = lib.cleanSource ./..;
+    filter = name: _: ((!lib.hasSuffix ".nix" name) && (baseNameOf name) != "node_modules");
+    src = ./..;
   };
 
   postPatch = ''
-    substituteInPlace src/app/core/config.domain.ts src/index.html \
-      --replace-fail '##TITLE##' ${lib.escapeShellArg title}
-    ln -s ${data}/{meta,index.ixx} public
-  '';
+    substituteInPlace src/index.html \
+      --replace-fail '##TITLE##' ${lib.escapeShellArg config.title}
+
+    # remove development files
+    rm -rf public/data
+    mkdir -p public/data
+    ln -s ${data}/* public/data
+
+    cat << EOF >src/app/core/config.json
+    ${builtins.toJSON config}
+    EOF
+  '' + cpFixx;
 
   pnpmDeps = fetchPnpmDeps {
     inherit (finalAttrs) pname version src;
     inherit pnpm;
     fetcherVersion = 3;
-    hash = "sha256-gwrKzHt994V44FS58jZUybdnhF333CfGI16CebJExbc=";
+    #postPatch = cpFixx;
+    hash = "sha256-zfpU/h0m8Z9n4tK2Ji6SUJBT12hhvnic0L9RZGx+21c=";
   };
 
   nativeBuildInputs = [
@@ -53,7 +55,7 @@ stdenv.mkDerivation (finalAttrs: {
   __darwinAllowLocalNetworking = true;
 
   buildPhase = ''
-    pnpm run build:ci --base-href ${baseHref}
+    pnpm run build:ci --base-href ${config.baseHref}
   '';
 
   installPhase = ''
@@ -65,6 +67,6 @@ stdenv.mkDerivation (finalAttrs: {
   '';
 
   passthru = {
-    inherit pnpm;
+    inherit config data pnpm;
   };
 })

@@ -1,34 +1,37 @@
 <form [formGroup]="search">
-  <feel-text-field formControlName="query" label="Search" [autofocus]="true" />
-  @if ((scopes | async); as scopes) {
-    @if (scopes.length > 1) {
-      <feel-dropdown formControlName="scope" label="Scope">
-        <option value="-1">All</option>
-        @for (scope of scopes; track scope; let idx = $index) {
-          <option [value]="idx.toString()">
-            {{scope}}
-          </option>
-        }
-      </feel-dropdown>
-    }
+  <p>{{searchLabel$ | async}}</p>
+  <feel-text-field formControlName="query" [autofocus]="true" />
+  @if (scopes.length > 1) {
+    <feel-dropdown formControlName="scope" label="Scope">
+      <option value="-1">All</option>
+      @for (scope of scopes; track scope) {
+        <option [value]="scope.id">
+          {{scope.name}}
+        </option>
+      }
+    </feel-dropdown>
   }
 </form>
 
-@if ((results | async); as options) {
+@if ((results | async); as results) {
   <div class="scroll">
     <ul>
-      @for (option of options; track option) {
+      @for (result of results; track result.idx) {
         <li>
-          <a [routerLink]="[]" [title]="option.name" [queryParams]="{option_scope: option.scope_id, option: option.name}" queryParamsHandling="merge"
-            [class.active]="isActive(option) | async">
-            <code>{{option.displayName}}</code>
+          <a
+            [routerLink]="[]"
+            [title]="result.name"
+            [queryParams]="{scope_id: result.scope_id, name: result.name}"
+            queryParamsHandling="merge"
+            [class.active]="isActive(result) | async"
+          >
+            <code>{{result.displayName ?? result.name}}</code>
           </a>
         </li>
       }
     </ul>
-    @if (options.length == maxSearchResults) {
-      <p>Only showing the first {{maxSearchResults}} results. Make your search
-      term more concise.</p>
+    @if (results.length == maxSearchResults) {
+      <p>Only showing the first {{maxSearchResults}} results. Make your search term more concise.</p>
     }
   </div>
 }

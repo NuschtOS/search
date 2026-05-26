@@ -1,0 +1,10 @@
+@if ((teamData$ | async); as teamData) {
+  <p>{{teamData.scope}}</p>
+  <ul>
+    @for (githubId of teamData.members; track githubId) {
+      <li>
+        <app-maintainer [githubId]="{scopeId: (scopeId$|async)!, githubId}" />
+      </li>
+    }
+  </ul>
+}

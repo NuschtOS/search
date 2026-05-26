@@ -1,0 +1,254 @@
+@if ((package$ | async); as package) {
+<div class="typography">
+  <h2><code>{{package.attrName}}</code></h2>
+
+  @if (package.evalError) {
+    <app-notice>
+      <h3>Eval Error</h3>
+      <p>
+        This package fails to evaluate and therefore cannot be used.
+        If you want to use this package anyways, you may try to fix it in the source code and open a pull request.
+      </p>
+    </app-notice>
+  } @else {
+
+    @if (package.broken) {
+      <app-notice>
+        <h3>Broken Package</h3>
+        <p>
+          This package has been marked as broken.
+          If you want to use this package anyways, you may try to fix it in the source code and open a pull request.
+        </p>
+      </app-notice>
+    }
+
+    @if (package.disabled) {
+      <app-notice>
+        <h3>Disabled Package</h3>
+        <p>
+          This package has been disabled for this toolchain.
+          If you want to use this package anyways, you may try to fix it in the source code and open a pull request.
+        </p>
+      </app-notice>
+    }
+
+    @if ((package.knownVulnerabilities ?? []).length != 0) {
+      <app-notice>
+        <h3>Insecure Package</h3>
+        <p>This package has been marked as insecure:</p>
+        <ul>
+          @for (vulnerability of package.knownVulnerabilities; track vulnerability) {
+            <li [innerHTML]="vulnerability"></li>
+          }
+        </ul>
+      </app-notice>
+    }
+
+    <table>
+      <tbody>
+        @if (scopes.length > 1) {
+          <tr>
+            <td>Scope</td>
+            <td><a [routerLink]="[]" [queryParams]="{scope: getScope(package.scopeId)!.name}" queryParamsHandling="merge">{{getScope(package.scopeId)!.name}}</a></td>
+          </tr>
+        }
+        @if (package.declaration) {
+        <tr>
+          <td>Declaration</td>
+          <td>
+            <a target="_blank" [href]="package.declaration">{{package.declaration}}</a>
+          </td>
+        </tr>
+        }
+        @if (`${package.pname}-${package.version}` != package.name) {
+        <tr>
+          <td>Name</td>
+          <td><code>{{package.name}}</code></td>
+        </tr>
+        }
+        @if (package.pname) {
+        <tr>
+          <td>Package Name</td>
+          <td><code>{{package.pname}}</code></td>
+        </tr>
+        }
+        @if (package.version) {
+        <tr>
+          <td>Version</td>
+          <td><code>{{package.version}}</code></td>
+        </tr>
+        }
+        @if (package.outputs.length > 1) {
+        <tr>
+          <td>Outputs</td>
+          <td>
+          <ul>
+          @for (output of package.outputs; track output) {
+            <li><code>{{output}}</code></li>
+          }
+          </ul>
+          </td>
+        </tr>
+        }
+        @if (package.description) {
+        <tr>
+          <td>Description</td>
+          <td [innerHTML]="package.description"></td>
+        </tr>
+        }
+        @if (package.longDescription) {
+        <tr>
+          <td>Long Description</td>
+          <td [innerHTML]="package.longDescription"></td>
+        </tr>
+        }
+        @if ((package.homepages ?? []).length > 0) {
+        <tr>
+          <td>Homepage</td>
+          <td>
+            @if ((package.homepages!).length > 1) {
+            <ul>
+              @for (homepage of package.homepages; track homepage) {
+              <li>
+                <a target="_blank" [href]="homepage">{{homepage}}</a>
+              </li>
+              }
+            </ul>
+            } @else {
+            <a target="_blank" [href]="package.homepages?.[0]">{{package.homepages?.[0]}}</a>
+            }
+          </td>
+        </tr>
+        }
+        @if (package.downloadPage) {
+        <tr>
+          <td>Download Page</td>
+          <td><a target="_blank" [href]="package.downloadPage">{{package.downloadPage}}</a></td>
+        </tr>
+        }
+        @if ((package.changelogs ?? []).length > 0) {
+        <tr>
+          <td>Changelog</td>
+          <td>
+            @if ((package.changelogs!).length > 1) {
+            <ul>
+              @for (changelog of package.changelogs; track changelog) {
+              <li>
+                <a target="_blank" [href]="changelog">{{changelog}}</a>
+              </li>
+              }
+            </ul>
+            } @else {
+            <a target="_blank" [href]="package.changelogs?.[0]">{{package.changelogs?.[0]}}</a>
+            }
+          </td>
+        </tr>
+        }
+        @if ((package.licenses ?? []).length > 0) {
+        <tr>
+          <td>Licenses</td>
+          <td>
+          @if ((package.licenses!).length > 1) {
+            <ul>
+              @for (license of package.licenses; track license)  {
+              <li>
+                <app-license [shortName]="{scopeId: package.scopeId, shortName: license}"/>
+              </li>
+              }
+            </ul>
+          } @else {
+            <app-license [shortName]="{scopeId: package.scopeId, shortName: (package.licenses ?? [])[0]}"/>
+          }
+          </td>
+        </tr>
+        }
+        @if ((package.sourceProvenance ?? []).length > 0) {
+        <tr>
+          <td>Source Provenance</td>
+          <td>
+            @if ((package.sourceProvenance!).length > 1) {
+            <ul>
+              @for (source of package.sourceProvenance; track source) {
+              <li>{{source}}</li>
+              }
+            </ul>
+            } @else {
+            {{package.sourceProvenance?.[0]}}
+            }
+          </td>
+        </tr>
+        }
+        @if (package.cpe) {
+        <tr>
+          <td><abbr title="Common Platform Enumeration">CPE</abbr></td>
+          <td><code>{{package.cpe}}</code></td>
+        </tr>
+        } @else {
+        @if ((package.possibleCpes ?? []).length > 0) {
+        <tr>
+          <td>Possible <abbr title="Common Platform Enumeration">CPE</abbr></td>
+          <td>
+            <ul>
+              @for (possibleCpe of package.possibleCpes; track possibleCpe) {
+              <li><code>{{possibleCpe}}</code></li>
+              }
+            </ul>
+          </td>
+        </tr>
+        }
+        }
+        @if (package.purl) {
+        <tr>
+          <td><abbr title="Package URL">PURL</abbr></td>
+          <td><code>{{package.purl}}</code></td>
+        </tr>
+        }
+        @if ((package.maintainers ?? []).length > 0) {
+        <tr>
+          <td>Maintainers</td>
+          <td>
+          @if ((package.maintainers!).length > 1) {
+            <ul>
+            @for (githubId of package.maintainers; track githubId) {
+              <li>
+                <app-maintainer [githubId]="{scopeId: package.scopeId, githubId}" />
+              </li>
+              }
+            </ul>
+          } @else {
+            <app-maintainer [githubId]="{scopeId: package.scopeId, githubId: (package.maintainers!)[0]}" />
+          }
+          </td>
+        </tr>
+        }
+        @if ((package.teams ?? []).length > 0) {
+        <tr>
+          <td>Maintainer Teams</td>
+          <td>
+          @if ((package.teams!).length > 1) {
+            <ul>
+            @for (shortName of package.teams; track shortName) {
+              <li>
+                <app-team [teamName]="{scopeId: package.scopeId, teamName: shortName}" />
+              </li>
+            }
+            </ul>
+          } @else {
+            <app-team [teamName]="{scopeId: package.scopeId, teamName: package.teams?.[0]!}" />
+          }
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>
+} @else {
+  @if (loading | async) {
+  <div class="loading-wrapper">
+    <app-loading-indicator />
+  </div>
+  } @else {
+    <p>Try searching for something!</p>
+  }
+}
