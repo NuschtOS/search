@@ -8,7 +8,15 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      nix-dependencies:
+        patterns:
+          - '*'
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      npm-dependencies:
+        patterns:
+          - '*'
