@@ -3,7 +3,7 @@
  emptyDirectory,
  fetchPnpmDeps,
  lib,
- nodejs,
+ nodejs_24,
  path,
  pnpmConfigHook,
  stdenv,
@@ -41,11 +41,11 @@ stdenv.mkDerivation (finalAttrs: {
     inherit (finalAttrs) pname version src;
     inherit pnpm;
     fetcherVersion = 3;
-    hash = "sha256-gwrKzHt994V44FS58jZUybdnhF333CfGI16CebJExbc=";
+    hash = "sha256-zhB/CRxt8p0jB2KmvOM6PSGCgZ1YCMFUr07JssAtp/8=";
   };
 
   nativeBuildInputs = [
-    nodejs
+    nodejs_24
     pnpm
     (pnpmConfigHook.override { inherit pnpm; })
   ];
