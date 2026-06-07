@@ -2,8 +2,7 @@
 
 :host {
   display: grid;
-  height: 100%;
-  grid-template-rows: 1fr;
+  grid-template-rows: auto;
   grid-template-columns: 1fr 2fr;
   grid-template-areas: "aside main";
   gap: 1rem;
@@ -19,6 +18,10 @@
   aside {
     grid-area: aside;
     overflow: hidden;
+    position: sticky;
+    top: var(--header-height);
+    align-self: start;
+    height: calc(100dvh - var(--header-height));
 
     .card {
       height: 100%;
@@ -27,5 +30,21 @@
 
   main {
     grid-area: main;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    footer {
+      display: flex;
+      justify-content: flex-end;
+      flex-shrink: 0;
+      margin-top: auto;
+
+      >*:not(:last-child)::after {
+        content: "|";
+        margin: 0 0.5rem;
+        color: $c-gray;
+      }
+    }
   }
 }
