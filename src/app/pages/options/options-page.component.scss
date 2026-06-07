@@ -2,6 +2,7 @@
 
 :host {
   display: grid;
+  height: 100%;
   grid-template-rows: 1fr;
   grid-template-columns: 1fr 2fr;
   grid-template-areas: "aside main";
@@ -12,12 +13,16 @@
     border: .1rem solid $c-card-secondary;
     background-color: $c-card;
     border-radius: .5rem;
-    max-height: 100%;
     display: flex;
   }
 
   aside {
     grid-area: aside;
+    overflow: hidden;
+
+    .card {
+      height: 100%;
+    }
   }
 
   main {
