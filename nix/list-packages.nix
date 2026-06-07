@@ -4,6 +4,7 @@ let
   shouldRemoved = attrPrefix: name: value:
     attrPrefix != [ ]
     && builtins.elemAt attrPrefix (builtins.length attrPrefix - 1) == name
+    || name == "nixosTests"
     # TODO: re-enable when https://github.com/NixOS/nixpkgs/pull/437723#issuecomment-3493948379 is resolved
     || name == "tests"
     # we are not noogle, yet
@@ -34,6 +35,7 @@ let
     || attrPrefix == [ "pypy27Packages" ] || attrPrefix == [ "pypy27Packages" ] || attrPrefix == ["pypy2Packages"] || attrPrefix == ["pypyPackages"] || attrPrefix == ["python27Packages"] || attrPrefix == ["python2Packages"]
     # don't recurse into pythonPackages a nth time and just assume and attrPrefix ending in Packages (eg. python311Packages or mopidyPackages) is not what we want
     || (attrPrefix != [ ] && lib.hasSuffix "Packages" (lib.head attrPrefix) && name == "pythonPackages")
+    # builtins.trace "name: ${lib.concatStringsSep "." attrPrefix}.${name}"
     || !(builtins.isAttrs value);
 
   listPackages = attrPrefix: pkgs:
