@@ -106,9 +106,9 @@ rec {
             overrideEvalModulesArgs = scope.overrideEvalModulesArgs or { };
           });
         } // (if scope?packagesJSONs then {
-          inherit (scope) packagesJSONs;
+          packagesJsons = scope.packagesJSONs;
         } else lib.optionalAttrs (scope?pkgs) {
-          packagesJSONs = [ (pkgs.writers.writeJSON "${scope.name}-packages.json" (let
+          packagesJsons = [ (pkgs.writers.writeJSON "${scope.name}-packages.json" (let
             inherit (scope) pkgs;
           in buildPackages pkgs (listPackages [ ] pkgs))) ];
         }))

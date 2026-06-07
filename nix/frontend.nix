@@ -1,4 +1,4 @@
-{ callPackage, ixxPkgs, path, lib, stdenv, nodejs, fetchPnpmDeps, pnpmConfigHook }:
+{ callPackage, path, lib, stdenv, nodejs_24, fetchPnpmDeps, pnpmConfigHook }:
 
 { config, data }:
 
@@ -10,10 +10,6 @@ let
     version = "11.1.2";
     hash = "sha256-v+TSssejIQVlu6YpKfnv5JPrXyRicgGhAupFFOroz4A=";
   };
-
-  cpFixx = ''
-    cp ${ixxPkgs.fixx.dist}/*.tgz .
-  '';
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = manifest.name;
@@ -24,32 +20,34 @@ stdenv.mkDerivation (finalAttrs: {
     src = ./..;
   };
 
+  __structuredAttrs = true;
+  strictDeps = true;
+
   postPatch = ''
     substituteInPlace src/index.html \
       --replace-fail '##TITLE##' ${lib.escapeShellArg config.title}
 
     # remove development files
     rm -rf public/data
-    mkdir -p public/data
-    ln -s ${data}/* public/data
+    cp -r ${data} public/data
 
     cat << EOF >src/app/core/config.json
     ${builtins.toJSON config}
     EOF
-  '' + cpFixx;
+  '';
 
   pnpmDeps = fetchPnpmDeps {
     inherit (finalAttrs) pname version src;
     inherit pnpm;
-    fetcherVersion = 3;
+    fetcherVersion = 4;
     #postPatch = cpFixx;
-    hash = "sha256-zfpU/h0m8Z9n4tK2Ji6SUJBT12hhvnic0L9RZGx+21c=";
+    hash = "sha256-HhykoxE2XwzRBUUo6MT2OOqWK1mEwjcWmVYvAko76C4=";
   };
 
   nativeBuildInputs = [
-    nodejs
+    nodejs_24
     pnpm
-    (pnpmConfigHook.override { inherit pnpm; })
+    pnpmConfigHook
   ];
 
   __darwinAllowLocalNetworking = true;

@@ -5,7 +5,7 @@
     flake-utils.url = "github:numtide/flake-utils";
     ixx = {
       # match version with npm package
-      url = "github:NuschtOS/ixx/v0.2.0";
+      url = "github:NuschtOS/ixx/v0.2.1";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "flake-utils";
@@ -40,7 +40,7 @@
 
           packages =
             let
-              nuscht-search-unwrapped = pkgs.callPackage ./nix/frontend.nix { inherit ixxPkgs; };
+              nuscht-search-unwrapped = pkgs.callPackage ./nix/frontend.nix { };
             in
             rec {
               fixx-dist = ixxPkgs.fixx.dist;

@@ -115,7 +115,7 @@
               }
             </ul>
             } @else {
-            <a target="_blank" [href]="package.homepages?.[0]">{{package.homepages?.[0]}}</a>
+            <a target="_blank" [href]="$safeNavigationMigration(package.homepages?.[0])">{{package.homepages?.[0]}}</a>
             }
           </td>
         </tr>
@@ -139,7 +139,7 @@
               }
             </ul>
             } @else {
-            <a target="_blank" [href]="package.changelogs?.[0]">{{package.changelogs?.[0]}}</a>
+            <a target="_blank" [href]="$safeNavigationMigration(package.changelogs?.[0])">{{package.changelogs?.[0]}}</a>
             }
           </td>
         </tr>
@@ -234,7 +234,7 @@
             }
             </ul>
           } @else {
-            <app-team [teamName]="{scopeId: package.scopeId, teamName: package.teams?.[0]!}" />
+            <app-team [teamName]="{scopeId: package.scopeId, teamName: $safeNavigationMigration(package.teams?.[0])!}" />
           }
           </td>
         </tr>

@@ -1,2 +1,3 @@
 ignoreScripts: true
-
+minimumReleaseAgeExclude:
+  - '@nuschtos/fixx@0.2.1'
