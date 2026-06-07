@@ -5,9 +5,7 @@ import { OptionsService } from '../../core/data/options.service';
 import { OptionsSearchComponent } from '../../core/components/search/search.component';
 import { RouterLink } from '@angular/router';
 import { AsyncPipe, DecimalPipe, formatNumber } from '@angular/common';
-import { Subject } from 'rxjs/internal/Subject';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { takeUntil } from 'rxjs/internal/operators/takeUntil';
+import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-options',

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import __wbg_init, { Index } from '@nuschtos/fixx';
-import { BehaviorSubject, forkJoin, from, map, Observable, of, shareReplay, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, forkJoin, from, map, Observable, of, switchMap, tap } from 'rxjs';
 import { CONFIG } from '../config.domain';
 
 export interface SearchedResult {
@@ -16,7 +16,6 @@ export abstract class SearchService<T> {
   private readonly index = new BehaviorSubject<Index | null>(null);
   private readonly data = new BehaviorSubject<Record<number, T[]>>({});
   private readonly ready$ = this.index.pipe(
-    map(index => index),
     switchMap(index => index ? of(index) : of()),
   );
 
