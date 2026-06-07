@@ -114,14 +114,14 @@ export class SearchComponent<T> {
       )
       .subscribe(({ scope, query }) => {
         const id = this.scopes.find(s => s.name === scope)?.id ?? -1;
-        this.search.setValue({ query, scope: id.toString() })
+        this.search.setValue({ query: query ?? '', scope: id.toString() })
       });
   }
 
   protected ngAfterViewInit0(): void {
     const { query, scope } = getQuery(this.activatedRoute);
     const id = this.scopes.find(s => s.name === scope)?.id ?? -1;
-    this.search.setValue({ query, scope: id.toString() })
+    this.search.setValue({ query: query ?? '', scope: id.toString() })
 
     this.doSearch(scope === null ? null : Number(scope), query)
       .subscribe(value => this.results.next(value));
