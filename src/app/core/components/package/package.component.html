@@ -48,13 +48,13 @@
       <tbody>
         @if (scopes.length > 1) {
           <tr>
-            <td>Scope</td>
+            <th scope="row">Scope</th>
             <td><a [routerLink]="[]" [queryParams]="{scope: getScope(package.scopeId)!.name}" queryParamsHandling="merge">{{getScope(package.scopeId)!.name}}</a></td>
           </tr>
         }
         @if (package.declaration) {
         <tr>
-          <td>Declaration</td>
+          <th scope="row">Declaration</th>
           <td>
             <a target="_blank" [href]="package.declaration">{{package.declaration}}</a>
           </td>
@@ -62,25 +62,25 @@
         }
         @if (`${package.pname}-${package.version}` != package.name) {
         <tr>
-          <td>Name</td>
+          <th scope="row">Name</th>
           <td><code>{{package.name}}</code></td>
         </tr>
         }
         @if (package.pname) {
         <tr>
-          <td>Package Name</td>
+          <th scope="row">Package Name</th>
           <td><code>{{package.pname}}</code></td>
         </tr>
         }
         @if (package.version) {
         <tr>
-          <td>Version</td>
+          <th scope="row">Version</th>
           <td><code>{{package.version}}</code></td>
         </tr>
         }
         @if (package.outputs.length > 1) {
         <tr>
-          <td>Outputs</td>
+          <th scope="row">Outputs</th>
           <td>
           <ul>
           @for (output of package.outputs; track output) {
@@ -92,19 +92,19 @@
         }
         @if (package.description) {
         <tr>
-          <td>Description</td>
+          <th scope="row">Description</th>
           <td [innerHTML]="package.description"></td>
         </tr>
         }
         @if (package.longDescription) {
         <tr>
-          <td>Long Description</td>
+          <th scope="row">Long Description</th>
           <td [innerHTML]="package.longDescription"></td>
         </tr>
         }
         @if ((package.homepages ?? []).length > 0) {
         <tr>
-          <td>Homepage</td>
+          <th scope="row">Homepage</th>
           <td>
             @if ((package.homepages!).length > 1) {
             <ul>
@@ -122,13 +122,13 @@
         }
         @if (package.downloadPage) {
         <tr>
-          <td>Download Page</td>
+          <th scope="row">Download Page</th>
           <td><a target="_blank" [href]="package.downloadPage">{{package.downloadPage}}</a></td>
         </tr>
         }
         @if ((package.changelogs ?? []).length > 0) {
         <tr>
-          <td>Changelog</td>
+          <th scope="row">Changelog</th>
           <td>
             @if ((package.changelogs!).length > 1) {
             <ul>
@@ -146,7 +146,7 @@
         }
         @if ((package.licenses ?? []).length > 0) {
         <tr>
-          <td>Licenses</td>
+          <th scope="row">Licenses</th>
           <td>
           @if ((package.licenses!).length > 1) {
             <ul>
@@ -164,7 +164,7 @@
         }
         @if ((package.sourceProvenance ?? []).length > 0) {
         <tr>
-          <td>Source Provenance</td>
+          <th scope="row">Source Provenance</th>
           <td>
             @if ((package.sourceProvenance!).length > 1) {
             <ul>
@@ -180,13 +180,13 @@
         }
         @if (package.cpe) {
         <tr>
-          <td><abbr title="Common Platform Enumeration">CPE</abbr></td>
+          <th scope="row"><abbr title="Common Platform Enumeration">CPE</abbr></th>
           <td><code>{{package.cpe}}</code></td>
         </tr>
         } @else {
         @if ((package.possibleCpes ?? []).length > 0) {
         <tr>
-          <td>Possible <abbr title="Common Platform Enumeration">CPE</abbr></td>
+          <th scope="row">Possible <abbr title="Common Platform Enumeration">CPE</abbr></th>
           <td>
             <ul>
               @for (possibleCpe of package.possibleCpes; track possibleCpe) {
@@ -199,13 +199,13 @@
         }
         @if (package.purl) {
         <tr>
-          <td><abbr title="Package URL">PURL</abbr></td>
+          <th scope="row"><abbr title="Package URL">PURL</abbr></th>
           <td><code>{{package.purl}}</code></td>
         </tr>
         }
         @if ((package.maintainers ?? []).length > 0) {
         <tr>
-          <td>Maintainers</td>
+          <th scope="row">Maintainers</th>
           <td>
           @if ((package.maintainers!).length > 1) {
             <ul>
@@ -223,7 +223,7 @@
         }
         @if ((package.teams ?? []).length > 0) {
         <tr>
-          <td>Maintainer Teams</td>
+          <th scope="row">Maintainer Teams</th>
           <td>
           @if ((package.teams!).length > 1) {
             <ul>

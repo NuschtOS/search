@@ -8,14 +8,15 @@ h2 code {
   word-break: break-all;
 }
 
-td {
+td,
+th {
   padding: 0.4rem;
+}
 
-  &:first-of-type {
-    text-align: right;
-    vertical-align: top;
-    font-weight: bold;
-  }
+th {
+  text-align: right;
+  vertical-align: top;
+  font-weight: bold;
 }
 
 .loading-wrapper {

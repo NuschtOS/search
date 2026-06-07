@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import __wbg_init, { Index } from '@nuschtos/fixx';
-import { BehaviorSubject, forkJoin, from, map, Observable, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, forkJoin, from, map, Observable, of, shareReplay, switchMap, tap } from 'rxjs';
 import { CONFIG } from '../config.domain';
 
 export interface SearchedResult {

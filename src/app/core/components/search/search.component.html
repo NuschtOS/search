@@ -15,7 +15,7 @@
 
 @if ((results | async); as results) {
   <div class="scroll">
-    <ul>
+    <ul aria-live="polite" aria-label="Search results">
       @for (result of results; track result.idx) {
         <li>
           <a

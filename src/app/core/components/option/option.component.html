@@ -5,12 +5,12 @@
       <tbody>
         @if (scopes.length > 1) {
           <tr>
-            <td>Scope</td>
+            <th scope="row">Scope</th>
             <td><a [routerLink]="[]" [queryParams]="{scope: getScope(option.scopeId)!.name}" queryParamsHandling="merge">{{getScope(option.scopeId)!.name}}</a></td>
           </tr>
         }
         <tr>
-          <td>Declarations</td>
+          <th scope="row">Declarations</th>
           <td>
             @if ((option.declarations ?? []).length > 1) {
               <ul>
@@ -26,18 +26,18 @@
           </td>
         </tr>
         <tr>
-          <td>Type</td>
+          <th scope="row">Type</th>
           <td><code>{{option.type}}</code></td>
         </tr>
         @if (option.read_only) {
           <tr>
-            <td>Readonly</td>
+            <th scope="row">Readonly</th>
             <td><code>{{option.read_only}}</code></td>
           </tr>
         }
         @if (option.default) {
           <tr>
-            <td>Default</td>
+            <th scope="row">Default</th>
             <td>
               @if (scopes[option.scopeId].packagesEnabled && (option.type == "package" || option.type == "null or package")) {
                 @defer {
@@ -57,14 +57,14 @@
         }
         @if (option.example) {
           <tr>
-            <td>Example</td>
+            <th scope="row">Example</th>
             <td>
               <pre><code [innerHTML]="option.example"></code></pre>
             </td>
           </tr>
         }
         <tr>
-          <td>Description</td>
+          <th scope="row">Description</th>
           <td [innerHTML]="option.description"></td>
         </tr>
       </tbody>

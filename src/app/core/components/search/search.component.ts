@@ -64,12 +64,7 @@ export class SearchComponent<T> {
     );
 
     afterNextRender(() => {
-      // HACK: setTimeout is needs because hydration? somehow updates the view
-      //       after the item was scrolled into view
-      setTimeout(() => {
-        const element = document.querySelector("a.active");
-        element?.scrollIntoView({ behavior: "smooth" });
-      }, 300);
+      document.querySelector("a.active")?.scrollIntoView({ behavior: "smooth" });
     });
   }
 
