@@ -18,8 +18,8 @@ let
   # pin pnpm version to avoid hash mismatches with differing pnpm versions
   # on nixos stable and unstable
   pnpm = callPackage (path + "/pkgs/development/tools/pnpm/generic.nix") {
-    version = "10.28.0";
-    hash = "sha256-mwsE5ueZRVZpF/hBG7b2X9Lz4VkEJpBOhQDhrMSzNWE=";
+    version = "11.4.0";
+    hash = "sha256-50EGpaDrJWn0WDUEQg6tX8HCY+QXoyFsqxy+DM3LTq4=";
   };
 in
 stdenv.mkDerivation (finalAttrs: {
@@ -40,8 +40,8 @@ stdenv.mkDerivation (finalAttrs: {
   pnpmDeps = fetchPnpmDeps {
     inherit (finalAttrs) pname version src;
     inherit pnpm;
-    fetcherVersion = 3;
-    hash = "sha256-zhB/CRxt8p0jB2KmvOM6PSGCgZ1YCMFUr07JssAtp/8=";
+    fetcherVersion = 4;
+    hash = "sha256-JGmmDjEsWubDYkZjNXaMlwqmW/pkRhEx2Qj7PSznR+E=";
   };
 
   nativeBuildInputs = [
