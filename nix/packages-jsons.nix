@@ -27,7 +27,7 @@ in
           {
             partition = builtins.toJSON attrNames;
             passAsFile = [ "partition" ];
-            nativeBuildInputs = with nixpkgsPkgs; [ jq nixVersions.nix_2_33 ];
+            nativeBuildInputs = with nixpkgsPkgs; [ jq nixVersions.nix_2_34 ];
           }
           ''
             cp ${./build-packages.nix} build-packages.nix
