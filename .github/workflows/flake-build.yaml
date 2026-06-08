@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: ["25.11", "unstable"]
+        target: ["26.05", "unstable"]
         os: ["ubuntu", "macos"]
 
     runs-on: ${{ matrix.os }}-latest
