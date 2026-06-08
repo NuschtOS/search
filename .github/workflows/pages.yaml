@@ -41,6 +41,8 @@ jobs:
         run: nix build -L github:NuschtOS/search.nuschtos.de --override-input search .
           --override-input nixpkgs $(jq -r '"github:" + .nodes.nixpkgs.locked.owner + "/" + .nodes.nixpkgs.locked.repo + "/" + .nodes.nixpkgs.locked.rev' flake.lock)
 
+      - uses: nicknovitski/nix-develop@v1
+
       - name: Publish to Cloudflare Pages
         if: "github.repository_owner == 'NuschtOS'"
         uses: cloudflare/wrangler-action@v4
