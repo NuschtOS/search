@@ -31,6 +31,15 @@
               pnpm
               ixxPkgs.ixx
             ];
+
+            env = {
+              PLAYWRIGHT_BROWSERS_PATH = pkgs.playwright-driver.browsers;
+              PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = true;
+            };
+
+            shellHook = ''
+              pnpm install -D @playwright/test@${pkgs.playwright-driver.version}
+            '';
           };
 
           packages =
@@ -46,7 +55,6 @@
                 optionsJSON = (import "${nixpkgs}/nixos/release.nix" { }).options + /share/doc/nixos/options.json;
                 name = "NixOS";
                 urlPrefix = "https://github.com/NixOS/nixpkgs/tree/master/";
-                baseHref = "/result/";
               };
               default = nixpkgs-search;
             };
