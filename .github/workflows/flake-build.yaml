@@ -46,9 +46,7 @@ jobs:
           nix build -L
 
       - name: Install JS dependencies for E2E tests
-        if: matrix.os == 'ubuntu'
         run: nix develop --command pnpm install --frozen-lockfile
 
       - name: E2E tests
-        if: matrix.os == 'ubuntu'
         run: nix develop --command pnpm test:e2e
