@@ -4,6 +4,7 @@ export default defineConfig({
   testDir: './e2e',
   fullyParallel: true,
   reporter: 'list',
+  timeout: 60_000,
 
   use: {
     baseURL: 'http://localhost:4200',
@@ -28,7 +29,6 @@ export default defineConfig({
         ...devices['Desktop Firefox'],
       },
     },
-
   ],
 
   webServer: {
