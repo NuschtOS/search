@@ -36,6 +36,14 @@
               pnpm
               ixxPkgs.ixx
             ];
+
+            env = {
+              PLAYWRIGHT_BROWSERS_PATH = pkgs.playwright-driver.browsers;
+            };
+
+            shellHook = ''
+              pnpm install -D @playwright/test@${pkgs.playwright-driver.version}
+            '';
           };
 
           packages =

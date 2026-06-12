@@ -52,13 +52,11 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public",
-                "output": "/"
+                "input": "public"
               },
               {
                 "glob": "fixx_bg.wasm",
                 "input": "node_modules/@nuschtos/fixx",
-                "output": "/"
               }
             ],
             "styles": [

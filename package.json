@@ -7,7 +7,8 @@
     "build": "ng build",
     "build:ci": "ng build --output-path ./dist",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "test:e2e": "playwright test"
   },
   "private": true,
   "dependencies": {
@@ -30,6 +31,8 @@
     "@angular/build": "^22.0.0",
     "@angular/cli": "^22.0.0",
     "@angular/compiler-cli": "^22.0.0",
+    "@playwright/test": "^1.59.1",
+    "http-server": "^14.1.1",
     "typescript": "~6.0.3",
     "zone.js": "^0.16.2"
   }

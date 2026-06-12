@@ -47,3 +47,6 @@ Thumbs.db
 result
 /public/meta
 /public/index.ixx
+
+# playwright
+/test-results
