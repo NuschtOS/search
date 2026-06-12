@@ -3,10 +3,16 @@
     <h2><code>{{option.name}}</code></h2>
     <table>
       <tbody>
+        @if (scopes.length > 1) {
+          <tr>
+            <th scope="row">Scope</th>
+            <td><a [routerLink]="[]" [queryParams]="{scope: getScope(option.scopeId)!.name}" queryParamsHandling="merge">{{getScope(option.scopeId)!.name}}</a></td>
+          </tr>
+        }
         <tr>
-          <td>Declarations</td>
+          <th scope="row">Declarations</th>
           <td>
-            @if (option.declarations.length > 1) {
+            @if ((option.declarations ?? []).length > 1) {
               <ul>
                 @for (declaration of option.declarations; track declaration) {
                   <li>
@@ -15,40 +21,52 @@
                 }
               </ul>
             } @else {
-              <a target="_blank" [href]="option.declarations[0]">{{option.declarations[0]}}</a>
+              <a target="_blank" [href]="(option.declarations ?? [])[0]">{{(option.declarations ?? [])[0]}}</a>
             }
           </td>
         </tr>
-        @if ((scope | async); as scope) {
-          <tr>
-            <td>Scope</td>
-            <td><a [routerLink]="[]" [queryParams]="{scope}" queryParamsHandling="merge">{{scope}}</a></td>
-          </tr>
-        }
         <tr>
-          <td>Description</td>
-          <td [innerHTML]="option.description"></td>
-        </tr>
-        <tr>
-          <td>Type</td>
+          <th scope="row">Type</th>
           <td><code>{{option.type}}</code></td>
         </tr>
+        @if (option.read_only) {
+          <tr>
+            <th scope="row">Readonly</th>
+            <td><code>{{option.read_only}}</code></td>
+          </tr>
+        }
         @if (option.default) {
           <tr>
-            <td>Default</td>
+            <th scope="row">Default</th>
             <td>
-              <pre><code [innerHTML]="option.default"></code></pre>
+              @if (scopes[option.scopeId].packagesEnabled && (option.type == "package" || option.type == "null or package")) {
+                @defer {
+                  <a
+                    routerLink="/packages"
+                    [queryParams]="{name: getPackageName(option.default)}"
+                    queryParamsHandling="merge"
+                  >
+                    <pre><code [innerHTML]="option.default"></code></pre>
+                  </a>
+                }
+              } @else {
+                <pre><code [innerHTML]="option.default"></code></pre>
+              }
             </td>
           </tr>
         }
         @if (option.example) {
           <tr>
-            <td>Example</td>
+            <th scope="row">Example</th>
             <td>
               <pre><code [innerHTML]="option.example"></code></pre>
             </td>
           </tr>
         }
+        <tr>
+          <th scope="row">Description</th>
+          <td [innerHTML]="option.description"></td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -61,4 +79,3 @@
     <p>Try searching for something!</p>
   }
 }
-

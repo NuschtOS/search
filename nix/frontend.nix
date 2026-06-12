@@ -1,25 +1,14 @@
-{
- callPackage,
- emptyDirectory,
- fetchPnpmDeps,
- lib,
- nodejs_24,
- path,
- pnpmConfigHook,
- stdenv,
+{ callPackage, path, lib, stdenv, nodejs_24, fetchPnpmDeps, pnpmConfigHook }:
 
- baseHref ? "/",
- title ? "NuschtOS Search",
- data ? emptyDirectory,
-}:
+{ config, data }:
 
 let
   manifest = lib.importJSON ../package.json;
   # pin pnpm version to avoid hash mismatches with differing pnpm versions
   # on nixos stable and unstable
   pnpm = callPackage (path + "/pkgs/development/tools/pnpm/generic.nix") {
-    version = "10.28.0";
-    hash = "sha256-mwsE5ueZRVZpF/hBG7b2X9Lz4VkEJpBOhQDhrMSzNWE=";
+    version = "11.1.2";
+    hash = "sha256-v+TSssejIQVlu6YpKfnv5JPrXyRicgGhAupFFOroz4A=";
   };
 in
 stdenv.mkDerivation (finalAttrs: {
@@ -27,33 +16,44 @@ stdenv.mkDerivation (finalAttrs: {
   inherit (manifest) version;
 
   src = lib.cleanSourceWith {
-    filter = name: _: ((!lib.hasSuffix ".nix" name) && (builtins.dirOf name) != "node_modules");
-    src = lib.cleanSource ./..;
+    filter = name: _: ((!lib.hasSuffix ".nix" name) && (baseNameOf name) != "node_modules");
+    src = ./..;
   };
 
+  __structuredAttrs = true;
+  strictDeps = true;
+
   postPatch = ''
-    substituteInPlace src/app/core/config.domain.ts src/index.html \
-      --replace-fail '##TITLE##' ${lib.escapeShellArg title}
-    cp -r ${data}/{meta,index.ixx} public
+    substituteInPlace src/index.html \
+      --replace-fail '##TITLE##' ${lib.escapeShellArg config.title}
+
+    # remove development files
+    rm -rf public/data
+    cp -r ${data} public/data
+
+    cat << EOF >src/app/core/config.json
+    ${builtins.toJSON config}
+    EOF
   '';
 
   pnpmDeps = fetchPnpmDeps {
     inherit (finalAttrs) pname version src;
     inherit pnpm;
-    fetcherVersion = 3;
-    hash = "sha256-JDSGF8V3HHww7GaJNBUXZCEt8766tCXru6UXHareJUI=";
+    fetcherVersion = 4;
+    #postPatch = cpFixx;
+    hash = "sha256-XUreJ+eQOsb46gZZtnx42NV6JFCqUZTAOvG8R6+5/Bc=";
   };
 
   nativeBuildInputs = [
     nodejs_24
     pnpm
-    (pnpmConfigHook.override { inherit pnpm; })
+    pnpmConfigHook
   ];
 
   __darwinAllowLocalNetworking = true;
 
   buildPhase = ''
-    pnpm run build:ci --base-href ${baseHref}
+    pnpm run build:ci --base-href ${config.baseHref}
   '';
 
   installPhase = ''
@@ -65,6 +65,6 @@ stdenv.mkDerivation (finalAttrs: {
   '';
 
   passthru = {
-    inherit pnpm;
+    inherit config data pnpm;
   };
 })

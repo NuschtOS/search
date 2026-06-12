@@ -1,1 +1,16 @@
-<router-outlet />
+<header>
+  <h1>{{title}}</h1>
+
+  <nav>
+    <a routerLink="/options" queryParamsHandling="merge" routerLinkActive="active">
+      Options Search
+    </a>
+    <a routerLink="/packages" queryParamsHandling="merge" routerLinkActive="active">
+      Packages Search
+    </a>
+  </nav>
+</header>
+
+<div id="main">
+  <router-outlet />
+</div>

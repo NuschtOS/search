@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: ["25.11", "unstable"]
+        target: ["26.05", "unstable"]
         os: ["ubuntu", "macos"]
 
     runs-on: ${{ matrix.os }}-latest
@@ -34,16 +34,18 @@ jobs:
       - name: Install Nix
         uses: cachix/install-nix-action@v31
 
+      - uses: DeterminateSystems/magic-nix-cache-action@v13
+
       - name: build stable
         if: matrix.target != 'unstable'
         run: |
-          nix build -L \
+          nix build -L --max-jobs 1 \
             --override-input nixpkgs github:NixOS/nixpkgs/nixos-${{ matrix.target }}
 
       - name: build unstable
         if: matrix.target == 'unstable'
         run: |
-          nix build -L
+          nix build -L --max-jobs 1
 
       - name: Install JS dependencies for E2E tests
         run: nix develop --command pnpm install --frozen-lockfile

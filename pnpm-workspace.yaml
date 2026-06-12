@@ -1,7 +1,3 @@
-allowBuilds:
-  '@parcel/watcher': false
-  esbuild: false
-  lmdb: false
-  msgpackr-extract: false
-  sharp: false
-  workerd: false
+ignoreScripts: true
+minimumReleaseAgeExclude:
+  - '@nuschtos/fixx@0.2.1'
