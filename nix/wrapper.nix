@@ -158,6 +158,6 @@ rec {
   mkSearch = { baseHref ? "/", title ? "NüschtOS Search", ... }@args:
     mkMultiSearch {
       inherit baseHref title;
-      scopes = [ (lib.removeAttrs args [ "baseHref" "title" ]) ];
+      scopes = [ ({ name = ""; } // (lib.removeAttrs args [ "baseHref" "title" ])) ];
     };
 }
