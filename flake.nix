@@ -49,7 +49,7 @@
               inherit (pkgs.callPackages ./nix/wrapper.nix {
                 inherit ixxPkgs;
                 nuscht-search = nuscht-search-unwrapped;
-              }) mkOptionsJSON mkSearchJSON mkSearch mkMultiSearch;
+              }) mkOptionsJSON mkSearchData mkSearch mkMultiSearch;
               nixpkgs-search = mkSearch {
                 optionsJSON = (import "${nixpkgs}/nixos/release.nix" { }).options + /share/doc/nixos/options.json;
                 name = "NixOS";
