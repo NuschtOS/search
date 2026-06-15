@@ -134,11 +134,10 @@ rec {
       '');
 
   # also update README examples
-  mkMultiSearch = { scopes, baseHref ? "/", title ? "NüschtOS Search" }:
+  mkMultiSearch = { scopes, baseHref ? "/", title ? "NüschtOS Search" }@args:
     let
       chunkSize = 300;
-    in
-      nuscht-search {
+      drv = nuscht-search {
         config =
         assert lib.assertMsg (lib.hasSuffix "/" baseHref) "baseHref needs a trailing slash";
         assert lib.assertMsg (lib.hasPrefix "/" baseHref) "baseHref needs to start with a slash";
@@ -153,11 +152,20 @@ rec {
         };
         data = mkSearchData { inherit scopes chunkSize; };
       };
+    in
+      drv // {
+        override = newArgs: mkMultiSearch (args // newArgs);
+      };
 
   # also update README examples
   mkSearch = { baseHref ? "/", title ? "NüschtOS Search", ... }@args:
-    mkMultiSearch {
-      inherit baseHref title;
-      scopes = [ ({ name = ""; } // (lib.removeAttrs args [ "baseHref" "title" ])) ];
-    };
+    let
+      drv = mkMultiSearch {
+        inherit baseHref title;
+        scopes = [ ({ name = ""; } // (lib.removeAttrs args [ "baseHref" "title" ])) ];
+      };
+    in
+      drv // {
+        override = newArgs: mkSearch (args // newArgs);
+      };
 }
