@@ -12,4 +12,8 @@ import { CONFIG } from './core/config.domain';
 export class AppComponent {
 
   protected readonly title = CONFIG.title;
+
+  protected readonly OPTIONS_ENABLED = CONFIG.scopes.findIndex(scope => scope.optionsEnabled) != -1;
+  protected readonly PACKAGES_ENABLED = CONFIG.scopes.findIndex(scope => scope.packagesEnabled) != -1;
+
 }

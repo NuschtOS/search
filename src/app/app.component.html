@@ -1,6 +1,7 @@
 <header>
   <h1>{{title}}</h1>
 
+  @if (PACKAGES_ENABLED && OPTIONS_ENABLED) {
   <nav>
     <a routerLink="/options" queryParamsHandling="merge" routerLinkActive="active">
       Options Search
@@ -9,6 +10,7 @@
       Packages Search
     </a>
   </nav>
+  }
 </header>
 
 <div id="main">
