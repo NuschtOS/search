@@ -58,7 +58,7 @@
                 inherit self ixxPkgs;
                 inherit (nix-index-database.packages.${pkgs.stdenv.hostPlatform.system}) nix-index-database;
                 nuscht-search = nuscht-search-unwrapped;
-              }) mkOptionsJSON mkPackagesJSONs mkCollectManDerivations mkSearch mkSearchData mkMultiSearch;
+              }) mkOptionsJSON mkPackagesJSONs mkCollectManDerivations mkSearchData mkMultiSearch mkSearch;
 
               nixpkgs-search = mkSearch (
                 # nixos/release.nix hardcodes a pkgs import with x86_64-linux system
