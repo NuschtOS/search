@@ -1,0 +1,62 @@
+@import "vars";
+
+:host {
+  // IDK, this was just taken from the devtools + 1rem
+  --header-height: 106.5px;
+
+  display: grid;
+  grid-template-rows: min-content 1fr;
+  grid-template-columns: 1fr;
+  grid-template-areas: "header" "main";
+  min-height: 100dvh;
+  width: 100%;
+
+  header {
+    grid-area: header;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+
+    padding: 1rem;
+    border-bottom: .1rem solid $c-card-secondary;
+    background-color: $c-card;
+
+    display: flex;
+    align-items: center;
+
+    justify-content: space-between;
+
+    h1 {
+      font-size: 1.3rem;
+    }
+
+    nav {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    a {
+      text-decoration: none;
+      color: $f-color;
+      background-color: $c-page;
+      transition: background-color 150ms ease-in-out, color 150ms ease-in-out;
+      border-radius: calc(0.4 * $s-unit);
+      padding: calc(0.5 * $s-unit) calc(0.8 * $s-unit);
+
+      &:hover {
+        color: $c-secondary-d;
+        background-color: $c-primary-d;
+      }
+
+      &.active {
+        color: $c-secondary;
+        background-color: $c-primary;
+      }
+    }
+  }
+
+  #main {
+    grid-area: main;
+    padding: 1rem;
+  }
+}

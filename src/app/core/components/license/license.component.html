@@ -1,0 +1,11 @@
+@if ((license$ | async); as license) {
+  @if (license.url) {
+    <a [href]="license.url" target="_blank" [title]="getLicenseTitle(license)">
+      {{license.fullName ? license.fullName : license.shortName}}
+    </a>
+  } @else {
+    <span [title]="getLicenseTitle(license)">
+      {{license.fullName ? license.fullName : (license.shortName || 'Unknown License')}}
+    </span>
+  }
+}

@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { switchMap, map, merge, of, BehaviorSubject, tap } from 'rxjs';
+import { switchMap, merge, of, BehaviorSubject, tap, Subject, takeUntil } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
-import { SearchService } from '../../data/search.service';
 import { LoadingIndicatorComponent } from "../loading-indicator/loading-indicator.component";
+import { OptionsService } from '../../data/options.service';
+import { CONFIG } from '../../config.domain';
 
 @Component({
   selector: 'app-option',
@@ -12,24 +13,40 @@ import { LoadingIndicatorComponent } from "../loading-indicator/loading-indicato
   styleUrl: './option.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OptionComponent {
+export class OptionComponent implements OnDestroy {
 
   protected readonly loading = new BehaviorSubject(false);
   protected readonly option;
-  protected readonly scope;
+  protected readonly scopes = CONFIG.scopes
+    .map((scope, idx) => Object.assign({ id: idx }, scope))
+    .filter(scope => scope.optionsEnabled);
+  private readonly destroy$ = new Subject<void>();
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
-    private readonly searchService: SearchService,
+    private readonly searchService: OptionsService,
   ) {
     this.option = this.activatedRoute.queryParams.pipe(
+      takeUntil(this.destroy$),
       tap(() => this.loading.next(true)),
-      switchMap(({ option_scope, option }) => merge(of(null), this.searchService.getByName(Number(option_scope), option))),
+      switchMap(({ scope_id, name }) => merge(of(null), this.searchService.getByName(Number(scope_id), name))),
       tap(() => this.loading.next(false)),
     );
+  }
 
-    this.scope = this.activatedRoute.queryParams.pipe(
-      switchMap(({ option_scope }) => merge(of(null), this.searchService.getScopes().pipe(map(scopes => scopes[Number(option_scope)])))),
-    );
+  public ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  protected getPackageName(html: string): string {
+    const tmp = document.createElement("div");
+    tmp.innerHTML = html;
+    const match = tmp.innerText.trim().match(/pkgs\.(.+?)(\.override.*)?$/);
+    return match ? match[1] : '';
+  }
+
+  protected getScope(id: number): (typeof CONFIG.scopes)[number] | undefined {
+    return this.scopes.find(scope => scope.id === id);
   }
 }

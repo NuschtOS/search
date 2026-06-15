@@ -1,0 +1,17 @@
+<aside>
+  <div class="card">
+    <app-packages-search [searchString]="(searchLabel$ | async)!" />
+  </div>
+</aside>
+
+<main>
+  <div class="card">
+    <app-package />
+  </div>
+  <footer class="typography">
+    <p>NüschtOS Search</p>
+    <p>Licensed under MIT</p>
+    <a href="https://github.com/NuschtOS/search" target="_blank">Source</a>
+  </footer>
+</main>
+
