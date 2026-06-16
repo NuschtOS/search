@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
-  <ShortName>NüschtOS Search</ShortName>
-  <Description>Simple and fast static-page NixOS option and packages search</Description>
+  <ShortName>NüschtOS Options Search</ShortName>
+  <Description>Simple and fast static-page NixOS options search</Description>
   <InputEncoding>UTF-8</InputEncoding>
   <Image width="16" height="16" type="image/x-icon">favicon.ico</Image>
-  <Url type="text/html" template="./?query={searchTerms}" />
+  <Url type="text/html" template="./options?query={searchTerms}" />
 </OpenSearchDescription>
