@@ -54,7 +54,9 @@ jobs:
       - run: rm package.json pnpm-lock.yaml
 
       - name: Publish to Cloudflare Pages
-        if: "github.repository_owner == 'NuschtOS'"
+        # Fork PRs do not receive the Pages secret, so skip deployment there.
+        # Trusted PRs and pushes can still publish when the secret is present.
+        if: github.repository_owner == 'NuschtOS' && (github.event_name != 'pull_request' || secrets.CLOUDFLARE_API_TOKEN != '')
         uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
