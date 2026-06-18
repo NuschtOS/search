@@ -8,7 +8,7 @@ export function setOpenSearchLink(document: Document, type: OpenSearchType): voi
 
   link.rel = 'search';
   link.type = 'application/opensearchdescription+xml';
-  link.dataset.nuschtosOpensearch = 'true';
+  link.dataset['nuschtosOpensearch'] = 'true';
   link.title = `${CONFIG.title} ${type === 'options' ? 'Options' : 'Packages'} Search`;
   link.href = `${CONFIG.baseHref}opensearch-${type}.xml`;
 }
