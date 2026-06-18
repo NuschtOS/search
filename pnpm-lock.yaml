@@ -27,11 +27,11 @@ importers:
         specifier: ^22.0.0
         version: 22.0.1(@angular/common@22.0.1(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(@angular/platform-browser@22.0.1(@angular/common@22.0.1(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2)))(rxjs@7.8.2)
       '@feel/form':
-        specifier: ^0.2.4
-        version: 0.2.4(@angular/cdk@20.2.14(@angular/common@22.0.1(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/common@22.0.1(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(@feel/style@0.2.4(@angular/common@22.0.1(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2)))
+        specifier: ^0.2.5
+        version: 0.2.5(@angular/cdk@20.2.14(@angular/common@22.0.1(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/common@22.0.1(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(@feel/style@0.2.5(@angular/common@22.0.1(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2)))
       '@feel/style':
-        specifier: ^0.2.4
-        version: 0.2.4(@angular/common@22.0.1(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))
+        specifier: ^0.2.5
+        version: 0.2.5(@angular/common@22.0.1(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))
       '@fontsource/dm-mono':
         specifier: ^5.2.7
         version: 5.2.7
@@ -871,16 +871,16 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@feel/form@0.2.4':
-    resolution: {integrity: sha512-cAfK7LLYeh80+Ahox80KTMSmpwGmbnK7FfYmlkpGlUDuzwLxa1Jv04O3stzoA4dithMomTi4PqiqHSk1/ox72Q==, tarball: https://codeberg.org/api/packages/m4rc3l/npm/%40feel%2Fform/-/0.2.4/form-0.2.4.tgz}
+  '@feel/form@0.2.5':
+    resolution: {integrity: sha512-xMmegKj5ebU80xXxd8mxQascHu8+mSX+QOum3/nFTHwX5YOEt3GhLrRpD1KdrEQGrkdWLwTBuwK2rQbXIrC3Ow==, tarball: https://codeberg.org/api/packages/m4rc3l/npm/%40feel%2Fform/-/0.2.5/form-0.2.5.tgz}
     peerDependencies:
       '@angular/cdk': ^20.0.0
       '@angular/common': ^20.0.0
       '@angular/core': ^20.0.0
-      '@feel/style': 0.2.4
+      '@feel/style': 0.2.5
 
-  '@feel/style@0.2.4':
-    resolution: {integrity: sha512-mIfyolBEDtbZB1c0JGMbzdZPWfC6ns3S5ideqWKAn9fRZ99AXsWRcJWauvMfe1NF/KrL51CeVXZ73BT79Q4cVg==, tarball: https://codeberg.org/api/packages/m4rc3l/npm/%40feel%2Fstyle/-/0.2.4/style-0.2.4.tgz}
+  '@feel/style@0.2.5':
+    resolution: {integrity: sha512-ohV+9bLWpOMUWvs2+4kLdyceaoOtbZjArBEf0Xcm1zRRq5ag7ZHkyjJeC2AUJp2kcQOKXNUSZqwbAztCarhfWg==, tarball: https://codeberg.org/api/packages/m4rc3l/npm/%40feel%2Fstyle/-/0.2.5/style-0.2.5.tgz}
     peerDependencies:
       '@angular/common': ^20.0.0
       '@angular/core': ^20.0.0
@@ -3702,15 +3702,15 @@ snapshots:
   '@esbuild/win32-x64@0.28.0':
     optional: true
 
-  '@feel/form@0.2.4(@angular/cdk@20.2.14(@angular/common@22.0.1(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/common@22.0.1(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(@feel/style@0.2.4(@angular/common@22.0.1(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2)))':
+  '@feel/form@0.2.5(@angular/cdk@20.2.14(@angular/common@22.0.1(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/common@22.0.1(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(@feel/style@0.2.5(@angular/common@22.0.1(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2)))':
     dependencies:
       '@angular/cdk': 20.2.14(@angular/common@22.0.1(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2)
       '@angular/common': 22.0.1(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2)
       '@angular/core': 22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2)
-      '@feel/style': 0.2.4(@angular/common@22.0.1(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))
+      '@feel/style': 0.2.5(@angular/common@22.0.1(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))
       tslib: 2.8.1
 
-  '@feel/style@0.2.4(@angular/common@22.0.1(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))':
+  '@feel/style@0.2.5(@angular/common@22.0.1(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2))(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))':
     dependencies:
       '@angular/common': 22.0.1(@angular/core@22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2))(rxjs@7.8.2)
       '@angular/core': 22.0.1(@angular/compiler@22.0.1)(rxjs@7.8.2)(zone.js@0.16.2)
