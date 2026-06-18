@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, Inject, LOCALE_ID, OnDestroy } from '@angular/core';
-import { CONFIG } from '../../core/config.domain';
+import { DOCUMENT } from '@angular/common';
 import { OptionComponent } from '../../core/components/option/option.component';
 import { OptionsService } from '../../core/data/options.service';
 import { OptionsSearchComponent } from '../../core/components/search/search.component';
 import { RouterLink } from '@angular/router';
-import { AsyncPipe, DecimalPipe, formatNumber } from '@angular/common';
+import { AsyncPipe, formatNumber } from '@angular/common';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
+import { clearOpenSearchLink, setOpenSearchLink } from '../../core/opensearch-link';
 
 @Component({
   selector: 'app-options',
@@ -27,8 +28,10 @@ export class OptionsPageComponent implements OnDestroy {
 
   constructor(
     protected readonly searchService: OptionsService,
+    @Inject(DOCUMENT) private readonly document: Document,
     @Inject(LOCALE_ID) private readonly locale: string
   ) {
+    setOpenSearchLink(this.document, 'options');
     this.searchService.getIndexSize()
       .pipe(takeUntil(this.destroy$))
       .subscribe(size => {
@@ -36,6 +39,7 @@ export class OptionsPageComponent implements OnDestroy {
       });
   }
   ngOnDestroy(): void {
+    clearOpenSearchLink(this.document);
     this.destroy$.next();
     this.destroy$.complete();
   }

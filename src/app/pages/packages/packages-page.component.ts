@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, Component, Inject, LOCALE_ID, OnDestroy } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { PackagesSearchComponent } from '../../core/components/search/search.component';
 import { PackagesService } from '../../core/data/packages.service';
 import { PackageComponent } from "../../core/components/package/package.component";
 import { AsyncPipe, formatNumber } from '@angular/common';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
+import { clearOpenSearchLink, setOpenSearchLink } from '../../core/opensearch-link';
 
 @Component({
   selector: 'app-packages-page.component',
@@ -23,8 +25,10 @@ export class PackagesPageComponent implements OnDestroy {
 
   constructor(
     protected readonly searchService: PackagesService,
+    @Inject(DOCUMENT) private readonly document: Document,
     @Inject(LOCALE_ID) private readonly locale: string
   ) {
+    setOpenSearchLink(this.document, 'packages');
     this.searchService.getIndexSize()
       .pipe(takeUntil(this.destroy$))
       .subscribe(size => {
@@ -32,6 +36,7 @@ export class PackagesPageComponent implements OnDestroy {
       });
   }
   ngOnDestroy(): void {
+    clearOpenSearchLink(this.document);
     this.destroy$.next();
     this.destroy$.complete();
   }
