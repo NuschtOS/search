@@ -24,9 +24,7 @@ stdenv.mkDerivation (finalAttrs: {
   strictDeps = true;
 
   postPatch = ''
-    substituteInPlace src/index.html \
-      --replace-fail '##TITLE##' ${lib.escapeShellArg config.title}
-    substituteInPlace public/opensearch-options.xml public/opensearch-packages.xml \
+    substituteInPlace src/index.html public/opensearch-options.xml public/opensearch-packages.xml \
       --replace-fail '##TITLE##' ${lib.escapeShellArg config.title}
 
     # remove development files
