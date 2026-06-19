@@ -54,7 +54,7 @@ jobs:
       - run: rm package.json pnpm-lock.yaml
 
       - name: Publish to Cloudflare Pages
-        if: "github.repository_owner == 'NuschtOS'"
+        if: github.event_name == 'push'
         uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
