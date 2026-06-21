@@ -1,3 +1,10 @@
 ignoreScripts: true
 minimumReleaseAgeExclude:
   - '@nuschtos/fixx@0.2.1'
+  - '@angular-devkit/architect@0.2200.3'
+  - '@angular-devkit/core@22.0.3'
+  - '@angular-devkit/schematics@22.0.3'
+  - '@angular/build@22.0.3'
+  - '@angular/cli@22.0.3'
+  - '@schematics/angular@22.0.3'
+  - '@nuschtos/fixx@0.2.2'
