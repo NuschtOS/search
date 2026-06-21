@@ -38,7 +38,7 @@ jobs:
       - name: Install Nix
         uses: cachix/install-nix-action@v31
 
-      - uses: DeterminateSystems/magic-nix-cache-action@v13
+      - uses: DeterminateSystems/magic-nix-cache-action@v14
 
       - name: Build search
         # reduce max jobs to not run out of memory
