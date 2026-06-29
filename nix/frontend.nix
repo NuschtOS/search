@@ -7,8 +7,10 @@ let
   # pin pnpm version to avoid hash mismatches with differing pnpm versions
   # on nixos stable and unstable
   pnpm = callPackage (path + "/pkgs/development/tools/pnpm/generic.nix") {
-    version = "11.1.2";
-    hash = "sha256-v+TSssejIQVlu6YpKfnv5JPrXyRicgGhAupFFOroz4A=";
+    version = "11.9.0";
+    hash = "sha256-K1Z6pmAmI4B4rC4KM77D/r1g6WKYeqxpdFbzGAgZsoc=";
+    knownVulnerabilities = [ ];
+    nodejs = null;
   };
 in
 stdenv.mkDerivation (finalAttrs: {
