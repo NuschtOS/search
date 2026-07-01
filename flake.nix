@@ -42,6 +42,7 @@
             };
 
             shellHook = ''
+              pnpm install -D @nuschtos/fixx@$(sed -nE 's/.*github:NuschtOS\/ixx\/v([0-9]\.[0-9]\.[0-9]).*/\1/p' flake.nix)
               pnpm install -D @playwright/test@${pkgs.playwright-driver.version}
             '';
           };
