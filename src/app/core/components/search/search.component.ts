@@ -145,6 +145,8 @@ export class SearchComponent<T> {
           return [];
         }
 
+        entries.sort((a, b) => a.name.localeCompare(b.name));
+
         if (this.collapse) {
           const commonPrefix0 = prefix(entries);
           const idx = commonPrefix0.lastIndexOf('.');
