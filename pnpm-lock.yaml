@@ -38,9 +38,6 @@ importers:
       '@fontsource/dm-sans':
         specifier: ^5.2.8
         version: 5.2.8
-      '@nuschtos/fixx':
-        specifier: ^0.2.3
-        version: 0.2.3
       rxjs:
         specifier: ~7.8.2
         version: 7.8.2
@@ -60,6 +57,9 @@ importers:
       '@angular/compiler-cli':
         specifier: ^22.0.2
         version: 22.0.2(@angular/compiler@22.0.2)(typescript@6.0.3)
+      '@nuschtos/fixx':
+        specifier: 0.2.3
+        version: 0.2.3
       '@playwright/test':
         specifier: ^1.60.0
         version: 1.60.0
