@@ -13,6 +13,16 @@ test('typing a query returns search option results', async ({ page }) => {
   await expect(page.getByRole('cell', { name: 'Whether to enable the Firefox web browser.', exact: true })).toBeVisible()
 });
 
+test('deeplnk with query returns search option results', async ({ page }) => {
+  await page.goto('/?query=fire*ox*able');
+
+  const searchResultEntry = page.getByRole('link', { name: 'programs.firefox.enable', exact: true });
+  await expect(searchResultEntry).toBeVisible()
+  await searchResultEntry.click()
+
+  await expect(page.getByRole('cell', { name: 'Whether to enable the Firefox web browser.', exact: true })).toBeVisible()
+});
+
 test('typing a query returns search package results', async ({ page }) => {
   await page.goto('/');
 
@@ -29,4 +39,15 @@ test('typing a query returns search package results', async ({ page }) => {
 
   await expect(page.getByRole('cell', { name: 'Web browser built from Firefox source tree', exact: true })).toBeVisible()
 });
+
+test('deeplnk with query returns search package results', async ({ page }) => {
+  await page.goto('/packages?query=fire*ox');
+
+  const searchResultEntry = page.getByRole('link', { name: 'firefox', exact: true });
+  await expect(searchResultEntry).toBeVisible()
+  await searchResultEntry.click()
+
+  await expect(page.getByRole('cell', { name: 'Web browser built from Firefox source tree', exact: true })).toBeVisible()
+});
+
 

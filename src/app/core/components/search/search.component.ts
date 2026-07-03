@@ -117,9 +117,6 @@ export class SearchComponent<T> {
     const { query, scope } = getQuery(this.activatedRoute);
     const id = this.scopes.find(s => s.name === scope)?.id ?? -1;
     this.search.setValue({ query: query ?? '', scope: id.toString() })
-
-    this.doSearch(scope === null ? null : Number(scope), query)
-      .subscribe(value => this.results.next(value));
   }
 
   protected ngOnDestroy0(): void {
