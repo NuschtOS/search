@@ -62,8 +62,10 @@ stdenv.mkDerivation (finalAttrs: {
     mkdir -p $out
     cp -rL ./dist/browser/* $out/
     cp ./dist/3rdpartylicenses.txt $out
-    # support for GitHub Pages
-    cp $out/index.html $out/404.html
+    ${lib.optionalString (!config.hashLocation) ''
+      # support for GitHub Pages and other 404.html-respecting static hosts
+      cp $out/index.html $out/404.html
+    ''}
     runHook postInstall
   '';
 

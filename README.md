@@ -15,8 +15,8 @@ There are two functions exposeed to build the directory containing the static se
 
 | Name | Description | Available Options |
 |---|---|---|
-| `mkMultiSearch` | to build a search with multiple scopes (modules). | `baseHref`, `title` and `scopes` |
-| `mkSearch` | is a thin wrapper around `mkMultiSearch` to only use one scope (module). | `modules`, `optionsJSON`, `optionsPrefix`, `urlPrefix`, `baseHref` and `title` |
+| `mkMultiSearch` | to build a search with multiple scopes (modules). | `baseHref`, `title`, `hashLocation` and `scopes` |
+| `mkSearch` | is a thin wrapper around `mkMultiSearch` to only use one scope (module). | `modules`, `optionsJSON`, `optionsPrefix`, `urlPrefix`, `baseHref`, `title` and `hashLocation` |
 
 ### Explanation of options
 
@@ -24,6 +24,7 @@ There are two functions exposeed to build the directory containing the static se
 |---|---|
 | `baseHref` | The directory to where the search is going to be deployed relative to the domain. Defaults to `/`. |
 | `title` | The title on the top left. Defaults to `NüschtOS Search`. |
+| `hashLocation` | Use hash-based routing (`/#/...`) instead of path-based routing. Defaults to `false` and should be enabled when the web server or page provider does not automatically fall back to `index.html` or `404.html`. <br> For example, this can occur when embedding NüschtOS Search into a larger documentation site hosted on a static server that only serves the root `404.html`. Hash-based routing encodes URL path information in the URL hash instead, so the browser always requests `index.html`, regardless of the current page. |
 | `modules` | A list of NixOS modules as an attrset or file similar to the `nixosSystem` function. Exclusive with `optionsJSON`. |
 | `optionsJSON` | Path to a pre-generated `options.json` file. Exclusive with `modules`. |
 | `optionsPrefix` | A static prefix to append to all options. An extra `dot` is always appended. Defaults to being empty. |
