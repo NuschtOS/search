@@ -27,8 +27,9 @@ let
     || name == "ghcHEAD"
     # ... or binary variants
     || (lib.hasPrefix "ghc" name && lib.hasSuffix "Binary" name)
-    # coqPackages_X_X re-exports all packages, including packages that do not eval that version
-    || (attrPrefix != [ ] && lib.hasPrefix "coqPackages" (lib.head attrPrefix) && name == "coqPackages")
+    # coqPackages_X_X/rocqPackages_X_X re-exports all packages, including packages that do not eval for that version
+    || (attrPrefix != [ ] && lib.hasPrefix "coqPackages" (lib.head attrPrefix) && (name == "coqPackages" || name == "rocqPackages"))
+    || (attrPrefix != [ ] && lib.hasPrefix "rocqPackages" (lib.head attrPrefix) && name == "rocqPackages")
     # qt exposes sources under srcs
     || name == "srcs"
     # broken since buildPython* supports "finalAttrs"-pattern
