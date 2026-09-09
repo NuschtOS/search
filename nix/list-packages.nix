@@ -27,15 +27,15 @@ let
     || name == "ghcHEAD"
     # ... or binary variants
     || (lib.hasPrefix "ghc" name && lib.hasSuffix "Binary" name)
-    # has broken meta stuff
-    || (lib.hasPrefix "coqPackages" name)
+    # coqPackages_X_X re-exports all packages, including packages that do not eval that version
+    || (attrPrefix != [ ] && lib.hasPrefix "coqPackages" (lib.head attrPrefix) && name == "coqPackages")
     # qt exposes sources under srcs
     || name == "srcs"
     # broken since buildPython* supports "finalAttrs"-pattern
     || attrPrefix == [ "pypy27Packages" ] || attrPrefix == [ "pypy27Packages" ] || attrPrefix == ["pypy2Packages"] || attrPrefix == ["pypyPackages"] || attrPrefix == ["python27Packages"] || attrPrefix == ["python2Packages"]
     # don't recurse into pythonPackages a nth time and just assume and attrPrefix ending in Packages (eg. python311Packages or mopidyPackages) is not what we want
     || (attrPrefix != [ ] && lib.hasSuffix "Packages" (lib.head attrPrefix) && name == "pythonPackages")
-    # builtins.trace "name: ${lib.concatStringsSep "." attrPrefix}.${name}"
+    # || builtins.trace "name: ${lib.concatStringsSep "." attrPrefix}.${name}" false
     || !(builtins.isAttrs value);
 
   listPackages = attrPrefix: pkgs:
