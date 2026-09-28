@@ -2871,8 +2871,8 @@ packages:
     resolution: {integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==}
     engines: {node: '>=8'}
 
-  tar@7.5.16:
-    resolution: {integrity: sha512-56adEpPMouktRlBLXiaYFFzZ/3+JXa8P9n7WbR+ibIjtviN55mEaOkiysCnPnWm+7kkui1Dn8J9l+g6zV8731w==}
+  tar@7.5.22:
+    resolution: {integrity: sha512-MFO/QzvtAOmJbkhOaCTvbGcFN9L9b+JunIsDwaKljSOdcLMea3NJ1k9Usz/rjdfSXTq4dfzfeS7W4p4YOAAHeA==}
     engines: {node: '>=18'}
 
   tinyglobby@0.2.16:
@@ -5225,7 +5225,7 @@ snapshots:
       nopt: 9.0.0
       proc-log: 6.1.0
       semver: 7.8.4
-      tar: 7.5.16
+      tar: 7.5.22
       tinyglobby: 0.2.17
       undici: 6.26.0
       which: 6.0.1
@@ -5336,7 +5336,7 @@ snapshots:
       proc-log: 6.1.0
       sigstore: 4.1.1(supports-color@10.2.2)
       ssri: 13.0.1
-      tar: 7.5.16
+      tar: 7.5.22
     transitivePeerDependencies:
       - supports-color
 
@@ -5687,7 +5687,7 @@ snapshots:
     dependencies:
       has-flag: 4.0.0
 
-  tar@7.5.16:
+  tar@7.5.22:
     dependencies:
       '@isaacs/fs-minipass': 4.0.1
       chownr: 3.0.0
