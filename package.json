@@ -17,7 +17,7 @@
     "@angular/core": "^22.0.2",
     "@angular/forms": "^22.0.2",
     "@angular/platform-browser": "^22.0.2",
-    "@angular/router": "^22.0.2",
+    "@angular/router": "^22.2.0",
     "@feel/form": "^0.2.5",
     "@feel/style": "^0.2.5",
     "@fontsource/dm-mono": "^5.2.7",
